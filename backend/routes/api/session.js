@@ -1,6 +1,6 @@
 const express = require("express");
 const { check } = require("express-validator");
-
+const router = require('express').Router();
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie } = require("../../utils/auth");
 const { User } = require("../../db/models");
