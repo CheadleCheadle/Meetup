@@ -1,10 +1,9 @@
-const express = require('express');
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const express = require("express");
+const { check } = require("express-validator");
 
-const router = express.Router();
+const { handleValidationErrors } = require("../../utils/validation");
+const { setTokenCookie } = require("../../utils/auth");
+const { User } = require("../../db/models");
 
 const validateLogin = [
     check('credential')
