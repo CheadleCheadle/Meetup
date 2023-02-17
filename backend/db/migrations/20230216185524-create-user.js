@@ -1,11 +1,10 @@
 'use strict';
 
-const { now } = require('lodash');
 
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schmea = process.env.SCHEMA;
+  options.schema = process.env.SCHEMA;
 }
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -44,6 +43,6 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Users";
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable(options);
   }
 };
