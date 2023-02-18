@@ -43,6 +43,14 @@ module.exports = (sequelize, DataTypes) => {
     }
     static associate(models) {
       // define association here
+      User.hasMany(
+        models.Group,
+        {foreignKey: 'organizerId'}
+      )
+
+      User.belongsToMany(models.Group, {
+        through: models.Membership
+      })
     }
   }
    User.init(
@@ -59,6 +67,25 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [0, 30],
+          isAlpha: true,
+          notEmpty: true,
+        }
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: [0, 30],
+          isAlpha: true,
+          notEmpty: true,
+        }
+      },
+
       email: {
         type: DataTypes.STRING,
         allowNull: false,
