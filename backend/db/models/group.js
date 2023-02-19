@@ -18,6 +18,13 @@ module.exports = (sequelize, DataTypes) => {
       Group.belongsToMany(models.User, {
         through: models.Membership
       })
+      Group.hasMany(models.GroupImage, {
+        foreignKey: "groupId"
+      })
+      Group.hasMany(models.Venue, {
+        foreignKey: 'groupId'
+      })
+      Group.hasMany(models.Event, {foreignKey: "groupId"})
     }
   }
   Group.init({
@@ -52,12 +59,10 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: {
       type: DataTypes.STRING,
       allowNull: true,
-      // defaultValue: new Date(),
     },
     updatedAt: {
       type: DataTypes.STRING,
       allowNull: true,
-      // defaultValue: new Date(),
     },
     numMembers: {
       type: DataTypes.INTEGER,
