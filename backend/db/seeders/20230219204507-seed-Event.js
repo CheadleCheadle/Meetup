@@ -1,6 +1,11 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+ options.schema = process.env.SCHEMA; // define your schema in options object
+}
+
 module.exports = {
   async up (queryInterface, Sequelize) {
     /**
@@ -12,7 +17,8 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-     await queryInterface.bulkInsert('Events', [
+      options.tableName = "Events";
+     await queryInterface.bulkInsert(options, [
       {
         venueId: 1,
         groupId: 1,
@@ -24,7 +30,7 @@ module.exports = {
         startDate: '2023-03-19',
         endDate: '2023-03-20',
       }
-     ]);
+     ], {});
   },
 
   async down (queryInterface, Sequelize) {
@@ -34,6 +40,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('Events', null, {});
+    options.tableName = "Events";
+    await queryInterface.bulkDelete(options, null, {});
   }
 };
