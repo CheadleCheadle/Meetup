@@ -47,14 +47,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      numMembers: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      previewImage: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
+      // numMembers: {
+      //   type: Sequelize.INTEGER,
+      //   allowNull: false,
+      // },
+      // previewImage: {
+      //   type: Sequelize.STRING,
+      //   allowNull: true,
+      // },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE,

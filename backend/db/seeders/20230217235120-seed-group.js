@@ -18,8 +18,8 @@ module.exports = {
       private: "true",
       city: "New York",
       state: "NY",
-      numMembers: 10,
-      previewImage: null,
+      // numMembers: 10,
+      // previewImage: null,
     }
    ], {})
   },
