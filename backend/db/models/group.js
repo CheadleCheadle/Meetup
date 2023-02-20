@@ -64,14 +64,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    // numMembers: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
-    // previewImage: {
-    //   type: DataTypes.STRING,
-    //   allowNull: true,
-    // }
   }, {
     sequelize,
     modelName: 'Group',
