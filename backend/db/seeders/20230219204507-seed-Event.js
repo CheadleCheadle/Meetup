@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+   up: async (queryInterface, Sequelize) => {
     /**
      * Add seed commands here.
      *
@@ -33,7 +33,7 @@ module.exports = {
      ], {});
   },
 
-  async down (queryInterface, Sequelize) {
+   down: async (queryInterface, Sequelize) => {
     /**
      * Add commands to revert seed here.
      *
