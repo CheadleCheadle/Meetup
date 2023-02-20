@@ -1,43 +1,34 @@
 'use strict';
-
-
 /** @type {import('sequelize-cli').Migration} */
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;
+ options.schema = process.env.SCHEMA; // define your schema in options object
 }
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('GroupImages', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      groupId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "Groups"
+        }
+      },
+      url: {
         type: Sequelize.STRING,
-        unique: false,
-      },
-      lastName: {
         allowNull: false,
-        type: Sequelize.STRING,
-        unique: false,
       },
-      username: {
-        type: Sequelize.STRING(30),
+      preview: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
-        unique: true,
-      },
-      email: {
-        type: Sequelize.STRING(256),
-        allowNull: false,
-        unique: true
-      },
-      hashedPassword: {
-        type: Sequelize.STRING.BINARY,
-        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -52,7 +43,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
+    options.tableName = "GroupImages"
     await queryInterface.dropTable(options);
   }
 };

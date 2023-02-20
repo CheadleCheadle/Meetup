@@ -1,58 +1,74 @@
 'use strict';
 
-
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;
+ options.schema = process.env.SCHEMA; // define your schema in options object
 }
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Groups', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      organizerId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
+      name: {
         type: Sequelize.STRING,
-        unique: false,
-      },
-      lastName: {
         allowNull: false,
+      },
+      about: {
         type: Sequelize.STRING,
-        unique: false,
-      },
-      username: {
-        type: Sequelize.STRING(30),
         allowNull: false,
-        unique: true,
       },
-      email: {
-        type: Sequelize.STRING(256),
+      type: {
+        type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
-      hashedPassword: {
-        type: Sequelize.STRING.BINARY,
-        allowNull: false
+      private: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
+      city: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      state: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      numMembers: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      previewImage: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       }
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
+    options.tableName = "Groups"
     await queryInterface.dropTable(options);
   }
 };
