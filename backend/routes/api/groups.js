@@ -26,21 +26,21 @@ const { requireAuth } = require('../../utils/auth');
 router.get('/',  async(req, res) => {
     const groups = await Group.findAll();
 
-    if (Membership) {
-    for (let i = 0; i < groups.length; i++) {
-        const members = await Membership.findAll({
-            where: {groupId: groups[i].id}
-        })
-        const image = await GroupImage.findOne({
-            where: {groupId : groups[i].id}
-        })
-        groups[i].dataValues.numMembers = members.length;
+//     if (Membership && GroupImage) {
+//     for (let i = 0; i < groups.length; i++) {
+//         const members = await Membership.findAll({
+//             where: {groupId: groups[i].id}
+//         })
+//         const image = await GroupImage.findOne({
+//             where: {groupId : groups[i].id}
+//         })
+//         groups[i].dataValues.numMembers = members.length;
 
-        if (image) {
-        groups[i].dataValues.previewImage = image.url
-        }
-    }
-}
+//         if (image) {
+//         groups[i].dataValues.previewImage = image.url
+//         }
+//     }
+// }
     res.status(200).json({Groups:groups});
 });
 
@@ -60,20 +60,20 @@ router.get('/current', requireAuth, async (req, res) => {
             }
         })
          console.log(groups[0].dataValues);
-        if (Membership){
-        for (let i = 0; i < groups.length; i++) {
-            const members = await Membership.findAll({
-                where: {
-                    groupId: groups[i].dataValues.id
-                }
-            });
-            const image = await GroupImage.findOne({
-                where: {groupId: groups[i].dataValues.id}
-            })
-            groups[i].dataValues.numMembers = members.length;
-            groups[i].dataValues.previewImage = image.url;
-        }
-    }
+    //     if (Membership && GroupImage){
+    //     for (let i = 0; i < groups.length; i++) {
+    //         const members = await Membership.findAll({
+    //             where: {
+    //                 groupId: groups[i].dataValues.id
+    //             }
+    //         });
+    //         const image = await GroupImage.findOne({
+    //             where: {groupId: groups[i].dataValues.id}
+    //         })
+    //         groups[i].dataValues.numMembers = members.length;
+    //         groups[i].dataValues.previewImage = image.url;
+    //     }
+    // }
         //  console.log(memberships[0].Group.dataValues);
         res.status(200).json({Groups:groups});
     } else {
