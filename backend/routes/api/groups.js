@@ -26,21 +26,21 @@ const { requireAuth } = require('../../utils/auth');
 router.get('/',  async(req, res) => {
     const groups = await Group.findAll();
 
-    for (let i = 0; i < groups.length; i++) {
-        const members = await Membership.findAll({
-            where: {groupId: groups[i].id}
-        })
-        const image = await GroupImage.findOne({
-            where: {groupId : groups[i].id}
-        })
-        groups[i].dataValues.numMembers = members.length;
+    // for (let i = 0; i < groups.length; i++) {
+    //     const members = await Membership.findAll({
+    //         where: {groupId: groups[i].id}
+    //     })
+    //     const image = await GroupImage.findOne({
+    //         where: {groupId : groups[i].id}
+    //     })
+    //     groups[i].dataValues.numMembers = members.length;
 
-        if (image) {
-        groups[i].dataValues.previewImage = image.url
-        }
+    //     if (image) {
+    //     groups[i].dataValues.previewImage = image.url
+    //     }
 
 
-    }
+    // }
     res.status(200).json({Groups:groups});
 });
 
