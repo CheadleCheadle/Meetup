@@ -12,6 +12,7 @@ router.use('/users', usersRouter);
 
 router.use('/groups', groupRouter);
 
+
 router.post('/test', (req, res) => {
   res.json({ requestBody: req.body });
 });
