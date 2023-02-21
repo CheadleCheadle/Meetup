@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     organizerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      onDelete: "CASCADE"
     },
     name: {
       type: DataTypes.STRING,
@@ -57,16 +58,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     createdAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATE,
       allowNull: true,
     },
     updatedAt: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATE,
       allowNull: true,
     },
   }, {
     sequelize,
     modelName: 'Group',
+    defaultScope: {
+      attributes: {
+        exclude: ["groupId", "updatedAt", "createdAt"]
+      }
+    }
   });
   return Group;
 };

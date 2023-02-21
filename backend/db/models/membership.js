@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Membership',
+    scopes: {
+      currentUserScope: {
+        attributes: { exclude: ['userId', 'groupId', 'status', 'createdAt', 'updatedAt']}
+      }
+    }
   });
   return Membership;
 };

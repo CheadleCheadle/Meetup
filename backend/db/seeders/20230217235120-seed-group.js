@@ -18,6 +18,15 @@ module.exports = {
       private: "true",
       city: "New York",
       state: "NY",
+    },
+    {
+      organizerId: 1,
+      name: "Second Group",
+      about: "Just the first group",
+      type: "In person",
+      private: "true",
+      city: "Portland",
+      state: "OR",
     }
    ], {})
   },
