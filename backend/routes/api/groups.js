@@ -108,9 +108,10 @@ router.post('/', requireAuth, async (req, res) => {
     try {
     const newGroup = await Group.create({name, about, type, private, city, state, organizerId: user.dataValues.id});
     //create new membership
-    await Membership.create({userId:user.id, groupId:newGroup.dataValues.id, status: "Host"});
+    const member = await Membership.create({userId:user.dataValues.id, groupId:newGroup.dataValues.id, status: "Host"});
     res.status(201).json(newGroup);
     } catch (e) {
+        console.log(e);
         res.status(400).json({
             message: "Validation Error",
             statusCode: 400,
