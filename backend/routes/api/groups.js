@@ -26,21 +26,20 @@ const { requireAuth } = require('../../utils/auth');
 router.get('/',  async(req, res) => {
     const groups = await Group.findAll();
 
-//     if (Membership && GroupImage) {
-//     for (let i = 0; i < groups.length; i++) {
-//         const members = await Membership.findAll({
-//             where: {groupId: groups[i].id}
-//         })
-//         const image = await GroupImage.findOne({
-//             where: {groupId : groups[i].id}
-//         })
-//         groups[i].dataValues.numMembers = members.length;
+    for (let i = 0; i < groups.length; i++) {
+        const members = await Membership.findAll({
+            where: {groupId: groups[i].id}
+        })
+        const image = await GroupImage.findOne({
+            where: {groupId : groups[i].id}
+        })
+        groups[i].dataValues.numMembers = members.length;
 
-//         if (image) {
-//         groups[i].dataValues.previewImage = image.url
-//         }
-//     }
-// }
+        if (image) {
+        groups[i].dataValues.previewImage = image.url
+        }
+
+}
     res.status(200).json({Groups:groups});
 });
 
@@ -108,6 +107,8 @@ router.post('/', requireAuth, async (req, res) => {
     const { user } = req;
     try {
     const newGroup = await Group.create({name, about, type, private, city, state, organizerId: user.dataValues.id});
+    //create new membership
+    await Membership.create({userId:user.id, groupId:newGroup.dataValues.id, status: "Host"});
     res.status(201).json(newGroup);
     } catch (e) {
         res.status(400).json({
