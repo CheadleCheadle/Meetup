@@ -108,7 +108,7 @@ Check error and ask a question on Slack.
 */
 router.post('/', requireAuth, async (req, res) => {
     const {name, about, type, private, city, state } = req.body;
-    // const { user } = req;
+     const { user } = req;
     // try {
     const newGroup = await Group.create({name, about, type, private, city, state, organizerId: user.dataValues.id});
     //create new membership
