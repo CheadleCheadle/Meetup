@@ -108,7 +108,10 @@ router.post('/', requireAuth, async (req, res) => {
     try {
     const newGroup = await Group.create({name, about, type, private, city, state, organizerId: user.dataValues.id});
     //create new membership
+    // console.log(user.id,  newGroup.dataValues.id);
     const member = await Membership.create({userId:user.dataValues.id, groupId:newGroup.dataValues.id, status: "Host"});
+
+    // console.log('               ', member);
     res.status(201).json(newGroup);
     } catch (e) {
         console.log(e);
