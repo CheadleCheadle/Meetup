@@ -37,20 +37,39 @@ for (let i = 0; i < events.length; i++) {
 res.status(200).json({Events:events});
 });
 
-//Get all Events of a Group specified by its id
-// router.get('/:groupId/events', async (req, res) => {
-//     const { groupId } = req.params;
-//     groupId = parseInt(groupId);
-//     const events = await Event.findAll({
-//         where: {
-//             groupId
-//         },
-//          attributes: {
-//         exclude: ["capacity", "price"]
-//     },
-//         include: ["Group", "Venue"]
-//     })
+router.get('/:eventId', async (req, res) => {
+    let { eventId } = req.params;
+    eventId = parseInt(eventId);
+    const event = await Event.findOne({
+        where: {
+            id: eventId
+        },
+        include: ["Group", "Venue"]
+    });
+    const numAttend = await Attendance.count({
+        where: {
+            eventId
+        }
+    });
 
-//     res.status(200).json(events);
-// })
+    const images = await EventImage.findAll({
+        where: {
+            eventId
+        }
+    })
+
+    if (!event) {
+        return res.status(404).json({message: "Event couldn't be found", statusCode: 404});
+    }
+
+    event.dataValues.numAttending = numAttend;
+    event.dataValues.EventImages = images;
+    delete event.dataValues.Group.dataValues.organizerId;
+    delete event.dataValues.Group.dataValues.type;
+    delete event.dataValues.Group.dataValues.about;
+    delete event.dataValues.Venue.dataValues.groupId;
+    return res.status(200).json(event);
+});
+
+
 module.exports = router;
