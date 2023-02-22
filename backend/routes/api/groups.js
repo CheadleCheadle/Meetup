@@ -59,20 +59,20 @@ router.get('/current', requireAuth, async (req, res) => {
             }
         })
          console.log(groups[0].dataValues);
-    //     if (Membership && GroupImage){
-    //     for (let i = 0; i < groups.length; i++) {
-    //         const members = await Membership.findAll({
-    //             where: {
-    //                 groupId: groups[i].dataValues.id
-    //             }
-    //         });
-    //         const image = await GroupImage.findOne({
-    //             where: {groupId: groups[i].dataValues.id}
-    //         })
-    //         groups[i].dataValues.numMembers = members.length;
-    //         groups[i].dataValues.previewImage = image.url;
-    //     }
-    // }
+
+        for (let i = 0; i < groups.length; i++) {
+            const members = await Membership.findAll({
+                where: {
+                    groupId: groups[i].dataValues.id
+                }
+            });
+            const image = await GroupImage.findOne({
+                where: {groupId: groups[i].dataValues.id}
+            })
+            groups[i].dataValues.numMembers = members.length;
+            groups[i].dataValues.previewImage = image.url;
+        }
+
         //  console.log(memberships[0].Group.dataValues);
         res.status(200).json({Groups:groups});
     } else {
@@ -111,7 +111,7 @@ router.post('/', requireAuth, async (req, res) => {
     // console.log(user.id,  newGroup.dataValues.id);
     const member = await Membership.create({userId:user.dataValues.id, groupId:newGroup.dataValues.id, status: "Host"});
 
-    // console.log('               ', member);
+     console.log(member);
     res.status(201).json(newGroup);
     } catch (e) {
         console.log(e);
