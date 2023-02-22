@@ -25,21 +25,23 @@ const { requireAuth } = require('../../utils/auth');
 // }
 router.get('/',  async(req, res) => {
     const groups = await Group.findAll();
+    for (let i = 0; i < groups.length; i++) {
+        let group = groups[i];
+        const memberCount = Membership.count({
+            where: {
+                groupId: group.id
+            }
+        });
+        const image = await GroupImage.findOne({
+            where: {groupId: group.id}
+        });
+        if (!image) {
+            group.dataValues.previewImage = "no image found";
+        }
+        group.dataValues.numMembers = memberCount;
+        group.dataValues.previewImage = image.dataValues.url;
+    }
 
-//     for (let i = 0; i < groups.length; i++) {
-//         const members = await Membership.findAll({
-//             where: {groupId: groups[i].id}
-//         })
-//         const image = await GroupImage.findOne({
-//             where: {groupId : groups[i].id}
-//         })
-//         groups[i].dataValues.numMembers = members.length;
-
-//         if (image) {
-//         groups[i].dataValues.previewImage = image.url
-//         }
-
-// }
     res.status(200).json({Groups:groups});
 });
 
@@ -60,18 +62,26 @@ router.get('/current', requireAuth, async (req, res) => {
         })
          console.log(groups[0].dataValues);
 
-        // for (let i = 0; i < groups.length; i++) {
-        //     const members = await Membership.findAll({
-        //         where: {
-        //             groupId: groups[i].dataValues.id
-        //         }
-        //     });
-        //     const image = await GroupImage.findOne({
-        //         where: {groupId: groups[i].dataValues.id}
-        //     })
-        //     groups[i].dataValues.numMembers = members.length;
-        //     groups[i].dataValues.previewImage = image.url;
-        // }
+        /*
+        How can I query using aggregates to find the COUNT of a groups members?
+        */
+       for (let i = 0; i < groups.length; i++) {
+        let group = groups[i];
+       const memberCount = await Membership.count({
+        where: {
+            groupId: group.id
+        }
+       });
+       const image = await GroupImage.findOne({
+            where: {groupId: group.id}
+        });
+        if (!image) {
+            group.dataValues.previewImage = "no image found";
+        }
+       group.dataValues.numMembers = memberCount;
+       group.dataValues.previewImage = image.dataValues.url;
+    }
+
 
         //  console.log(memberships[0].Group.dataValues);
         res.status(200).json({Groups:groups});
