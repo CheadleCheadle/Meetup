@@ -17,7 +17,8 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Users"
+          model: "Users",
+          key: "id"
         },
         allowNull: false,
       },
@@ -42,7 +43,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
-      }
+      },
     }, options);
   },
   async down(queryInterface, Sequelize) {
