@@ -2,32 +2,14 @@ const express = require("express");
 const router = require('express').Router();
 const { Group, Membership, GroupImage, User, Venue } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
-//Get All Groups
 //function to lazy load numMembers and previewImage
-// const getMembersAndImage = async (arr)  => {
 
-//     for (let i = 0; i < arr.length; i++) {
-//         const members = await Membership.findAll({
-//             where: {groupId: arr[i].id}
-//         })
-//         const image = await GroupImage.findOne({
-//             where: {groupId : arr[i].id}
-//         })
-//         arr[i].dataValues.numMembers = members.length;
-
-//         if (image) {
-//         arr[i].dataValues.previewImage = image.url
-//         }
-
-
-//     }
-
-// }
-router.get('/',  async(req, res) => {
+//Get All Groups
+router.get('/',  async(_req, res) => {
     const groups = await Group.findAll();
     for (let i = 0; i < groups.length; i++) {
         let group = groups[i];
-        const memberCount = Membership.count({
+        const memberCount = await Membership.count({
             where: {
                 groupId: group.id
             }
@@ -38,6 +20,7 @@ router.get('/',  async(req, res) => {
         if (!image) {
             group.dataValues.previewImage = "no image found";
         }
+        console.log("                  ", memberCount);
         group.dataValues.numMembers = memberCount;
         group.dataValues.previewImage = image.dataValues.url;
     }
@@ -60,7 +43,6 @@ router.get('/current', requireAuth, async (req, res) => {
                 organizerId: user.id
             }
         })
-         console.log(groups[0].dataValues);
 
         /*
         How can I query using aggregates to find the COUNT of a groups members?
@@ -82,8 +64,6 @@ router.get('/current', requireAuth, async (req, res) => {
        group.dataValues.previewImage = image.dataValues.url;
     }
 
-
-        //  console.log(memberships[0].Group.dataValues);
         res.status(200).json({Groups:groups});
     } else {
         res.status(400).json({message: "Not signed in"});
@@ -114,8 +94,10 @@ router.get('/:groupId', async (req, res) => {
 /*
 Having trouble creating new membership when creating new group.
 Check error and ask a question on Slack.
+May have fixed!!!!
 
 */
+//Create New Group
 router.post('/', requireAuth, async (req, res) => {
     const {name, about, type, private, city, state } = req.body;
      const { user } = req;
