@@ -57,6 +57,11 @@ module.exports = (sequelize, DataTypes) => {
         attributes: {
           exclude: ["updatedAt", "createdAt"]
         }
+      },
+      eventQuery: {
+        attributes: {
+          exclude: ["groupId", "address", "lat", "lng"]
+        }
       }
     }
   });
