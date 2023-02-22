@@ -27,8 +27,8 @@ module.exports = {
         type: 'Festival',
         capacity: 300,
         price: 10,
-        startDate: '2023-03-19',
-        endDate: '2023-03-20',
+        startDate: "2021-11-19 20:00:00",
+        endDate: "2021-11-19 20:00:00",
       }
      ], {});
   },

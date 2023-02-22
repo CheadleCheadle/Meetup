@@ -47,6 +47,23 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Venue',
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      }
+    },
+    scopes: {
+      noUp: {
+        attributes: {
+          exclude: ["updatedAt", "createdAt"]
+        }
+      },
+      eventQuery: {
+        attributes: {
+          exclude: ["groupId", "address", "lat", "lng"]
+        }
+      }
+    }
   });
   return Venue;
 };
