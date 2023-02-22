@@ -32,12 +32,6 @@ router.get('/',  async(_req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
     if (user) {
-        // const memberships = await Membership.scope('currentUserScope').findAll({
-        //     where: {
-        //         userId: user.id
-        //     },
-        //     include: Group
-        // });
         const groups = await Group.findAll({
             where: {
                 organizerId: user.id
@@ -104,8 +98,8 @@ router.post('/', requireAuth, async (req, res) => {
     // try {
     const newGroup = await Group.create({name, about, type, private, city, state, organizerId: user.dataValues.id});
     //create new membership
-    // console.log(user.id,  newGroup.dataValues.id);
-    // const member = await Membership.create({userId:user.dataValues.id, groupId:newGroup.dataValues.id, status: "Host"});
+    console.log(user.id,  newGroup.dataValues.id);
+    const member = await Membership.create({userId:user.dataValues.id, groupId:newGroup.dataValues.id, status: "Host"});
 
     //  console.log(member);
     res.status(201).json(newGroup);
