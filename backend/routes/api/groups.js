@@ -38,6 +38,8 @@ router.get('/',  async(req, res) => {
 
         if (image) {
         groups[i].dataValues.previewImage = image.url
+        } else {
+            groups[i].dataValues.previewImage = null;
         }
 
 
@@ -72,7 +74,11 @@ router.get('/current', requireAuth, async (req, res) => {
                 where: {groupId: groups[i].dataValues.id}
             })
             groups[i].dataValues.numMembers = members.length;
+            if (image) {
             groups[i].dataValues.previewImage = image.url;
+            } else {
+                groups[i].dataValues.previewImage = null;
+            }
         }
         //  console.log(memberships[0].Group.dataValues);
         res.status(200).json({Groups:groups});
@@ -110,6 +116,7 @@ router.post('/', requireAuth, async (req, res) => {
 
         //try to use build and save
     const newGroup = await Group.create({name, about, type, private, city, state, organizerId: user.dataValues.id});
+    const newMember = await Membership.create({userId: user.id, groupId: newGroup.id, status: "host"});
     res.status(201).json(newGroup);
     } catch (e) {
         res.status(400).json({
@@ -203,7 +210,6 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 //VENUES
 
 //Get All Venues for a Group specified by its id
-
 router.get('/:groupId/venues', requireAuth, async (req, res) => {
     const { user } = req;
     let { groupId } = req.params;
@@ -215,7 +221,10 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
         }
     })
 
-    if (membership.dataValues.groupId === groupId && membership.dataValues.status === "co-host") {
+    const group = await Group.findByPk(groupId);
+    if (!group) return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+
+    if (group.dataValues.id === groupId || membership.dataValues.status === "co-host") {
 
         const venues = await Venue.findAll({
             where: {
@@ -227,9 +236,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
             Venues: venues
         })
     }
-    else {
-        res.status(404).json({message: "Group couldn't be found", statusCode: 404});
-    }
+
 });
 
 //Create a new Venue for a Group specified by its id
@@ -255,6 +262,7 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
             userId: user.id
         }
     })
+    if (!membership) return res.json({message: "my custom erro"});
     if (membership.dataValues.groupId = groupId || membership.dataValues.status === "co-host") {
         const newVenue = await Venue.create({ groupId, address, city, state, lat, lng });
         return res.status(200).json(newVenue);
@@ -295,7 +303,9 @@ router.get('/:groupId/events', async (req, res) => {
     })
     // console.log(event);
     event.dataValues.numAttending = numAttend;
+    if (image) {
     event.dataValues.previewImage = image.url;
+    }
     delete event.dataValues.Group.dataValues.organizerId;
     delete event.dataValues.Group.dataValues.type;
     delete event.dataValues.Group.dataValues.about;
@@ -306,7 +316,34 @@ router.get('/:groupId/events', async (req, res) => {
     delete event.dataValues.Venue.dataValues.lng;
 }
 res.status(200).json({Events:events});
-})
+});
+//Create an Event by Group Id
+router.post('/:groupId/events', requireAuth, async (req, res) => {
+    const { user } = req;
+    let { groupId } = req.params;
+    groupId = parseInt(groupId);
+
+    const { venueId, name, type, capacity, price, description, startDate, endDate} = req.body;
+
+    const membership = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    });
+
+    const group = await Group.findByPk(groupId);
+    if (!group) res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+
+    if (membership.userId === group.organizerId || membership.status === "co-host") {
+        const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
+        await Attendance.create({eventId: newEvent.dataValues.id, userId: user.id, status: "host"});
+        delete newEvent.dataValues.createdAt;
+        delete newEvent.dataValues.updatedAt;
+        res.status(200).json(newEvent);
+    }
+});
+
+
 
 
 

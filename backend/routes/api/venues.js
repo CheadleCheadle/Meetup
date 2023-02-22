@@ -20,7 +20,7 @@ router.put('/:venueId', requireAuth, async (req, res) => {
         }
     })
     if (!venue) {
-        res.status(404).json({message: "Venue couldn't be found", statusCode: 404})
+        return res.status(404).json({message: "Venue couldn't be found", statusCode: 404})
     }
 
     if (membership.groupId === venue.groupId || membership.status === "co-host") {

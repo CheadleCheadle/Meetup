@@ -19,12 +19,14 @@ module.exports = (sequelize, DataTypes) => {
         through: models.Membership
       })
       Group.hasMany(models.GroupImage, {
-        foreignKey: "groupId"
+        foreignKey: "groupId",
+        onDelete: 'CASCADE'
       })
       Group.hasMany(models.Venue, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        onDelete: 'CASCADE'
       })
-      Group.hasMany(models.Event, {foreignKey: "groupId"})
+      Group.hasMany(models.Event, {foreignKey: "groupId", onDelete: 'CASCADE'});
     }
   }
   Group.init({
