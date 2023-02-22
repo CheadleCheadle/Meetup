@@ -2,6 +2,7 @@ const express = require("express");
 const router = require('express').Router();
 const { Group, Membership, GroupImage, User, Venue } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
+const {  handleCustomValidationErrors } = require('../../utils/validation');
 //Get All Groups
 //function to lazy load numMembers and previewImage
 // const getMembersAndImage = async (arr)  => {
@@ -106,6 +107,8 @@ router.post('/', requireAuth, async (req, res) => {
     const {name, about, type, private, city, state } = req.body;
     const { user } = req;
     try {
+
+        //try to use build and save
     const newGroup = await Group.create({name, about, type, private, city, state, organizerId: user.dataValues.id});
     res.status(201).json(newGroup);
     } catch (e) {
@@ -195,6 +198,69 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
         return res.status(403).json({message: "Forbidden request", statusCode: 403});
     }
 })
+
+
+//VENUES
+
+//Get All Venues for a Group specified by its id
+
+router.get('/:groupId/venues', requireAuth, async (req, res) => {
+    const { user } = req;
+    let { groupId } = req.params;
+    groupId = parseInt(groupId);
+
+    const membership = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    })
+
+    if (membership.dataValues.groupId === groupId && membership.dataValues.status === "co-host") {
+
+        const venues = await Venue.findAll({
+            where: {
+            groupId
+            }
+        });
+
+        res.status(200).json({
+            Venues: venues
+        })
+    }
+    else {
+        res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+    }
+});
+
+//Create a new Venue for a Group specified by its id
+
+router.post('/:groupId/venues', requireAuth, async (req, res) => {
+    const { user } = req;
+    let { groupId } = req.params
+    groupId = parseInt(groupId);
+
+    const group = await Group.findOne({
+        where: {
+            id: groupId
+        }
+    })
+    if (!group) {
+          return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+    }
+
+    const { address, city, state, lat, lng } = req.body;
+
+     const membership = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    })
+    if (membership.dataValues.groupId = groupId || membership.dataValues.status === "co-host") {
+        const newVenue = await Venue.create({ groupId, address, city, state, lat, lng });
+        return res.status(200).json(newVenue);
+    }
+})
+
 
 
 
