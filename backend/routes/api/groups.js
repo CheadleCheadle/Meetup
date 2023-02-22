@@ -125,6 +125,7 @@ router.post('/', requireAuth, async (req, res) => {
                 private: "Private must be a boolean",
                 city: "City is required",
                 state: "State is required",
+                error: e
             }
         })
     }
