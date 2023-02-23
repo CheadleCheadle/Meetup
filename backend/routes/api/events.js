@@ -1,12 +1,38 @@
-const e = require("express");
+
 const express = require("express");
+const { at } = require("lodash");
 const router = require('express').Router();
-const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage } = require('../../db/models');
+const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {  handleCustomValidationErrors } = require('../../utils/validation');
+const Op = Sequelize.Op;
 //Get all Events
 router.get('/', async (req, res) => {
+
+    let { page, size, name, type, startDate } = req.query;
+    if (!page) page = 1;
+    if (!size) size = 20;
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    console.log(page, size, typeof page, typeof size);
+
+    let pagination = {};
+    pagination.limit = size;
+    pagination.offset = size * (page - 1);
+
+    console.log(pagination);
+
+    // const events = await Event.findAll({
+    //     where: {
+    //         ...pagination
+    //     }
+    // });
+    // res.status(200).json({Events: events});
+
 const events = await Event.findAll({
+        ...pagination,
     attributes: {
         exclude: ["capacity", "price"]
     },
@@ -143,6 +169,209 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
         res.status(200).json({message: "Successfully deleted"});
     }
 
-})
+});
 
+//Get all Attendees of an Event specified by its id
+
+router.get('/:eventId/attendees', async (req, res) => {
+    const { user } = req;
+    let { eventId } = req.params;
+    eventId = parseInt(eventId);
+    const event = await Event.findByPk(eventId, {
+        include: Group
+    });
+
+    const membershipOfUser = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    })
+    if (!event) {
+        res.status(404).json({message: "Event couldn't be found", statusCode: 404});
+    }
+    if (event.dataValues.Group.dataValues.organizerId === user.id || membershipOfUser.status === "co-host") {
+        const attendants = await Attendance.findAll({
+            where: {
+                eventId
+            },
+            // include: {model: User, attributes: ["id","firstName","lastName"]}
+        });
+        for (let i = 0; i < attendants.length; i++) {
+            let attendant = attendants[i];
+            const user = await User.findOne({
+                where: {
+                    id: attendant.userId
+                }
+            })
+            attendant.dataValues.id = user.id;
+            attendant.dataValues.firstName = user.firstName;
+            attendant.dataValues.lastName = user.lastName;
+            delete attendant.dataValues.userId;
+            attendant.dataValues.Attendance = {status: attendant.status};
+            delete attendant.dataValues.status;
+        }
+        res.status(200).json({Attendees: attendants});
+    } else {
+        const attendants = await Attendance.findAll({
+            where: {
+                eventId,
+                status: {
+                    [Op.not]: "pending"
+                }
+            },
+        });
+
+        for (let i = 0; i < attendants.length; i++) {
+            let attendant = attendants[i];
+            const user = await User.findOne({
+                where: {
+                    id: attendant.userId
+                }
+            })
+            attendant.dataValues.id = user.id;
+            attendant.dataValues.firstName = user.firstName;
+            attendant.dataValues.lastName = user.lastName;
+            delete attendant.dataValues.userId;
+            attendant.dataValues.Attendance = {status: attendant.status};
+            delete attendant.dataValues.status;
+        }
+        res.status(200).json({Attendees: attendants});
+    }
+});
+
+//Request to Attend an Event based on the Event's id
+
+router.post('/:eventId/attendance', requireAuth, async (req, res) => {
+    let { eventId } = req.params;
+    eventId = parseInt(eventId);
+    const { user } = req;
+    const event = await Event.findByPk(eventId);
+    if (!event) {
+        return res.status(404).json({message: "Event couldn't be found", statusCode: 404});
+    }
+
+    const attendanceCheck = await Attendance.findOne({
+        where: {
+            userId: user.id
+        }
+    });
+    if (attendanceCheck) {
+    if (attendanceCheck.status === "pending") {
+        return res.status(400).json({message: "Attendance has already been requested", statusCode: 400});
+    } else {
+        return res.status(400).json({message: "User is already an attendee of the event", statusCode: 400});
+    }
+}
+    const membership = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    });
+    if (membership) {
+    if (membership.dataValues.groupId === event.dataValues.groupId) {
+        const newAttendant = await Attendance.create({eventId, userId: user.id, status: "pending"});
+        return res.status(200).json(newAttendant);
+    }
+   } else {
+    return res.status(400).json({message: "User doesn't have a membership"});
+   }
+});
+
+//Change the status of an attendance for an event specified by id
+
+router.put('/:eventId/attendance', requireAuth, async (req, res) => {
+    let { eventId } = req.params;
+    eventId = parseInt(eventId);
+    const { user } = req;
+    const { userId, status } = req.body;
+    const membership = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    });
+
+    const event = await Event.findByPk(eventId);
+
+    if (!event) {
+        return res.status(404).json({message: "Event couldn't be found", statusCode: 404});
+    }
+    if (status === "pending") {
+        return res.status(400).json({message: "Cannot change an attendance status to pending"});
+    }
+
+    const attendance = await Attendance.findOne({
+        where: {
+            eventId,
+            userId
+        }
+    });
+    if (!attendance) {
+          return res.status(404).json({message: "Attendance between the user and the event does not exist"});
+
+    }
+
+
+    if (membership.dataValues.groupId === event.dataValues.groupId
+        || membership.dataValues.status === "co-host") {
+            attendance.set({ userId, status });
+            await attendance.save();
+            return res.status(200).json(attendance);
+    }
+});
+
+//Delete attendance to an event specified by id
+
+router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
+    let { eventId } = req.params;
+    eventId = parseInt(eventId);
+    let { userId } = req.body;
+    userId = parseInt(userId);
+    const event = await Event.findByPk(eventId, {include: Group});
+    if (!event) {
+        return res.status(404).json({message: "Event couldn't be found", statusCode: 404});
+    }
+    const attendanceToDelete = await Attendance.findOne({
+        where: {
+            eventId,
+            userId
+        }
+    });
+
+    if (!attendanceToDelete) {
+        return res.status(404).json({message: "Attendance does not exist for this User", statusCode: 404});
+    }
+
+    if (event.dataValues.Group.dataValues.organizerId === userId || attendanceToDelete.dataValues.userId === userId) {
+            await attendanceToDelete.destroy();
+            return res.status(200).json({message: "Successfully deleted attendance from event"});
+        } else {
+            return res.status(403).json({message: "Only the User or organizer may delete an Attendance", statusCode: 403});
+        }
+});
+
+//Add Query Filters to Get All Events
+
+// router.get('/', async (req, res) => {
+//     const { page, size, name, type, startDate } = req.query;
+//     if (!page) page = 1;
+//     if (!size) size = 20;
+
+//     page = parseInt(page);
+//     size = parseInt(size);
+
+//     console.log(page, size, typeof page, typeof size);
+
+//     const pagination = {};
+//     pagination.limit = size;
+//     pagination.offset = size * (page - 1);
+
+//     console.log(pagination);
+
+//     const events = await Event.findAll({
+//         where: {
+//             ...pagination
+//         }
+//     });
+//     res.status(200).json({Events: events});
+// })
 module.exports = router;

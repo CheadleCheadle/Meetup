@@ -477,7 +477,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
             return res.status(200).json(membership);
         }
     } else {
-        res.status(400).json({message: "my custom error"});
+        res.status(400).json({message: "Unauthorized Request"});
     }
 });
 
@@ -487,9 +487,11 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
     let { memberId } = req.body;
     memberId = parseInt(memberId);
     groupId = parseInt(groupId);
+    const currentUser = await User.findByPk(memberId);
     const membershipToDelete = await Membership.findOne({
         where: {
-            userId: memberId
+            userId: memberId,
+            groupId
         }
     });
     const currentMembership = await Membership.findOne({
@@ -498,21 +500,29 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
         }
     });
     const group = await Group.findByPk(groupId);
+    if (!currentUser) {
+        return res.status(400).json({
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+            memberId: "User couldn't be found"
+            }
+})
+    }
     if (!group) {
-        res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+        return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
     }
     if (!membershipToDelete) {
-        res.status(400).json({message: "Validation Error", statusCode: 400, errors: {memberId: "User couldn't be found"}});
+        return res.status(404).json({message: "Membership does not exist for this User", statusCode: 404});
     }
-    if (!currentMembership) {
-        res.status(404).json({message: "Membership does not exist for this User", statusCode: 404});
-    }
-
-    // const group = await Group.findByPk(groupId);
-
-    if (currentMembership.dataValues.status === "host" || membershipToDelete.dataValues.userId === user.id) {
-        await currentMembership.destroy();
-        res.status(200).json({message: "Successfully deleted membership from group"});
+    if (membershipToDelete.dataValues.userId === user.id) {
+        await membershipToDelete.destroy();
+        return res.status(200).json({message: "Successfully deleted membership from group"});
+    } else if (currentMembership.dataValues.status === "host") {
+        await membershipToDelete.destroy();
+        return res.status(200).json({message: "Successfully deleted membership from group"});
+    } else {
+        return res.status(400).json({message: "Forbidden request", status: 400});
     }
 })
 

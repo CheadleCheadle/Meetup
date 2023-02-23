@@ -44,6 +44,11 @@ module.exports = (sequelize, DataTypes) => {
     scopes: {
       currentUserScope: {
         attributes: { exclude: ['userId', 'groupId', 'status', 'createdAt', 'updatedAt']}
+      },
+      eventScope: {
+        attributes: {
+          exclude: ["id","groupId","createdAt","updatedAt"]
+        }
       }
     }
   });
