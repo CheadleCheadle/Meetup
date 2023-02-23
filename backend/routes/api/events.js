@@ -24,12 +24,6 @@ router.get('/', async (req, res) => {
 
     console.log(pagination);
 
-    // const events = await Event.findAll({
-    //     where: {
-    //         ...pagination
-    //     }
-    // });
-    // res.status(200).json({Events: events});
 
 const events = await Event.findAll({
         ...pagination,
