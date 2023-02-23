@@ -15,7 +15,7 @@ module.exports = {
       name: "First Group",
       about: "Just the first group",
       type: "In person",
-      private: "true",
+      private: true,
       city: "New York",
       state: "NY",
     },
@@ -24,10 +24,19 @@ module.exports = {
       name: "Second Group",
       about: "Just the first group",
       type: "In person",
-      private: "true",
+      private: true,
       city: "Portland",
       state: "OR",
-    }
+    },
+     {
+      organizerId: 4,
+      name: "Testing delete group",
+      about: "Wa do waeoda SDwa",
+      type: "Dont care",
+      private: true,
+      city: "Canby",
+      state: "OR"
+     }
    ], {})
   },
 

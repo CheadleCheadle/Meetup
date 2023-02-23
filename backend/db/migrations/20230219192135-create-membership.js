@@ -17,8 +17,10 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Users"
+          model: "Users",
+          key: "id"
         },
+        onDelete: "CASCADE",
         allowNull: false,
       },
       groupId: {
@@ -27,11 +29,12 @@ module.exports = {
           model: "Groups",
           key: "id"
         },
+        onDelete: "CASCADE",
         allowNull: false,
       },
       status: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
@@ -42,7 +45,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
-      }
+      },
     }, options);
   },
   async down(queryInterface, Sequelize) {

@@ -19,12 +19,16 @@ module.exports = (sequelize, DataTypes) => {
         through: models.Membership
       })
       Group.hasMany(models.GroupImage, {
-        foreignKey: "groupId"
+        foreignKey: "groupId",
+        onDelete: 'CASCADE'
       })
       Group.hasMany(models.Venue, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        onDelete: 'CASCADE'
       })
-      Group.hasMany(models.Event, {foreignKey: "groupId"})
+      Group.hasMany(models.Event, {foreignKey: "groupId", onDelete: 'CASCADE'});
+
+      Group.hasMany(models.Membership, {as: 'Members',foreignKey: "groupId"});
     }
   }
   Group.init({
@@ -71,6 +75,13 @@ module.exports = (sequelize, DataTypes) => {
     defaultScope: {
       attributes: {
         exclude: ["groupId", "updatedAt", "createdAt"]
+      }
+    },
+    scopes: {
+      getMembers: {
+        attributes: {
+          exclude: ["updatedAt", "createdAt", "state", "city", "private", "type", "about", "name", "organizerId", "id"]
+        }
       }
     }
   });

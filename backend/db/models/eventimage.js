@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   EventImage.init({
     eventId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true,
     },
     url: {
       type: DataTypes.STRING,
@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'EventImage',
+    defaultScope: {
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "eventId"]
+      }
+    }
   });
   return EventImage;
 };

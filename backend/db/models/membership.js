@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { all } = require('underscore');
 module.exports = (sequelize, DataTypes) => {
   class Membership extends Model {
     /**
@@ -11,15 +12,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      //   Membership.belongsTo(models.User, {
-      //   foreignKey: 'userId'
-      // });
-      // Membership.belongsTo(models.Group, {
-      //   foreignKey: 'groupId'
-      // })
+      Membership.belongsTo(models.User, {
+        foreignKey: 'userId'
+      });
+      Membership.belongsTo(models.Group,  { as: "Members",
+        foreignKey: 'groupId'
+      })
     }
   }
   Membership.init({
+    id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -30,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     }
   }, {
     sequelize,
@@ -38,6 +45,11 @@ module.exports = (sequelize, DataTypes) => {
     scopes: {
       currentUserScope: {
         attributes: { exclude: ['userId', 'groupId', 'status', 'createdAt', 'updatedAt']}
+      },
+      eventScope: {
+        attributes: {
+          exclude: ["id","groupId","createdAt","updatedAt"]
+        }
       }
     }
   });
