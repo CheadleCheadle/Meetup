@@ -417,11 +417,14 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
          return res.status(400).json({message: "User is already a member of the group", statusCode: 400})
     }
 });
+//Change the status of a membership for a group specified by id
 
 router.put('/:groupId/membership', requireAuth, async (req, res) => {
-    const { groupId } = req.params;
+    let { groupId } = req.params;
+    groupId = parseInt(groupId);
     const { user } = req;
-    const { memberId, status } = req.body
+    let { memberId, status } = req.body
+    memberId = parseInt(memberId);
     const currentMembership = await Membership.findOne({
         where: {
             userId: user.id
@@ -429,28 +432,66 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     });
 
     const group = await Group.findByPk(groupId);
-    const membership = await Membership.findByPk(memberId);
+    const membership = await Membership.findOne({
+        where: {
+            id : memberId
+        },
+        attributes: ["id", "status", "userId", "groupId"]
+    });
+    console.log(memberId, typeof memberId);
+    console.log(membership);
+
+
     if (!group) {
-        res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+        return res.status(404).
+        json({message: "Group couldn't be found", statusCode: 404});
     }
-    if (!group.organizerId) res.status(400).json({message: "Validation Error", statusCode: 400, errors: {memberId: "User couldn't be found"}});
 
-    if (!membership) return res.status(400).json({message: "Membership between the user and the group does not exists", statusCode: 400});
-
-    if (group.dataValues.organizerId === user.id && status !== "pending") {
-        membership.set({ userId: memberId, groupId, status });
-        await membership.save();
-        return res.status(200).json(membership);
+    if (!membership) {
+        return res.status(400).
+        json({message: "Membership between the user and the group does not exists", statusCode: 400});
     }
-    else if (group.dataValues.organizerId === user.id || currentMembership.status === "co-host" && status !== "pending") {
-        if (status !== "member") {
-        membership.set({ status });
-        await membership.save();
-        return res.status(200).json(membership);
+
+    if (!membership.userId) {
+        return res.status(400).
+        json({message: "Validation Error", statusCode:400, errors: {memberId: "User couldn't be found"}});
+    }
+    if (status === "pending") {
+        return res.status(400).
+        json({message: "Validation Error", statusCode: 400, errors: {status: "Cannot change a membership status to pending"}});
+    }
+
+    if (currentMembership.status === "co-host" || group.dataValues.organizerId === user.id) {
+        if (status === "member") {
+            membership.dataValues.status = status;
+            membership.save();
+            return res.status(200).json(membership);
+        } else if (status === "co-host" && group.dataValues.organizerId === user.id) {
+            membership.set({ status });
+            membership.save();
+            return res.status(200).json(membership);
         }
     } else {
-        return res.status(400).json({message: "Validations Error", statusCode: 400, errors: {status: "Cannot change a membership status to pending"}});
+        res.status(400).json({message: "my custom error"});
     }
+    // if (!group.organizerId) res.status(400).json({message: "Validation Error", statusCode: 400, errors: {memberId: "User couldn't be found"}});
+
+    // if (!membership) return res.status(400).json({message: "Membership between the user and the group does not exists", statusCode: 400});
+
+    // if (group.dataValues.organizerId === user.id && status !== "pending") {
+    //     membership.set({ userId: memberId, groupId, status });
+    //     await membership.save();
+    //     return res.status(200).json(membership);
+    // }
+    // else if (group.dataValues.organizerId === user.id || currentMembership.status === "co-host" && status !== "pending") {
+    //     if (status !== "member") {
+    //     membership.set({ status });
+    //     await membership.save();
+    //     return res.status(200).json(membership);
+    //     }
+    // } else {
+    //     return res.status(400).json({message: "Validations Error", statusCode: 400, errors: {status: "Cannot change a membership status to pending"}});
+    // }
 })
 
 
