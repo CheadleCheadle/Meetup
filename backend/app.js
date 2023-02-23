@@ -54,7 +54,7 @@ app.use((err, _req, _res, next) => {
     next(err);
 });
 
-//Error Formatter Error-Handler
+//Error Formatter Error-Handler.
 
 app.use((err, _req, res, _next) => {
     res.status(err.status || 500);
