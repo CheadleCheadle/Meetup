@@ -211,7 +211,10 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
         }
     })
 
-    if (membership.dataValues.groupId === groupId && membership.dataValues.status === "co-host") {
+    const group = await Group.findByPk(groupId);
+    if (!group) return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+
+    if (group.dataValues.id === groupId || membership.dataValues.status === "co-host") {
 
         const venues = await Venue.findAll({
             where: {
@@ -223,9 +226,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
             Venues: venues
         })
     }
-    else {
-        res.status(404).json({message: "Group couldn't be found", statusCode: 404});
-    }
+
 });
 
 //Create a new Venue for a Group specified by its id
