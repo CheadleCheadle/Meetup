@@ -40,6 +40,11 @@ module.exports = {
         userId: 4,
         groupId: 1,
         status: 'pending'
+      },
+      {
+        userId: 4,
+        groupId: 3,
+        status: 'host'
       }
     ], {})
   },
