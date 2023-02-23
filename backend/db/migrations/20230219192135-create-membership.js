@@ -19,6 +19,7 @@ module.exports = {
         references: {
           model: "Users"
         },
+        onDelete: "CASCADE",
         allowNull: false,
       },
       groupId: {
@@ -27,6 +28,7 @@ module.exports = {
           model: "Groups",
           key: "id"
         },
+        onDelete: "CASCADE",
         allowNull: false,
       },
       status: {

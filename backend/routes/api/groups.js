@@ -343,6 +343,59 @@ router.post('/:groupId/events', requireAuth, async (req, res) => {
     }
 });
 
+//Get all Members of a Group specified by its id
+
+router.get('/:groupId/members', async (req, res) => {
+    const { user } = req;
+    let { groupId } = req.params;
+    groupId = parseInt(groupId);
+    //EAGER LOADING MAY BREAK IN PRODUCTION!
+    const groupMembers = await Membership.findAll({
+        where: {
+            groupId
+        },
+        include: User
+    });
+    const currentMembership = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    })
+    const group = await Group.findByPk(groupId);
+    if (group.dataValues.organizerId === user.id || currentMembership.status === "co-host") {
+    let members= [];
+    for (let i = 0; i < groupMembers.length; i++) {
+        let membership = groupMembers[i];
+        let member = {};
+        member.id = membership.dataValues.User.dataValues.id;
+        member.firstName = membership.dataValues.User.dataValues.firstName;
+        member.lastName = membership.dataValues.User.dataValues.lastName;
+        member.Membership = {status: membership.dataValues.status};
+        members.push(member);
+    }
+    return res.status(200).json({Members: members});
+} else if (group.dataValues.organizer !== user.id) {
+    let otherMembers = [];
+    for (let i = 0; i < groupMembers.length; i++) {
+        const membership = groupMembers[i];
+        if (membership.dataValues.status !== "pending") {
+            let member = {};
+        member.id = membership.dataValues.User.dataValues.id;
+        member.firstName = membership.dataValues.User.dataValues.firstName;
+        member.lastName = membership.dataValues.User.dataValues.lastName;
+        member.Membership = {status: membership.dataValues.status};
+        otherMembers.push(member);
+        }
+    }
+    res.status(200).json({Members: otherMembers});
+}
+
+    // if (groupMembers.dataValues.organizerId === user.id || groupMembers.dataValues.Membership.status === "co-host") {
+    //     res.status(200).json(groupMembers);
+    // } else if (groupMembers.dataValues.organizerId !== user.id) {
+
+    // }
+})
 
 
 

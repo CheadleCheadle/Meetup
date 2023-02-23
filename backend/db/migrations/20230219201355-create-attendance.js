@@ -21,6 +21,7 @@ module.exports = {
           model: "Events",
           key: "id"
         },
+        onDelete: 'CASCADE',
         allowNull: false
       },
       userId: {
@@ -29,6 +30,7 @@ module.exports = {
           model: "Users",
           key: "id"
         },
+        onDelete: "CASCADE",
         allowNull: false
       },
       status: {
