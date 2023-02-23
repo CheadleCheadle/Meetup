@@ -15,12 +15,18 @@ module.exports = (sequelize, DataTypes) => {
       Membership.belongsTo(models.User, {
         foreignKey: 'userId'
       });
-      Membership.belongsTo(models.Group, {
+      Membership.belongsTo(models.Group,  { as: "Members",
         foreignKey: 'groupId'
       })
     }
   }
   Membership.init({
+    id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -31,14 +37,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
+      allowNull: true,
+    }
   }, {
     sequelize,
     modelName: 'Membership',
     scopes: {
       currentUserScope: {
         attributes: { exclude: ['userId', 'groupId', 'status', 'createdAt', 'updatedAt']}
+      },
+      eventScope: {
+        attributes: {
+          exclude: ["id","groupId","createdAt","updatedAt"]
+        }
       }
     }
   });

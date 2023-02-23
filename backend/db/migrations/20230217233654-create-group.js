@@ -13,7 +13,8 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelete: "CASCADE"
       },
       organizerId: {
         type: Sequelize.INTEGER,
@@ -21,7 +22,8 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id'
-        }
+        },
+        onDelete: "CASCADE"
       },
       name: {
         type: Sequelize.STRING,

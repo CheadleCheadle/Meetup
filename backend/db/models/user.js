@@ -52,7 +52,9 @@ module.exports = (sequelize, DataTypes) => {
 
       User.belongsToMany(models.Group, {
         through: models.Membership
-      })
+      });
+
+      User.hasMany(models.Membership, {foreignKey: "userId"});
     }
   }
    User.init(
