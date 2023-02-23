@@ -350,6 +350,9 @@ router.get('/:groupId/members', async (req, res) => {
     let { groupId } = req.params;
     groupId = parseInt(groupId);
     //EAGER LOADING MAY BREAK IN PRODUCTION!
+    const group = await Group.findByPk(groupId);
+
+    if (!group) return res.status(404).json({message: "Group couldn't be found"});
     const groupMembers = await Membership.findAll({
         where: {
             groupId
@@ -361,7 +364,7 @@ router.get('/:groupId/members', async (req, res) => {
             userId: user.id
         }
     })
-    const group = await Group.findByPk(groupId);
+    // if (!currentMembership) res.json({message: "my custom error"});
     if (group.dataValues.organizerId === user.id || currentMembership.status === "co-host") {
     let members= [];
     for (let i = 0; i < groupMembers.length; i++) {
@@ -387,14 +390,67 @@ router.get('/:groupId/members', async (req, res) => {
         otherMembers.push(member);
         }
     }
-    res.status(200).json({Members: otherMembers});
+    return res.status(200).json({Members: otherMembers});
 }
+});
 
-    // if (groupMembers.dataValues.organizerId === user.id || groupMembers.dataValues.Membership.status === "co-host") {
-    //     res.status(200).json(groupMembers);
-    // } else if (groupMembers.dataValues.organizerId !== user.id) {
+//Request a Membership for a Group based on the Group's id
+router.post('/:groupId/membership', requireAuth, async (req, res) => {
+    const { user } = req;
+    let { groupId } = req.params;
+    groupId = parseInt(groupId);
+    const group = await Group.findByPk(groupId);
+    const membershipCheck = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    });
+    if (!group) return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+    //USE SWITCH STATEMENT
+    if (membershipCheck && membershipCheck.dataValues.groupId !== groupId) {
+        return res.status(400).json({message: "Membership has already been requested", statusCode: 400});
+    } else if (!membershipCheck) {
+        const pendingMember = await Membership.create({ userId: user.id, groupId, status: "pending"});
+        return res.status(200).json({memberId: pendingMember.id, status: pendingMember.status});
+    } else if (membershipCheck.dataValues.groupId === groupId)
+    {
+         return res.status(400).json({message: "User is already a member of the group", statusCode: 400})
+    }
+});
 
-    // }
+router.put('/:groupId/membership', requireAuth, async (req, res) => {
+    const { groupId } = req.params;
+    const { user } = req;
+    const { memberId, status } = req.body
+    const currentMembership = await Membership.findOne({
+        where: {
+            userId: user.id
+        }
+    });
+
+    const group = await Group.findByPk(groupId);
+    const membership = await Membership.findByPk(memberId);
+    if (!group) {
+        res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+    }
+    if (!group.organizerId) res.status(400).json({message: "Validation Error", statusCode: 400, errors: {memberId: "User couldn't be found"}});
+
+    if (!membership) return res.status(400).json({message: "Membership between the user and the group does not exists", statusCode: 400});
+
+    if (group.dataValues.organizerId === user.id && status !== "pending") {
+        membership.set({ userId: memberId, groupId, status });
+        await membership.save();
+        return res.status(200).json(membership);
+    }
+    else if (group.dataValues.organizerId === user.id || currentMembership.status === "co-host" && status !== "pending") {
+        if (status !== "member") {
+        membership.set({ status });
+        await membership.save();
+        return res.status(200).json(membership);
+        }
+    } else {
+        return res.status(400).json({message: "Validations Error", statusCode: 400, errors: {status: "Cannot change a membership status to pending"}});
+    }
 })
 
 
