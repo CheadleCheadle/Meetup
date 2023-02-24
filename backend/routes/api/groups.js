@@ -40,7 +40,11 @@ router.get('/current', requireAuth, async (req, res) => {
                 organizerId: user.id
             }
         })
-         console.log(groups[0].dataValues);
+
+        // if (!groups) {
+        //     return res.status(404).json({message: "no groups?"});
+        // }
+        // console.log(groups);
 
         for (let i = 0; i < groups.length; i++) {
             const members = await Membership.findAll({
@@ -141,12 +145,15 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 //Edit a group
 router.put('/:groupId', [requireAuth, validateGroupBody], async (req, res) => {
     const { name, about, type, private, city, state } = req.body;
-    const { groupId } = req.params;
-    try {
+    let { groupId } = req.params;
+    groupId = parseInt(groupId);
+    const { user } = req;
+
     const group = await Group.findByPk(groupId);
     if (!group) {
         return res.status(404).json({message: "Group not found", statusCode: 404});
     }
+    if (group.dataValues.organizerId === user.id) {
     group.set({
         name,
         about,
@@ -155,22 +162,12 @@ router.put('/:groupId', [requireAuth, validateGroupBody], async (req, res) => {
         city,
         state
     });
+
     await group.save();
     return res.status(200).json(group);
-    } catch (e) {
-        return res.status(400).json({
-              message: "Validation Error",
-              statusCode: 400,
-              errors: {
-              name: "Name must be 60 characters or less",
-              about: "About must be 50 characters or more",
-              type: "Type must be 'Online' or 'In person'",
-              private: "Private must be a boolean",
-              city: "City is required",
-              state: "State is required",
-              }
-        });
-    }
+} else {
+    res.status(403).json({message: "Forbidden", statusCode: 403});
+}
 });
 
 //Delete a Group
