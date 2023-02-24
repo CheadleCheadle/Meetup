@@ -46,7 +46,7 @@ router.get('/',  async(req, res) => {
 
 
     }
-    res.status(200).json({Groups:members});
+    res.status(200).json({Groups:groups});
 });
 
 //Get all Groups joined or organized by the Current User
