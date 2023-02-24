@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const { all } = require('underscore');
+
 module.exports = (sequelize, DataTypes) => {
   class Membership extends Model {
     /**
