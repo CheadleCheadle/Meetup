@@ -28,7 +28,7 @@ const {  handleCustomValidationErrors } = require('../../utils/validation');
 // }
 router.get('/',  async(req, res) => {
     const groups = await Group.findAll();
-
+    // const test = await Membership.findAll();
     for (let i = 0; i < groups.length; i++) {
         const members = await Membership.findAll({
             where: {groupId: groups[i].id}
@@ -46,7 +46,7 @@ router.get('/',  async(req, res) => {
 
 
     }
-    res.status(200).json({Groups:groups});
+    res.status(200).json({Groups:members});
 });
 
 //Get all Groups joined or organized by the Current User
