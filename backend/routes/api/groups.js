@@ -5,27 +5,8 @@ const router = require('express').Router();
 const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage} = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {  handleCustomValidationErrors } = require('../../utils/validation');
+
 //Get All Groups
-//function to lazy load numMembers and previewImage
-// const getMembersAndImage = async (arr)  => {
-
-//     for (let i = 0; i < arr.length; i++) {
-//         const members = await Membership.findAll({
-//             where: {groupId: arr[i].id}
-//         })
-//         const image = await GroupImage.findOne({
-//             where: {groupId : arr[i].id}
-//         })
-//         arr[i].dataValues.numMembers = members.length;
-
-//         if (image) {
-//         arr[i].dataValues.previewImage = image.url
-//         }
-
-
-//     }
-
-// }
 router.get('/',  async(req, res) => {
     const groups = await Group.findAll();
     // const test = await Membership.findAll();
@@ -53,12 +34,7 @@ router.get('/',  async(req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
     if (user) {
-        // const memberships = await Membership.scope('currentUserScope').findAll({
-        //     where: {
-        //         userId: user.id
-        //     },
-        //     include: Group
-        // });
+
         const groups = await Group.findAll({
             where: {
                 organizerId: user.id
@@ -152,7 +128,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
         //tried to use scopes but didnt work. Need to fix
         res.status(200).json({id: newImage.id, url: newImage.url, preview: newImage.preview});
         } else {
-            res.status(403).json({message: "Forbidden request", statusCode: 403});
+            res.status(403).json({message: "Forbidden", statusCode: 403});
         }
 });
 
@@ -205,7 +181,7 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
         await group.destroy();
         return res.status(200).json({message: "Successfully delted", statusCode: 200});
     } else {
-        return res.status(403).json({message: "Forbidden request", statusCode: 403});
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 })
 
