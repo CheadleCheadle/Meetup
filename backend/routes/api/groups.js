@@ -1,5 +1,6 @@
 const express = require("express");
 const { route } = require("express/lib/router");
+const { escapeRegExp } = require("lodash");
 const router = require('express').Router();
 const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage} = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
@@ -409,6 +410,10 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
             groupId
         }
     });
+    const userCheck = await User.findByPk(memberId);
+    if (!userCheck) {
+        res.status(400).json({message: "memberId is invalid. The user associated doesn't exist", statusCode: 400});
+    }
     if (!group) return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
 
     if (!membershipCheck) {
