@@ -83,7 +83,6 @@ const validateVenueBody = [
 const validateEventBody = [
     check('venueId')
       .exists({ checkFalsy: true})
-      .isString()
       .notEmpty()
       .withMessage("Venue does not exist"),
     check('name')
