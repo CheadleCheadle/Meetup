@@ -130,7 +130,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
         const { user } = req;
         const group = await Group.findByPk(groupId);
         if (!group) {
-            res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+            return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
         }
         if (group.organizerId === user.id) {
         const newImage = await GroupImage.create({ groupId, url, preview });
