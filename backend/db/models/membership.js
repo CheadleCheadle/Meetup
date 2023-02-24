@@ -15,18 +15,18 @@ module.exports = (sequelize, DataTypes) => {
       Membership.belongsTo(models.User, {
         foreignKey: 'userId'
       });
-      Membership.belongsTo(models.Group,  {
+      Membership.belongsTo(models.Group,  { as: "Members",
         foreignKey: 'groupId'
       })
     }
   }
   Membership.init({
-    // id: {
-    //     allowNull: false,
-    //     autoIncrement: true,
-    //     primaryKey: true,
-    //     type: DataTypes.INTEGER
-    // },
+    id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
