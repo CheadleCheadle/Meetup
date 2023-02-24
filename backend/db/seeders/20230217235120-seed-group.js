@@ -20,23 +20,33 @@ module.exports = {
       state: "NY",
     },
     {
-      organizerId: 1,
+      organizerId: 2,
       name: "Second Group",
-      about: "Just the first group",
+      about: "Just the second group",
       type: "In person",
-      private: true,
+      private: false,
       city: "Portland",
       state: "OR",
     },
      {
-      organizerId: 4,
-      name: "Testing delete group",
-      about: "Wa do waeoda SDwa",
-      type: "Dont care",
+      organizerId: 3,
+      name: "Third Group",
+      about: "Just the third group",
+      type: "Online",
       private: true,
-      city: "Canby",
+      city: "West Linn",
+      state: "OR"
+     },
+     {
+      organizerId: 4,
+      name: "Fourth Group",
+      about: "Just the fourth group",
+      type: "Online",
+      private: true,
+      city: "East Linn",
       state: "OR"
      }
+
    ], {})
   },
 

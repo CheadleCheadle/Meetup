@@ -26,7 +26,31 @@ module.exports = {
       state: "OR",
       lat: 120.6,
       lng: 219.4
-    }
+    },
+    {
+      groupId: 2,
+      address: '12345 S Main St',
+      city: 'Athena',
+      state: "OR",
+      lat: 124.6,
+      lng: 212.4
+    },
+    {
+      groupId: 3,
+      address: '12345 S Main St',
+      city: 'Beaverton',
+      state: "OR",
+      lat: 210.6,
+      lng: 234.4
+    },
+    {
+      groupId: 4,
+      address: '12345 S Main St',
+      city: 'Portland',
+      state: "OR",
+      lat: 930.6,
+      lng: 231.4
+    },
    ], {});
   },
 
