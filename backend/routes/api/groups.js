@@ -245,9 +245,11 @@ router.post('/:groupId/venues', [requireAuth, validateVenueBody], async (req, re
         }
     })
     if (!membership) return res.json({message: "my custom erro"});
-    if (membership.dataValues.groupId = groupId || membership.dataValues.status === "co-host") {
+    if (user.id === group.dataValues.organizerId || membership.dataValues.status === "co-host") {
         const newVenue = await Venue.create({ groupId, address, city, state, lat, lng });
         return res.status(200).json(newVenue);
+    } else {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 });
 //Get all Events of a Group specified by its id
