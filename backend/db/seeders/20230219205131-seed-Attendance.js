@@ -25,20 +25,25 @@ module.exports = {
           status: 'Attendee'
         },
         {
-          eventId: 1,
+          eventId: 2,
           userId: 2,
-          status: 'pending'
+          status: 'Attendee'
         },
         {
-          eventId: 1,
+          eventId: 3,
           userId: 3,
           status: 'Attendee'
         },
         {
-          eventId: 1,
+          eventId: 4,
           userId: 4,
-          status: 'pending'
-        }
+          status: 'Attendee'
+        },
+         {
+          eventId: 1,
+          userId: 2,
+          status: "pending"
+         }
 
        ], options);
   },

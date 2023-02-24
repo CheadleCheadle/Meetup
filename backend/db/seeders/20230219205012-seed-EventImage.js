@@ -22,9 +22,24 @@ module.exports = {
 
         {
           eventId: 1,
-          url: "www.sugma",
+          url: "image url",
           preview: true,
-        }
+        },
+        {
+          eventId: 2,
+          url: "image url",
+          preview: true,
+        },
+        {
+          eventId: 3,
+          url: "image url",
+          preview: true,
+        },
+        {
+          eventId: 4,
+          url: "image url",
+          preview: true,
+        },
        ], {})
   },
 

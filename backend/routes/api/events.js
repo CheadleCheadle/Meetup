@@ -5,6 +5,7 @@ const router = require('express').Router();
 const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {  handleCustomValidationErrors } = require('../../utils/validation');
+const { validateEventBody } = require('../../utils/body-validation');
 const Op = Sequelize.Op;
 //Get all Events
 router.get('/', async (req, res) => {
@@ -121,7 +122,7 @@ router.post('/:eventId/images', requireAuth, async (req, res) => {
     }
 });
 //Update event
-router.put('/:eventId', requireAuth, async (req, res) => {
+router.put('/:eventId', [requireAuth, validateEventBody], async (req, res) => {
     const { user } = req;
     let { eventId } = req.params;
     eventId = parseInt(eventId);
