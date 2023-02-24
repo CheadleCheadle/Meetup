@@ -110,7 +110,7 @@ router.get('/:groupId', async (req, res) => {
         res.status(404).json({message: "Group couldn't be found", statusCode: 404});
     }
 });
-
+//Create a group
 router.post('/', requireAuth, async (req, res) => {
     const {name, about, type, private, city, state } = req.body;
     const { user } = req;
@@ -121,6 +121,7 @@ router.post('/', requireAuth, async (req, res) => {
     const newMember = await Membership.create({userId: user.id, groupId: newGroup.id, status: "host"});
     res.status(201).json(newGroup);
     } catch (e) {
+        console.log(error);
         res.status(400).json({
             message: "Validation Error",
             statusCode: 400,
