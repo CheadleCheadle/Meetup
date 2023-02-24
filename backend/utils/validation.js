@@ -27,9 +27,9 @@ const checkReq = (req) => {
 
 const handleCustomValidationErrors = (req, _res, next) => {
     // const validationErrors = validationResult(req)
-    body('name')
+    // body('name')
 
-next();
+// next();
 }
 
 
