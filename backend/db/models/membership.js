@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Membership.belongsTo(models.User, {
         foreignKey: 'userId'
       });
-      Membership.belongsTo(models.Group,  { as: "Members",
+      Membership.belongsTo(models.Group,  { as: "theMembers",
         foreignKey: 'groupId'
       })
     }
