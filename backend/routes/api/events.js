@@ -107,12 +107,15 @@ router.post('/:eventId/images', requireAuth, async (req, res) => {
     const attendanceMembership = await Attendance.findOne({
         where: {
             userId: user.id,
-            eventId
+             eventId
         }
     });
 
+    if (!attendanceMembership) {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
+    }
+
     const roles = ["attendee", "host", "co-host"];
-    console.log(attendanceMembership.status);
     if (roles.includes(attendanceMembership.dataValues.status.toLowerCase())) {
         const image = await EventImage.create({eventId, userId: user.id, url, preview});
         delete image.dataValues.createdAt;

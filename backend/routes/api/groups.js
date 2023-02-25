@@ -429,12 +429,15 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     const group = await Group.findByPk(groupId);
     const membership = await Membership.findOne({
         where: {
-            id : memberId
+            userId : memberId,
+            groupId
         },
         attributes: ["id", "status", "userId", "groupId"]
     });
-    console.log(memberId, typeof memberId);
-    console.log(membership);
+
+    console.log(currentMembership.dataValues.userId);
+    console.log(group.dataValues.organizerId);
+    console.log(user.id);
 
 
     if (!group) {
@@ -456,7 +459,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         json({message: "Validation Error", statusCode: 400, errors: {status: "Cannot change a membership status to pending"}});
     }
 
-    if (currentMembership.status === "co-host" || group.dataValues.organizerId === user.id) {
+    if (currentMembership.dataValues.status === "co-host" || group.dataValues.organizerId === user.id) {
         if (status === "member") {
             membership.set( { status } );
             membership.save();
@@ -467,7 +470,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
             return res.status(200).json(membership);
         }
     } else {
-        res.status(400).json({message: "Unauthorized Request"});
+        res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 });
 
