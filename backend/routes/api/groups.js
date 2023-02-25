@@ -325,6 +325,8 @@ router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, re
         delete newEvent.dataValues.createdAt;
         delete newEvent.dataValues.updatedAt;
         res.status(200).json(newEvent);
+    } else {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 });
 
