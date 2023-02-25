@@ -143,6 +143,8 @@ router.put('/:eventId', [requireAuth, validateEventBody], async (req, res) => {
         await event.save();
         delete event.dataValues.updatedAt;
         res.status(200).json(event);
+    } else {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 
 });

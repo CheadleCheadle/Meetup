@@ -308,7 +308,6 @@ router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, re
     groupId = parseInt(groupId);
 
     const { venueId, name, type, capacity, price, description, startDate, endDate} = req.body;
-    console.log(price, typeof price);
     const membership = await Membership.findOne({
         where: {
             userId: user.id
@@ -321,11 +320,13 @@ router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, re
     if (!group) res.status(404).json({message: "Group couldn't be found", statusCode: 404});
 
     if (membership.userId === group.organizerId || membership.status === "co-host") {
-        const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price: price, description, startDate, endDate });
+        const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
         await Attendance.create({eventId: newEvent.dataValues.id, userId: user.id, status: "host"});
         delete newEvent.dataValues.createdAt;
         delete newEvent.dataValues.updatedAt;
         res.status(200).json(newEvent);
+    } else {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 });
 
