@@ -386,23 +386,32 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
     const { user } = req;
     let { groupId } = req.params;
     groupId = parseInt(groupId);
-    let { memberId, status } = req.body;
-    memberId = parseInt(memberId);
+    // let { memberId, status } = req.body;
+    // memberId = parseInt(memberId);
     const group = await Group.findByPk(groupId);
     const membershipCheck = await Membership.findOne({
         where: {
-            userId: memberId,
+            userId: user.id,
             groupId
         }
     });
-    const userCheck = await User.findByPk(memberId);
-    if (!userCheck) {
-        res.status(400).json({message: "memberId is invalid. The user associated doesn't exist", statusCode: 400});
-    }
+    // const userCheck = await User.findByPk(user.id);
+    // if (!userCheck) {
+    //     res.status(400).json({message: "memberId is invalid. The user associated doesn't exist", statusCode: 400});
+    // }
     if (!group) return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
 
     if (!membershipCheck) {
-        const pendingMember = await Membership.create( {userId: memberId, groupId, status});
+        const pendingMember = await Membership.create( {userId: user.id, groupId, status: 'pending'});
+        delete pendingMember.dataValues.groupId;
+        delete pendingMember.dataValues.updatedAt;
+        delete pendingMember.dataValues.createdAt;
+        delete pendingMember.dataValues.userId;
+        delete pendingMember.dataValues.id;
+        //SET THE MEMBERID = TO THE USER.ID NOT THE ID OF A NEW MEMBERSHIP
+        //NOT SURE IF THIS IS RIGHT CHECK LATER!!!!!!!!!!!
+        pendingMember.dataValues.memberId = user.id
+
         return res.status(200).json(pendingMember);
 
     } else if (membershipCheck.dataValues.status === "pending") {
