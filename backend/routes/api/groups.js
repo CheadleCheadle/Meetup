@@ -410,8 +410,8 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
         delete pendingMember.dataValues.id;
         //SET THE MEMBERID = TO THE USER.ID NOT THE ID OF A NEW MEMBERSHIP
         //NOT SURE IF THIS IS RIGHT CHECK LATER!!!!!!!!!!!
+        //CONFIRMED MEMBERID === USERID
         pendingMember.dataValues.memberId = user.id
-
         return res.status(200).json(pendingMember);
 
     } else if (membershipCheck.dataValues.status === "pending") {
@@ -473,6 +473,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
             membership.set( { status } );
             membership.save();
             return res.status(200).json(membership);
+            // ELSE IF MIGHT NEED TO BE CHANGED TO CHECK FOR "HOST" AS WELL TEST IT
         } else if (status === "co-host" && group.dataValues.organizerId === user.id) {
             membership.set({ status });
             membership.save();
@@ -482,7 +483,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 });
-
+//Delete a membership to a group by id
 router.delete('/:groupId/membership', requireAuth, async (req, res) => {
     const { user } = req;
     let { groupId } = req.params;

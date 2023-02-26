@@ -2,7 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 const router = require('express').Router();
 const { handleValidationErrors } = require("../../utils/validation");
-const { setTokenCookie } = require("../../utils/auth");
+const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User } = require("../../db/models");
 
 const validateLogin = [
@@ -50,7 +50,7 @@ router.delete(
 );
 
 router.get(
-    '/', (req, res) => {
+    '/', requireAuth, (req, res) => {
         const { user } = req;
         if (user) {
             return res.json({

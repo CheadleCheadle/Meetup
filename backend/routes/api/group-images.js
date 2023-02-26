@@ -11,6 +11,9 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     let { imageId } = req.params;
     imageId = parseInt(imageId);
     const image = await GroupImage.findByPk(imageId, {include: Group});
+    //CHECK AUTH FIRST
+    //current user must be the organizer or co-host of the group
+    //so get the membership first and check those condtions before anything else
     if (!image) {
         return res.status(404).json({message: "Group Image couldn't be found", statusCode: 404});
     }
