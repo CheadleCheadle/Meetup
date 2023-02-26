@@ -19,10 +19,22 @@ const validateSignup = [
       .exists({ checkFalsy: true })
       .isLength({ min: 4 })
       .withMessage('Please provide a username with at least 4 characters.'),
-    check('username')
+    check('password')
       .not()
       .isEmail()
+      .isString()
+      .isLength({min: 6})
       .withMessage('Password must be 6 characters or more'),
+    check('firstName')
+      .exists( {checkFalsy: true })
+      .notEmpty()
+      .isString()
+      .withMessage('First name is required'),
+    check('lastName')
+      .exists( {checkFalsy: true })
+      .notEmpty()
+      .isString()
+      .withMessage('Last name is required'),
       handleValidationErrors
 ]
 router.post(

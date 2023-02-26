@@ -2,6 +2,7 @@ const express = require("express");
 const { route } = require("express/lib/router");
 const { escapeRegExp } = require("lodash");
 const router = require('express').Router();
+const { Op } = require('sequelize');
 const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage} = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {  handleValidationErrors } = require('../../utils/validation');
@@ -40,11 +41,22 @@ router.get('/current', requireAuth, async (req, res) => {
                 organizerId: user.id
             }
         })
+        //To find all the groups that the current user is a part of excluding hosted groups
+        const memberships = await Membership.findAll({
+            where: {
+                userId: user.id,
+                status: {
+                    [Op.ne]: "host"
+                }
+            },
+            include: {model: Group, as: "Members"}
+        })
 
-        // if (!groups) {
-        //     return res.status(404).json({message: "no groups?"});
-        // }
-        // console.log(groups);
+
+
+        memberships.forEach(membership => {
+            groups.push(membership.dataValues.Members);
+        })
 
         for (let i = 0; i < groups.length; i++) {
             const members = await Membership.findAll({
@@ -199,14 +211,18 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 
     const membership = await Membership.findOne({
         where: {
-            userId: user.id
+            userId: user.id,
+            groupId
         }
     })
-
     const group = await Group.findByPk(groupId);
+
     if (!group) return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
 
-    if (group.dataValues.id === groupId || membership.dataValues.status === "co-host") {
+    if (!membership) {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
+    }
+    if (group.dataValues.organizerId === user.id || membership.dataValues.status === "co-host") {
 
         const venues = await Venue.findAll({
             where: {
@@ -227,6 +243,7 @@ router.post('/:groupId/venues', [requireAuth, validateVenueBody], async (req, re
     const { user } = req;
     let { groupId } = req.params
     groupId = parseInt(groupId);
+    const { address, city, state, lat, lng } = req.body;
 
     const group = await Group.findOne({
         where: {
@@ -237,19 +254,23 @@ router.post('/:groupId/venues', [requireAuth, validateVenueBody], async (req, re
           return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
     }
 
-    const { address, city, state, lat, lng } = req.body;
+
 
      const membership = await Membership.findOne({
         where: {
-            userId: user.id
+            userId: user.id,
+            groupId
         }
     })
-    if (!membership) return res.json({message: "my custom erro"});
+    console.log(membership);
+    if (!membership) return res.json({message: "Forbidden", statusCode: 403});
     if (user.id === group.dataValues.organizerId || membership.dataValues.status === "co-host") {
         const newVenue = await Venue.create({ groupId, address, city, state, lat, lng });
+        delete newVenue.dataValues.createdAt;
+        delete newVenue.dataValues.updatedAt;
         return res.status(200).json(newVenue);
     } else {
-        return res.status(403).json({message: "Forbidden", statusCode: 403});
+        res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 });
 //Get all Events of a Group specified by its id
@@ -270,7 +291,7 @@ router.get('/:groupId/events', async (req, res) => {
             groupId
         },
     attributes: {
-        exclude: ["capacity", "price"]
+        exclude: ["capacity", "price", "description"]
     },
     include: ["Group", "Venue"]
     });
@@ -291,6 +312,8 @@ router.get('/:groupId/events', async (req, res) => {
     event.dataValues.previewImage = image.url;
     }
     delete event.dataValues.Group.dataValues.organizerId;
+    delete event.dataValues.Group.dataValues.createdAt;
+    delete event.dataValues.Group.dataValues.updatedAt;
     delete event.dataValues.Group.dataValues.type;
     delete event.dataValues.Group.dataValues.about;
     delete event.dataValues.Group.dataValues.private;
@@ -308,16 +331,17 @@ router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, re
     groupId = parseInt(groupId);
 
     const { venueId, name, type, capacity, price, description, startDate, endDate} = req.body;
-    const membership = await Membership.findOne({
-        where: {
-            userId: user.id
-        }
-    });
-
-    if (!membership) return res.json({message: "Shits busted"});
 
     const group = await Group.findByPk(groupId);
     if (!group) res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+
+    const membership = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId
+        }
+    });
+    if (!membership) return res.json({message: "Forbidden", statusCode: 403});
 
     if (membership.userId === group.organizerId || membership.status === "co-host") {
         const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
