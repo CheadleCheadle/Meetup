@@ -2,9 +2,29 @@ const express = require("express");
 const { check } = require("express-validator");
 const router = require('express').Router();
 const { handleValidationErrors } = require('./validation');
+const { Event } = require('../db/models');
 // const { setTokenCookie } = require("./auth");
 // const { User } = require("../../db/models");
 
+  // const validateSignUp = [
+  //   check('firstName')
+  //     .exists( {checkFalsy: true })
+  //     .notEmpty()
+  //     .isString()
+  //     .withMessage('First name is required'),
+  //   check('lastName')
+  //     .exists( {checkFalsy: true })
+  //     .notEmpty()
+  //     .isString()
+  //     .withMessage('Last name is required'),
+  //   check('email')
+  //     .exists( {checkFalsy: true })
+  //     .notEmpty()
+  //     .isEmail()
+  //     .isString()
+  //     .withMessage("Invalid email"),
+  //     handleValidationErrors
+  // ]
 
 
  const validateGroupBody = [
@@ -106,6 +126,8 @@ const validateEventBody = [
      check('price')
       .exists( {checkFalsy: true})
       .notEmpty()
+      .not()
+      .isString()
       .withMessage("Price is invalid"),
      check('description')
       .exists( {checkFalsy: true})
@@ -115,36 +137,41 @@ const validateEventBody = [
      check('startDate')
       .exists( {checkFalsy: true})
       .notEmpty()
+      .custom((value, { req }) => {
+        if (Date.parse(value) <= Date.now()) {
+          return false;
+        } else {
+          return true;
+        }
+      })
       .withMessage("Start date must be in the future"),
      check('endDate')
       .exists( {checkFalsy: true})
       .notEmpty()
+      .custom((value, { req }) => {
+        if (Date.parse(value) <= Date.parse(req.body.startDate)) {
+          return false;
+        } else {
+          return true;
+        }
+      })
       .withMessage("End date is less than start date"),
       handleValidationErrors
 ];
 
-// const validateEventQuery = [
-//   check('page')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("Page must be greater than or equal to 1"),
-//   check('size')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("Size must be greater than or equal to 1"),
-//   check('name')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("Name must be a string"),
-//   check('type')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("Type must be 'Online' or 'In Person'"),
-//   check('startDate')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("State date must be a valid datetime"),
-//   handleValidationErrors
-// ];
+const validateMemberBody = [
+      check('memberId')
+        .exists()
+        .notEmpty()
+        .not()
+        .isString()
+        .withMessage("memberId must be a valid memberId"),
+      check('status')
+        .exists()
+        .notEmpty()
+        .isString()
+        .withMessage("status is required"),
+        handleValidationErrors
+]
 
-module.exports = { validateGroupBody, validateVenueBody, validateEventBody } ;
+module.exports = { validateGroupBody, validateVenueBody, validateEventBody, validateMemberBody } ;

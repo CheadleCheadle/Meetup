@@ -14,14 +14,20 @@ router.put('/:venueId', [requireAuth, validateVenueBody], async (req, res) => {
 
 
     const venue = await Venue.scope('noUp').findByPk(venueId, {include: Group})
-    const membership = await Membership.findOne({
-        where: {
-            userId: user.id
-        }
-    })
+
     if (!venue) {
         return res.status(404).json({message: "Venue couldn't be found", statusCode: 404})
     }
+    const membership = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: venue.dataValues.Group.dataValues.id
+        }
+    });
+    if (!membership) {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
+    }
+
 
     if (user.id === venue.dataValues.Group.dataValues.organizerId || membership.status === "co-host") {
         venue.set({ address, city, state, lat, lng });
