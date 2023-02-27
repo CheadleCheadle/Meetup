@@ -122,7 +122,7 @@ router.post('/', [requireAuth, validateGroupBody], async (req, res) => {
     const newMember = await Membership.create({userId: user.id, groupId: newGroup.id, status: "host"});
     res.status(201).json(newGroup);
     } catch (e) {
-        console.log(error);
+
         res.status(400).json({
             message: "Validation Error",
             statusCode: 400,
@@ -216,7 +216,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
             groupId
         }
     })
-    console.log(membership);
+
     const group = await Group.findByPk(groupId);
 
     if (!group) return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
@@ -266,7 +266,7 @@ router.post('/:groupId/venues', [requireAuth, validateVenueBody], async (req, re
             groupId
         }
     })
-    console.log(membership);
+
     if (!membership) return res.json({message: "Forbidden", statusCode: 403});
     if (user.id === group.dataValues.organizerId || membership.dataValues.status === "co-host") {
         const newVenue = await Venue.create({ groupId, address, city, state, lat, lng });

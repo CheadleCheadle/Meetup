@@ -5,25 +5,30 @@ const router = require('express').Router();
 const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage, Sequelize } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {  handleCustomValidationErrors } = require('../../utils/validation');
-const { validateEventBody } = require('../../utils/body-validation');
+const { validateEventBody, validateQueryParameters } = require('../../utils/body-validation');
 const Op = Sequelize.Op;
 //Get all Events
-router.get('/', async (req, res) => {
-
-    let { page, size, name, type, startDate } = req.query;
+router.get('/', validateQueryParameters, async (req, res) => {
+    let { page, size } = req.query;
     if (!page) page = 1;
     if (!size) size = 20;
 
     page = parseInt(page);
     size = parseInt(size);
 
-    console.log(page, size, typeof page, typeof size);
+    if (page > 10) {
+        page = 10;
+    }
+    if (size > 20) {
+        size = 20;
+    }
+
+
 
     let pagination = {};
     pagination.limit = size;
     pagination.offset = size * (page - 1);
 
-    console.log(pagination);
 
 
 const events = await Event.findAll({
@@ -171,7 +176,7 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
     let { eventId } = req.params;
     eventId = parseInt(eventId);
     const event = await Event.findByPk(eventId);
-    console.log(event);
+
     if (!event) return res.status(404).json({message: "Event couldn't be found", statusCode: 404});
     const membership = await Membership.findOne({
         where: {
@@ -211,10 +216,10 @@ router.get('/:eventId/attendees', async (req, res) => {
 
         }
     })
-     console.log(membershipOfUser);
+
 
     if (event.dataValues.Group.dataValues.organizerId === user.id || membershipOfUser.dataValues.status === "co-host") {
-        console.log("FIRST");
+
         const attendants = await Attendance.findAll({
             where: {
                 eventId
@@ -239,7 +244,7 @@ router.get('/:eventId/attendees', async (req, res) => {
         }
         res.status(200).json({Attendees: attendants});
     } else {
-        console.log("SECOND");
+
         const attendants = await Attendance.findAll({
             where: {
                 eventId,
@@ -302,7 +307,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
     if (attendanceCheck) {
     if (attendanceCheck.status === "pending") {
         return res.status(400).json({message: "Attendance has already been requested", statusCode: 400});
-        // console.log("HI mom");
+
     } else if (attendanceCheck.status !== "pending") {
         return res.status(400).json({message: "User is already an attendee of the event", statusCode: 400});
     }
@@ -336,7 +341,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
             groupId: event.dataValues.groupId
         }
     });
-    console.log(membership);
+
     if (!membership || membership.dataValues.groupId !== event.dataValues.groupId || !["host", "co-host"].includes(membership.dataValues.status)) {
         return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
