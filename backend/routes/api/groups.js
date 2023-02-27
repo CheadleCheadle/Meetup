@@ -88,7 +88,12 @@ router.get('/:groupId', async (req, res) => {
     // console.log(typeof groupId);
     const group = await Group.scope('getDetailsOfGroup').findOne({
         where: {id: groupId},
-        include: [GroupImage, Venue,]
+        include: [{
+            model:GroupImage,
+            attributes: {
+                exclude: ["groupId", "createdAt", "updatedAt"]
+            }
+        }, Venue,]
     });
     if (!group) {
          return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
