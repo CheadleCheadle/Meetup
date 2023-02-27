@@ -382,6 +382,8 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
         || membership.dataValues.status === "co-host") {
             attendance.set({ userId, status });
             await attendance.save();
+            delete attendance.dataValues.createdAt;
+            delete attendance.dataValues.updatedAt;
             return res.status(200).json(attendance);
     }
 });
