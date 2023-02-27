@@ -8,7 +8,7 @@ const {  handleCustomValidationErrors } = require('../../utils/validation');
 const { validateEventBody, validateQueryParameters } = require('../../utils/body-validation');
 const Op = Sequelize.Op;
 //Get all Events
-router.get('/', validateQueryParameters, async (req, res) => {
+router.get('/', async (req, res) => {
     let { page, size } = req.query;
     if (!page) page = 1;
     if (!size) size = 20;

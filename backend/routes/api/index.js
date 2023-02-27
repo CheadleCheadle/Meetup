@@ -8,6 +8,8 @@ const groupImageRouter = require('./group-images.js');
 const eventImageRouter = require('./event-images.js');
 const { restoreUser } = require("../../utils/auth.js");
 
+const { validateQueryParameters } = require('../../utils/body-validation');
+
 router.use(restoreUser);
 
 router.use('/session', sessionRouter);
@@ -23,6 +25,12 @@ router.use('/events', eventRouter);
 router.use('/group-images', groupImageRouter);
 
 router.use('/event-images', eventImageRouter);
+
+router.use(function(req, res, next) {
+  if (req.query) {
+    validateQueryParameters
+  }
+})
 router.post('/test', (req, res) => {
   res.json({ requestBody: req.body });
 });
