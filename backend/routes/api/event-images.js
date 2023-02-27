@@ -21,20 +21,23 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
             id: image.dataValues.Event.dataValues.groupId
         }
     })
-    const currentUserMembership = await Membership.findOne({
+
+    const membership = await Membership.findOne({
         where: {
             userId: user.id,
-            groupId: group.id
+            groupId: image.dataValues.Event.dataValues.groupId
         }
     })
-    if (!currentUserMembership) {
-        return res.status(400).json({message: "Unauthorized request", statusCode: 400});
+
+    if (user.id !== group.dataValues.organizerId && !membership) {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
-    console.log(group.dataValues.organizerId )
-    console.log( currentUserMembership.dataValues.status)
-    if (group.dataValues.organizerId === user.id || currentUserMembership.dataValues.status === "co-host") {
+
+    if (["host", "co-host"].includes(membership.dataValues.status) || group.dataValues.organizerId === user.id) {
         await image.destroy();
-        return res.status(200).json({message: "Successfully deleted", statusCode: 200});
+        return res.status(200).json({message: "Successfully deleted"});
+    } else {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 })
 module.exports = router;

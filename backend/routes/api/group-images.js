@@ -11,26 +11,28 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     let { imageId } = req.params;
     imageId = parseInt(imageId);
     const image = await GroupImage.findByPk(imageId, {include: Group});
-    //CHECK AUTH FIRST
-    //current user must be the organizer or co-host of the group
-    //so get the membership first and check those condtions before anything else
+
     if (!image) {
         return res.status(404).json({message: "Group Image couldn't be found", statusCode: 404});
     }
-    const membership = await Membership.findOne({
+    console.log(image.dataValues.groupId);
+
+    const currentMembership = await Membership.findOne({
         where: {
-            userId: image.dataValues.Group.dataValues.organizerId
+            userId: user.id,
+            groupId: image.dataValues.groupId
         }
     });
-    const currentUserMembership = await Membership.findOne({
-        where: {
-            userId: user.id
-        }
-    })
 
-    if (membership || currentUserMembership.dataValues.status === "co-host") {
+    if (!currentMembership && user.id !== image.dataValues.Group.dataValues.organizerId) {
+        return res.status(403).json({message: "Forbidden", status: 403});
+    }
+
+    if (["host", "co-host"].includes(currentMembership.dataValues.status) || image.dataValues.Group.dataValues.organizerId === user.id) {
         await image.destroy();
         return res.status(200).json({message: "Successfully deleted", statusCode: 200});
+    } else {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 })
 

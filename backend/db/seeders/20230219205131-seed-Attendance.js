@@ -42,7 +42,7 @@ module.exports = {
          {
           eventId: 1,
           userId: 2,
-          status: "pending"
+          status: "Attendee"
          }
 
        ], options);

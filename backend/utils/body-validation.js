@@ -159,28 +159,19 @@ const validateEventBody = [
       handleValidationErrors
 ];
 
-// const validateEventQuery = [
-//   check('page')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("Page must be greater than or equal to 1"),
-//   check('size')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("Size must be greater than or equal to 1"),
-//   check('name')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("Name must be a string"),
-//   check('type')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("Type must be 'Online' or 'In Person'"),
-//   check('startDate')
-//     // .exists({checkFalsy: false})
-//     // .notEmpty()
-//     .withMessage("State date must be a valid datetime"),
-//   handleValidationErrors
-// ];
+const validateMemberBody = [
+      check('memberId')
+        .exists()
+        .notEmpty()
+        .not()
+        .isString()
+        .withMessage("memberId must be a valid memberId"),
+      check('status')
+        .exists()
+        .notEmpty()
+        .isString()
+        .withMessage("status is required"),
+        handleValidationErrors
+]
 
-module.exports = { validateGroupBody, validateVenueBody, validateEventBody } ;
+module.exports = { validateGroupBody, validateVenueBody, validateEventBody, validateMemberBody } ;
