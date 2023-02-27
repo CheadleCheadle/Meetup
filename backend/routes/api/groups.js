@@ -220,6 +220,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
             groupId
         }
     })
+    console.log(membership);
     const group = await Group.findByPk(groupId);
 
     if (!group) return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
@@ -238,6 +239,8 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
         res.status(200).json({
             Venues: venues
         })
+    } else {
+        return res.status(403).json({message: "Forbidden", statusCode:403});
     }
 
 });
