@@ -15,7 +15,7 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     if (!image) {
         return res.status(404).json({message: "Group Image couldn't be found", statusCode: 404});
     }
-    console.log(image.dataValues.groupId);
+
 
     const currentMembership = await Membership.findOne({
         where: {

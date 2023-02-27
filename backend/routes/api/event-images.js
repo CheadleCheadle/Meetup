@@ -8,9 +8,7 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     const { user } = req;
     let { imageId } = req.params;
     imageId = parseInt(imageId);
-    //CHECK AUTH
-    //current user must be the organizer or co-host of the group that the event belongs to
-    //find membership, check status, find event, then events group, then groupOrganizerId must === user.id
+
     const image = await EventImage.findByPk(imageId, {include: Event});
     if (!image) {
         return res.status(404).json({message: "Event Image couldn't be found", statusCode: 404});
@@ -35,7 +33,7 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
 
     if (["host", "co-host"].includes(membership.dataValues.status) || group.dataValues.organizerId === user.id) {
         await image.destroy();
-        return res.status(200).json({message: "Successfully deleted"});
+        return res.status(200).json({message: "Successfully deleted", statusCode: 200});
     } else {
         return res.status(403).json({message: "Forbidden", statusCode: 403});
     }

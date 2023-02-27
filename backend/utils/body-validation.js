@@ -3,29 +3,9 @@ const { check } = require("express-validator");
 const router = require('express').Router();
 const { handleValidationErrors } = require('./validation');
 const { Event } = require('../db/models');
+const { query } = require('express-validator/check');
 // const { setTokenCookie } = require("./auth");
 // const { User } = require("../../db/models");
-
-  // const validateSignUp = [
-  //   check('firstName')
-  //     .exists( {checkFalsy: true })
-  //     .notEmpty()
-  //     .isString()
-  //     .withMessage('First name is required'),
-  //   check('lastName')
-  //     .exists( {checkFalsy: true })
-  //     .notEmpty()
-  //     .isString()
-  //     .withMessage('Last name is required'),
-  //   check('email')
-  //     .exists( {checkFalsy: true })
-  //     .notEmpty()
-  //     .isEmail()
-  //     .isString()
-  //     .withMessage("Invalid email"),
-  //     handleValidationErrors
-  // ]
-
 
  const validateGroupBody = [
     check('name')
@@ -174,4 +154,30 @@ const validateMemberBody = [
         handleValidationErrors
 ]
 
-module.exports = { validateGroupBody, validateVenueBody, validateEventBody, validateMemberBody } ;
+const validateQueryParameters = [
+  query('page')
+    .exists()
+    .isString()
+    .custom((value) => {
+      if (Number(value) <= 0) {
+        return false
+      } else {
+        return true
+      }
+    })
+    .withMessage("Page must be greater than or equal to 1"),
+  query('size')
+    .exists()
+    .isString()
+    .custom((value) => {
+      if (Number(value) <= 0) {
+        return false
+      } else {
+        return true
+      }
+    })
+    .withMessage("Size must be greater than or equal to 1"),
+      handleValidationErrors
+]
+
+module.exports = { validateGroupBody, validateVenueBody, validateEventBody, validateMemberBody, validateQueryParameters } ;
