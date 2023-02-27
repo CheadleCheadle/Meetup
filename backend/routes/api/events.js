@@ -362,7 +362,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
 
 
     if (status === "pending") {
-        return res.status(400).json({message: "Cannot change an attendance status to pending"});
+        return res.status(400).json({message: "Cannot change an attendance status to pending", statusCode: 400});
     }
 
     const attendance = await Attendance.findOne({
