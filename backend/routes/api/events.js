@@ -43,7 +43,6 @@ for (let i = 0; i < events.length; i++) {
     const image = await EventImage.findOne({
         where: {eventId: event.id}
     })
-    // console.log(event);
     event.dataValues.numAttending = numAttend;
     if (image) {
     event.dataValues.previewImage = image.url;
@@ -117,17 +116,12 @@ router.post('/:eventId/images', requireAuth, async (req, res) => {
             eventId
         }
     });
-    // const currentMembership = await Membership.findOne({
-    //     where: {
-    //         userId: user.id,
-    //         groupId: event.dataValues.Group.dataValues.id
-    //     }
-    // })
+
 
     if (!attendanceMembership) {
         return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
-    //ASSUMING THAT MEMBERSHIP STATUS CANT BE ATTENDEE
+
     const roles = [ "attendee","host", "co-host"];
     if (roles.includes(attendanceMembership.dataValues.status.toLowerCase())) {
         const image = await EventImage.create({eventId, userId: user.id, url, preview});
@@ -225,7 +219,6 @@ router.get('/:eventId/attendees', async (req, res) => {
             where: {
                 eventId
             },
-            // include: {model: User, attributes: ["id","firstName","lastName"]}
             attributes: {
                 exclude: ["createdAt", "updatedAt"]
             }
@@ -278,7 +271,7 @@ router.get('/:eventId/attendees', async (req, res) => {
 });
 
 //Request to Attend an Event based on the Event's id
-//RE TEST
+
 router.post('/:eventId/attendance', requireAuth, async (req, res) => {
     let { eventId } = req.params;
     eventId = parseInt(eventId);
@@ -322,23 +315,11 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
     return res.status(200).json(newAttendant);
 
 
-//     const membership = await Membership.findOne({
-//         where: {
-//             userId: user.id
-//         }
-//     });
-//     if (membership) {
-//     if (membership.dataValues.groupId === event.dataValues.groupId) {
-//         const newAttendant = await Attendance.create({eventId, userId: user.id, status: "pending"});
-//         return res.status(200).json(newAttendant);
-//     }
-//    } else {
-//     return res.status(400).json({message: "User doesn't have a membership"});
-//    }
+
 });
 
 //Change the status of an attendance for an event specified by id
-//RE TEST
+
 router.put('/:eventId/attendance', requireAuth, async (req, res) => {
     let { eventId } = req.params;
     eventId = parseInt(eventId);
@@ -371,7 +352,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
             userId
         }
     });
-    //PROBABLY PUT THIS HIGHER UP SO IT CHECKS ATTENDANCE AFTER AUTHORIZING USER
+
     if (!attendance) {
           return res.status(404).json({message: "Attendance between the user and the event does not exist"});
 
@@ -397,8 +378,6 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
     let { userId } = req.body;
     userId = parseInt(userId);
     const event = await Event.findByPk(eventId, {include: Group});
-    //CHECK AUTHORIZATION FIRST
-//IF attendanceToDelete.userId !== user.id || user.id !== event.group.organizerId
 
     if (!event) {
         return res.status(404).json({message: "Event couldn't be found", statusCode: 404});
