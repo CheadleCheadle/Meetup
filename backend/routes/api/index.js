@@ -9,7 +9,9 @@ const eventImageRouter = require('./event-images.js');
 const { restoreUser } = require("../../utils/auth.js");
 
 const { validateQueryParameters } = require('../../utils/body-validation');
-
+router.post('/test', (req, res) => {
+  return res.json({ requestBody: req.body });
+});
 router.use(restoreUser);
 
 router.use('/session', sessionRouter);
@@ -31,8 +33,6 @@ router.use(function(req, res, next) {
     validateQueryParameters
   }
 })
-router.post('/test', (req, res) => {
-  res.json({ requestBody: req.body });
-});
+
 
 module.exports = router;
