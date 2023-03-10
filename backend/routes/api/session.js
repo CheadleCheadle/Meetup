@@ -49,7 +49,7 @@ router.delete(
 );
 
 router.get(
-    '/', requireAuth, (req, res) => {
+    '/',  (req, res) => {
         const { user } = req;
         if (user) {
             return res.json({
