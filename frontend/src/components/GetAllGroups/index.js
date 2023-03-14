@@ -27,7 +27,7 @@ const GroupList = () => {
         <section className="displayGroups">
         {groupList?.map((group) => (
             <>
-            <div className="container"
+            <div className="groups-container"
                  onClick={() => goToDetails(group)}>
             <img src={picture}></img>
             <div className="groupInfo">

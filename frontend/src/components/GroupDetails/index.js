@@ -8,6 +8,8 @@ export default function GroupDetails() {
     const params = useParams();
     let { groupId } = params;
     groupId = parseInt(groupId);
+
+
     const dispatch = useDispatch();
     const group = useSelector((state) => state.groups.singleGroup);
 
@@ -19,11 +21,14 @@ export default function GroupDetails() {
     if (!group) {
         return null;
     }
+    if (isNaN(groupId)) {
+        return null;
+    }
 return (
     <>
     <section>
         <NavLink to="/groups">Groups</NavLink>
-        <div className="container">
+        <div className="group-container">
             <img src={picture}></img>
             <div className="details">
                 <h1>{group.name}</h1>

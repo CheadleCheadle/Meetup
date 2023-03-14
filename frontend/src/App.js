@@ -9,6 +9,7 @@ import GroupDetails from "./components/GroupDetails";
 import EventList from "./components/GetAllEvents";
 import EventDetails from "./components/EventDetails";
 import CreateGroup from "./components/forms/CreateGroup";
+import Landing from "./components/LandingPage";
 function App() {
   const sessionUser = useSelector(state => state.session.user);
   console.log(Boolean(sessionUser));
@@ -20,19 +21,16 @@ function App() {
 
   return (
     <>
+
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && (
-        <Switch>
-        </Switch>
-      )}
+
       {sessionUser && (
-        <Switch>
         <Route exact path="/groups/new">
           <CreateGroup></CreateGroup>
         </Route>
-        </Switch>
       )}
-      <Switch>
+      {isLoaded && (
+        <Switch>
         <Route exact path="/groups">
           <GroupList></GroupList>
         </Route>
@@ -46,10 +44,12 @@ function App() {
           <EventDetails></EventDetails>
         </Route>
         <Route exact path="/">
+          <Landing></Landing>
           <SeeAllGroups></SeeAllGroups>
         </Route>
-
       </Switch>
+      )}
+
     </>
   );
 }

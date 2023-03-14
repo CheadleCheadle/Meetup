@@ -10,22 +10,19 @@ export default function EventDetails() {
     eventId = parseInt(eventId);
     const dispatch = useDispatch();
     const event = useSelector((state) => state.events.singleEvent);
-
     console.log("CURRENT EVENT:", event);
 
     useEffect(() => {
         dispatch(getEventDetails(eventId));
     }, [dispatch]);
-
-    if (!event) {
-        console.log("NO EVENT")
+    if (!Object.keys(event).length) {
         return null;
     }
 return (
     <>
     <section>
         <NavLink to="/events">Events</NavLink>
-        <div className="container">
+        <div className="event-container">
         <img src={picture}></img>
         <div className="details">
             <img src={picture}></img>
@@ -44,4 +41,5 @@ return (
     </section>
     </>
 )
+
 }
