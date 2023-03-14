@@ -65,8 +65,15 @@ export const createGroupAction = (group) => async (dispatch) => {
 
         console.log('GROUP', data);
 
-        dispatch(createGroup(data));
-
+        const singleObject = {
+            ...data,
+            GroupImages: [],
+            Organizer: {
+                test:"Im the user"
+            },
+            Venues: null
+        }
+        dispatch(createGroup(singleObject));
         return data;
     }
 }
@@ -105,12 +112,14 @@ const groupsReducer = (state = initalState, action) => {
         case CREATE_GROUP: {
             const newState = {...state};
             console.log('STATE',newState.allGroups);
-            newState.allGroups[action.group.id] = action.group;
+            // newState.allGroups[action.group.id] = action.group;
+            newState.singleGroup = {...action.group};
             return newState;
         }
         case CREATE_GROUP_IMAGE: {
             const newState = {...state};
-            newState.allGroups[action.groupId].previewImage = action.image;
+            newState.singleGroup.GroupImages.push(action.image);
+            // newState.singleGroup.GroupImages.push(action.image);
             return newState;
         }
         default:

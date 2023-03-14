@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react"
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createGroupAction, createGroupImageAction } from "../../store/groups";
 import './CreateGroup.css';
 export default function CreateGroup() {
-    // const history = useHistory();
+    const history = useHistory();
     const dispatch = useDispatch();
     const [location, setLocation] = useState("");
     const [name, setName] = useState("");
@@ -32,7 +32,8 @@ export default function CreateGroup() {
         const theImage = {url:image, preview: true};
 
         const newGroup = await dispatch(createGroupAction(group));
-        dispatch(createGroupImageAction(newGroup.id, theImage));
+        await dispatch(createGroupImageAction(newGroup.id, theImage));
+         history.replace(`/groups/${newGroup.id}`);
     }
 
     const validation = () => {
