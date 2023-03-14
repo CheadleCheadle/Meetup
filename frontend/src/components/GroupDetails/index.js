@@ -68,7 +68,7 @@ return (
         </div>
         {newEvents.length ? (
         <h1>Upcoming Events {`(${newEvents.length})`}</h1>
-        ) : null}
+        ) : (<h1>No Upcoming Events</h1>)}
 
         {newEvents.map((event) => (
             <>

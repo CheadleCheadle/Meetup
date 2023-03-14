@@ -69,8 +69,7 @@ export default function CreateGroup() {
             <h1>We'll walk you through a few steps to build your local community</h1>
         </div>
         <form
-        onSubmit={handleSubmit}
-        disable={() => !Object.keys(errors).length}>
+        onSubmit={handleSubmit}>
             <label>
                 <h1>First, set your group's location</h1>
                 <p>Meetup groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.</p>
