@@ -61,7 +61,8 @@ export const createGroupAction = (group, image) => async (dispatch) => {
     });
         if (imageResponse.ok) {
             const imageData = await imageResponse.json();
-            console.log(imageData);
+            console.log('IMAGE',imageData);
+            console.log('GROUP', data);
             dispatch(createGroup(data, imageData));
             return data;
         }
@@ -69,18 +70,6 @@ export const createGroupAction = (group, image) => async (dispatch) => {
     }
 }
 
-// export const createGroupImageAction = (groupId, image) => async (dispatch) => {
-//         const imageResponse = await csrfFetch(`/api/groups/${groupId}`, {
-//         method: "POST",
-//         headers: {'Content-Type': 'Application/json'},
-//         body: JSON.stringify(image)
-//     });
-//     if (imageResponse.ok) {
-//         const data = await imageResponse.json();
-//         dispatch(createGroupImage(data));
-//         return data;
-//     }
-// }
 
 const initalState = {allGroups: {}, singleGroup: {}, Venues: {}};
 

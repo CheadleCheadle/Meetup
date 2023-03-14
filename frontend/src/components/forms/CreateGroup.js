@@ -1,9 +1,10 @@
-import { create } from "lodash";
 import React, {useEffect, useState} from "react"
+// import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createGroupAction } from "../../store/groups";
 import './CreateGroup.css';
 export default function CreateGroup() {
+    // const history = useHistory();
     const dispatch = useDispatch();
     const [location, setLocation] = useState("");
     const [name, setName] = useState("");
@@ -30,7 +31,7 @@ export default function CreateGroup() {
         const group = {city:split[0], state:split[1], name, about, type, private:stringToBool(isPrivate)}
         const theImage = {url:image, preview: true};
         console.log('HANDLE SUBMIT',group);
-        await dispatch(createGroupAction(group, theImage));
+        dispatch(createGroupAction(group, theImage));
     }
 
     const validation = () => {
