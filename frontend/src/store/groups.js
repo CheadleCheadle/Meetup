@@ -17,11 +17,19 @@ const loadGroupDetails = (group) => {
     }
 }
 
-const createGroup = (group, image) => {
+const createGroup = (group) => {
     return {
         type: CREATE_GROUP,
         group,
-        image
+
+    }
+}
+
+const createGroupImage = (image, groupId) => {
+    return {
+        type: CREATE_GROUP_IMAGE,
+        image,
+        groupId:groupId
     }
 }
 
@@ -46,7 +54,7 @@ export const getGroupDetails = (id) => async (dispatch) => {
     }
 }
 
-export const createGroupAction = (group, image) => async (dispatch) => {
+export const createGroupAction = (group) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups/`, {
         method: "POST",
         headers: {'Content-Type': 'Application/json'},
@@ -54,19 +62,25 @@ export const createGroupAction = (group, image) => async (dispatch) => {
     });
     if (response.ok) {
         const data = await response.json();
-        const imageResponse = await csrfFetch(`/api/groups/${data.id}/images`, {
+
+        console.log('GROUP', data);
+
+        dispatch(createGroup(data));
+
+        return data;
+    }
+}
+
+export const createGroupImageAction = (groupId, image) => async (dispatch) => {
+        const imageResponse = await csrfFetch(`/api/groups/${groupId}/images`, {
         method: "POST",
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(image)
     });
-        if (imageResponse.ok) {
-            const imageData = await imageResponse.json();
-            console.log('IMAGE',imageData);
-            console.log('GROUP', data);
-            dispatch(createGroup(data, imageData));
-            return data;
-        }
-
+    if (imageResponse.ok) {
+        const data = await imageResponse.json();
+        dispatch(createGroupImage(data, groupId));
+        return data;
     }
 }
 
@@ -92,7 +106,11 @@ const groupsReducer = (state = initalState, action) => {
             const newState = {...state};
             console.log('STATE',newState.allGroups);
             newState.allGroups[action.group.id] = action.group;
-            newState.allGroups[action.group.id].GroupImages = action.image;
+            return newState;
+        }
+        case CREATE_GROUP_IMAGE: {
+            const newState = {...state};
+            newState.allGroups[action.groupId].previewImage = action.image;
             return newState;
         }
         default:

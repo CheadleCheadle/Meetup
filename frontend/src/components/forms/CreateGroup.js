@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 // import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createGroupAction } from "../../store/groups";
+import { createGroupAction, createGroupImageAction } from "../../store/groups";
 import './CreateGroup.css';
 export default function CreateGroup() {
     // const history = useHistory();
@@ -30,8 +30,9 @@ export default function CreateGroup() {
         const split = spaceRemoved.split(',')
         const group = {city:split[0], state:split[1], name, about, type, private:stringToBool(isPrivate)}
         const theImage = {url:image, preview: true};
-        console.log('HANDLE SUBMIT',group);
-        dispatch(createGroupAction(group, theImage));
+
+        const newGroup = await dispatch(createGroupAction(group));
+        dispatch(createGroupImageAction(newGroup.id, theImage));
     }
 
     const validation = () => {
@@ -102,7 +103,7 @@ export default function CreateGroup() {
                 </select>
                 <p className="errors">{errors.type}</p>
                 <p>Is this group private or public?</p>
-                <select defaultValue="select" value={isPrivate}  onChange={(e) => setisPrivate(e.target.value)} name="options">
+                <select value={isPrivate}  onChange={(e) => setisPrivate(e.target.value)} name="options">
                     <option value="Private">Private</option>
                     <option value="Public">Public</option>
                 </select>
