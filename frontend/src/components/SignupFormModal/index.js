@@ -12,7 +12,7 @@ function SignupFormModal() {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState([]);
+  let [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
@@ -28,6 +28,8 @@ function SignupFormModal() {
     }
     return setErrors(['Confirm Password field must be the same as the Password field']);
   };
+  errors = Object.values(errors);
+
 
   return (
     <>
