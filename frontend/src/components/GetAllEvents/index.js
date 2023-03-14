@@ -26,7 +26,7 @@ export default function EventList() {
 
         {eventList.map((event) => (
             <>
-            <div className="container"
+            <div className="events-container"
                  onClick={() => goToDetails(event)}>
                 <img src={picture}></img>
                 <div>
