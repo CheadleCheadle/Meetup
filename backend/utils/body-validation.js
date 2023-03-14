@@ -29,7 +29,7 @@ const { query } = require('express-validator/check');
       .isIn(["Online", "In person"])
       .withMessage("Type must be 'Online' or 'In person'"),
     check('private')
-      .exists( {checkFalsy: true })
+      .exists( {checkFalsy: false})
       .notEmpty()
       .not()
       .isString()
