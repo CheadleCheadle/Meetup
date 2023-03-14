@@ -5,15 +5,19 @@ import { getGroupDetails } from "../../store/groups";
 import { NavLink } from "react-router-dom";
 import { getGroupEvents } from "../../store/events";
 import picture from "../../images/download.jpg";
-import { set } from "lodash";
+import { useHistory } from "react-router-dom";
 export default function GroupDetails() {
+    const history = useHistory();
     const params = useParams();
     let { groupId } = params;
     groupId = parseInt(groupId);
-
     const dispatch = useDispatch();
     const group = useSelector((state) => state.groups.singleGroup);
 
+    const goToDetails = (event) => {
+    console.log("IM BEING CLICKED", event.id);
+    return history.replace(`/events/${event.id}`);
+    }
     const events = useSelector((state) => Object.values(state.events.allEvents));
     const upComingEvents = (events) => {
         return events.filter(event => {
@@ -25,7 +29,10 @@ export default function GroupDetails() {
     const newEvents = upComingEvents(events);
     newEvents.sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate));
     const pastEvents = events.filter(event => !newEvents.includes(event));
-    pastEvents.sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate));
+    pastEvents.sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
+
+    console.log("new", newEvents);
+    console.log("old", pastEvents);
     useEffect(() => {
         dispatch(getGroupDetails(groupId));
         dispatch(getGroupEvents(groupId));
@@ -59,10 +66,13 @@ return (
             <h1>What we're about</h1>
             <p>{group.about}</p>
         </div>
+        {newEvents.length ? (
         <h1>Upcoming Events {`(${newEvents.length})`}</h1>
+        ) : null}
+
         {newEvents.map((event) => (
             <>
-            <div>
+            <div onClick={() => goToDetails(event)}>
                 <img src={picture}></img>
                 {event.name}
 
@@ -78,12 +88,12 @@ return (
         ))}
     </section>
     <section>
-        {pastEvents.length && (
+        {pastEvents.length ? (
         <h1>Past Events {`(${pastEvents.length})`}</h1>
-        )}
+        ) : null}
         {pastEvents.map((event) => (
             <>
-            <div>
+            <div onClick={() => goToDetails(event)}>
                 <img src={picture}></img>
                  {event.name}
                 {event.startDate}
