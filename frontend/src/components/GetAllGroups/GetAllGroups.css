@@ -1,0 +1,15 @@
+.displayGroups {
+display: flex;
+flex-direction: column;
+}
+
+.groups-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+.groupInfo {
+    display: flex;
+    flex-direction: column;
+
+}

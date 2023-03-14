@@ -1,3 +1,38 @@
 .hidden {
     display: none;
 }
+.home > a {
+    text-decoration: none;
+    color: #56BC3B;
+    font-size: 40px;
+    font-family:sans-serif;
+    font-weight: bold;
+}
+.nav-bar {
+    display:flex;
+    width: 100%;
+    flex-direction: row;
+}
+.container {
+width: 100%;
+display: flex;
+justify-content: flex-end;
+}
+.start-group a{
+    display: flex;
+    margin-right: 30px;
+    text-decoration: none;
+    color: #941200;
+    font-family: sans-serif;
+    font-weight: bold;
+
+}
+.profile {
+    display:flex;
+
+    justify-content: flex-end;
+    gap: 10px;
+}
+.button {
+    background-color: #941200;
+}
