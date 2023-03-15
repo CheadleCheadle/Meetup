@@ -29,11 +29,10 @@ const createGroup = (group) => {
     }
 }
 
-const createGroupImage = (image, groupId) => {
+const createGroupImage = (image) => {
     return {
         type: CREATE_GROUP_IMAGE,
-        image,
-        groupId:groupId
+        image
     }
 }
 
@@ -112,7 +111,7 @@ export const createGroupImageAction = (groupId, image) => async (dispatch) => {
     });
     if (imageResponse.ok) {
         const data = await imageResponse.json();
-        dispatch(createGroupImage(data, groupId));
+        dispatch(createGroupImage(data));
         return data;
     }
 }
@@ -226,7 +225,6 @@ const groupsReducer = (state = initialState, action) => {
             newState.singleGroup = {};
             newState.allGroups = {...state.allGroups};
             delete newState.allGroups[action.groupId];
-            console.log("STATE", newState);
             return newState;
         }
         default:

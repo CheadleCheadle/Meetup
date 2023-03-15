@@ -5,6 +5,7 @@ const GET_ALL_EVENTS = "events/getAllEvents";
 const GET_EVENT_DETAILS = "events/getEventDetails";
 const GET_GROUP_EVENTS = "events/getGroupEvents";
 const CREATE_EVENT = "events/new";
+const CREATE_EVENT_IMAGE = "events/image/new"
 const loadEvents = (events) => {
     return {
         type: GET_ALL_EVENTS,
@@ -30,6 +31,13 @@ const createEvent = (event) => {
     return {
         type: CREATE_EVENT,
         event
+    }
+}
+
+const createEventImage = (image) => {
+    return {
+        type: CREATE_EVENT_IMAGE,
+        image
     }
 }
 
@@ -69,6 +77,7 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(event)
     });
+    console.log(response);
     if (response.ok) {
         const data = await response.json();
         console.log('HELLO FROM REDUCER',data);
@@ -89,15 +98,47 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
     }
 }
 
-const initialState = { allEvents: {}, singleEvent: {} }
+export const createEventImageAction = (eventId, image) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/images`, {
+        method: "POST",
+        headers: {'Content-Type': 'Application/json'},
+        body: JSON.stringify(image)
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(createEventImage(image, eventId));
+        return data;
+    }
+
+}
+
+// const initialState = { allEvents: {}, singleEvent: {} };
+const initialState = {
+    allEvents: {
+
+    },
+
+    singleEvent: {
+
+      Group: {
+
+      },
+
+      Venue: {
+
+      },
+      EventImages: [],
+      Members: [],
+      Attendees: [],
+    },
+  }
 
 const eventsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_EVENTS: {
             const newState = {...state};
-            console.log(`HELLO FROM REDUCER`,action.events.Events);
             action.events.Events.forEach((event) => (newState.allEvents[event.id] = event));
-            console.log(newState);
             return newState;
         }
         case GET_EVENT_DETAILS: {
@@ -114,6 +155,11 @@ const eventsReducer = (state = initialState, action) => {
         case CREATE_EVENT: {
             const newState = {...state};
             newState.singleEvent = {...action.event};
+            return newState;
+        }
+        case CREATE_EVENT_IMAGE: {
+            const newState = {...state};
+            newState.singleEvent.EventImages = [action.image, ...state.singleEvent.EventImages];
             return newState;
         }
         default: {
