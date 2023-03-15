@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react"
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createGroupAction, createGroupImageAction } from "../../../store/groups";
 import './CreateGroup.css';
 export default function CreateGroup({update}) {
-    console.log("UPDATE", update);
     const history = useHistory();
     const dispatch = useDispatch();
+    const group = useSelector((state) => state.groups.singleGroup);
     const [location, setLocation] = useState("");
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
@@ -14,9 +14,6 @@ export default function CreateGroup({update}) {
     const [isPrivate, setisPrivate] = useState("");
     const [image, setImage] = useState("");
     const [errors, setErrors] = useState({});
-    useEffect(() => {
-        console.log(typeof type, type);
-    }, [location, name, about, type, isPrivate, image])
 
     const stringToBool = (bool) => {
         if (bool === "Private") {
@@ -65,6 +62,19 @@ export default function CreateGroup({update}) {
     useEffect(() => {
         validation();
     }, [location, name, about, type, isPrivate, image])
+
+    useEffect(() => {
+        if (update) {
+        console.log('Group',group);
+        setLocation(`${group.city}, ${group.state}`);
+        setName(group.name);
+        setAbout(group.about);
+        setType(group.type);
+        setisPrivate(group.private === true ? "Private" : "Public");
+        setImage(group.GroupImages[0].url);
+        validation();
+    }
+    }, [])
 
     return (
         <>
