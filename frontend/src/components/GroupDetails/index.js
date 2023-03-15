@@ -6,16 +6,14 @@ import { NavLink } from "react-router-dom";
 import { getGroupEvents } from "../../store/events";
 import picture from "../../images/download.jpg";
 import { useHistory } from "react-router-dom";
-export default function GroupDetails() {
+export default function GroupDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
     let { groupId } = params;
     groupId = parseInt(groupId);
     const dispatch = useDispatch();
     const group = useSelector((state) => state.groups.singleGroup);
-
     const goToDetails = (event) => {
-    console.log("IM BEING CLICKED", event.id);
     return history.replace(`/events/${event.id}`);
     }
     const events = useSelector((state) => Object.values(state.events.allEvents));
@@ -31,8 +29,6 @@ export default function GroupDetails() {
     const pastEvents = events.filter(event => !newEvents.includes(event));
     pastEvents.sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
 
-    console.log("new", newEvents);
-    console.log("old", pastEvents);
     useEffect(() => {
         dispatch(getGroupDetails(groupId));
         dispatch(getGroupEvents(groupId));
@@ -42,6 +38,26 @@ export default function GroupDetails() {
     }
     if (isNaN(groupId)) {
         return null;
+    }
+
+    const createEventUpdateDelete = () => {
+        if (sessionUser?.id === group.organizerId) {
+            return (
+                <div>
+                    <button>
+                    Create event
+                    </button>
+                    <button>
+                    Update
+                    </button>
+                    <button>
+                    Delete
+                    </button>
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 return (
     <>
@@ -54,6 +70,7 @@ return (
                 <h3>{group.city} {group.state}</h3>
                 <h3>##events {group.type}</h3>
                 <h3>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</h3>
+                {createEventUpdateDelete()}
             </div>
         </div>
     </section>
