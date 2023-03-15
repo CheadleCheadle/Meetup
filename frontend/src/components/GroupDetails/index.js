@@ -102,7 +102,7 @@ return (
 
         {newEvents.map((event) => (
             <>
-            <div onClick={() => goToDetails(event)}>
+            <div onClick={() => goToDetails(event)} key={event.id}>
                 <img src={picture}></img>
                 {event.name}
 
@@ -121,7 +121,7 @@ return (
         ) : null}
         {pastEvents.map((event) => (
             <>
-            <div onClick={() => goToDetails(event)}>
+            <div onClick={() => goToDetails(event)} key={event.id}>
                 <img src={picture}></img>
                  {event.name}
                 {event.startDate}

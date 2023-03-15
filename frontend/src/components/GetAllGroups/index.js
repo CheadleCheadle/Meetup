@@ -8,7 +8,7 @@ import './GetAllGroups.css';
 const GroupList = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const groupList = useSelector((state) => Object.values(state.groups));
+    const groupList = useSelector((state) => Object.values(state.groups.allGroups));
     const goToDetails = (group) => {
         return history.replace(`/groups/${group.id}`)
         // return <Redirect to={`/groups/1`}/>;

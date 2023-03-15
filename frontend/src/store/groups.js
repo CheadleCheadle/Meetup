@@ -162,64 +162,74 @@ export const deleteGroupAction = (groupId) => async (dispatch) => {
 }
 
 
-const initalState = {allGroups: {}, singleGroup: {GroupImages: []}, Venues: {}};
+// const initalState = {allGroups: {}, singleGroup: {GroupImages: []}, Venues: {}};
+const initialState = {
+    allGroups: {
 
 
-const groupsReducer = (state = initalState, action) => {
+    },
+    singleGroup: {
+
+      GroupImages: [],
+      Organizer: {
+
+      },
+      Venues: [],
+    },
+}
+
+
+const groupsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_GROUPS: {
-            const newState = {};
-            action.groups.Groups.forEach((group) => (newState[group.id] = group));
-            // console.log('STATE', newState)
+            const newState = {...state};
+            action.groups.Groups.forEach((group) => (newState.allGroups[group.id] = group));
             return newState;
         }
         case GET_GROUP_DETAILS: {
             const newState = {...state};
             newState.singleGroup = {...action.group};
-            // console.log('Group Details',newState.singleGroup);
-            // console.log('NEW STATE',newState);
             return newState;
         }
         case CREATE_GROUP: {
             const newState = {...state};
-            // console.log('STATE',newState.allGroups);
-            // newState.allGroups[action.group.id] = action.group;
             newState.singleGroup = {...action.group};
             return newState;
         }
         case CREATE_GROUP_IMAGE: {
             const newState = {...state};
-            newState.singleGroup.GroupImages.push(action.image);
-            // newState.singleGroup.GroupImages.push(action.image);
+            newState.singleGroup.GroupImages = [action.image, ...state.singleGroup.GroupImages];
             return newState;
         }
         case UPDATE_GROUP: {
             const newState = {...state};
-            // newState.singleGroup.GroupImages = {...state.singleGroup.GroupImages}
-            // newState.singleGroup = {...action.group};
-            // newState.singleGroup.GroupImages = [...]
+            newState.singleGroup = {...state.singleGroup};
+            newState.singleGroup.name = action.group.name;
+            newState.singleGroup.location = action.group.location;
+            newState.singleGroup.about = action.group.about;
+            newState.singleGroup.type = action.group.type;
+            newState.singleGroup.private = action.group.private;
             return newState;
         }
         case UPDATE_GROUP_IMAGE: {
-            // console.log("Image State", state)
             const newState = {...state};
-            // const imageToUpdate = newState.singleGroup.GroupImages.find((image) => image.id === action.image.id);
-            // console.log('image to update', imageToUpdate);
-            newState.singleGroup.GroupImages[action.image.id] = {...action.image};
+            newState.singleGroup.GroupImages = [...state.singleGroup.GroupImages];
+            newState.singleGroup.GroupImages.forEach(image => {
+                if (image.id === action.image.id) {
+                    image.url = action.image.url;
+                }
+            });
             return newState;
         }
         case DELETE_GROUP: {
-            console.log('Current State',state);
             const newState = {...state};
-            // newState.singleGroup = {};
-            console.log(action.groupId);
-            // console.log("Events before deletion", newState);
-            delete newState.allGroups.action.groupId;
-            // console.log("Events after deletion", newState);
+            newState.singleGroup = {};
+            newState.allGroups = {...state.allGroups};
+            delete newState.allGroups[action.groupId];
+            console.log("STATE", newState);
             return newState;
         }
         default:
-            console.log('hitting default');
           return state;
     }
 }
