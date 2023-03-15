@@ -81,10 +81,6 @@ const validateVenueBody = [
 ];
 
 const validateEventBody = [
-    check('venueId')
-      .exists({ checkFalsy: true})
-      .notEmpty()
-      .withMessage("Venue does not exist"),
     check('name')
       .exists( {checkFalsy: true})
       .isString()
@@ -97,12 +93,6 @@ const validateEventBody = [
       .isIn(["Online", "In person"])
       .notEmpty()
       .withMessage("Type must be Online or In person"),
-     check('capacity')
-      .exists( {checkFalsy: true})
-      .notEmpty()
-      .not()
-      .isString()
-      .withMessage("Capacity must be an integer"),
      check('price')
       .exists( {checkFalsy: true})
       .notEmpty()
