@@ -33,7 +33,7 @@ export default function CreateGroup() {
 
         const newGroup = await dispatch(createGroupAction(group));
         await dispatch(createGroupImageAction(newGroup.id, theImage));
-         history.replace(`/groups/${newGroup.id}`);
+         history.push(`/groups/${newGroup.id}`);
     }
 
     const validation = () => {

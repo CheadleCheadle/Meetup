@@ -11,12 +11,12 @@ export default function CreateEvent() {
     const [name, setName] = useState("");
     const [type, setType] = useState("");
     const [isPrivate, setisPrivate] = useState("");
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [image, setImage] = useState("");
     const [about, setAbout] = useState("");
-
+    const [errors, setErrors] = useState({});
      const stringToBool = (bool) => {
         if (bool === "Private") {
             return true
@@ -31,8 +31,42 @@ export default function CreateEvent() {
         console.log("id", group)
         const newEvent = await dispatch(createEventAction(event, group.id));
         console.log("awaited Event", newEvent);
-        history.replace(`/events/${newEvent.id}`);
+        history.push(`/events/${newEvent.id}`);
     }
+
+    const validation = () => {
+        const tempErrors = {};
+        if (name === "") {
+            tempErrors.name = "Name is required";
+        }
+        if (type === "") {
+            tempErrors.type = "Event Type is required";
+        }
+        if (isPrivate === "") {
+            tempErrors.private = "Visibility is required";
+        }
+        if (price === "") {
+            tempErrors.price = "Price is required";
+        }
+        if (startDate === "") {
+            tempErrors.startDate = "Event start is required";
+        }
+        if (endDate === "") {
+            tempErrors.endDate = "Event end is required";
+        }
+        if (!["jpg", "jpeg", "png"].includes(image.split('.')[1])) {
+            tempErrors.image = "Image URL must end in .png, .jpg, or .jpeg";
+        }
+        if (about.length < 30) {
+            tempErrors.about = "Description needs 30 or more characters";
+        }
+        setErrors(tempErrors);
+    }
+
+    useEffect(() => {
+        validation();
+        console.log("price", typeof price, price);
+    }, [name, type, isPrivate, price, startDate, endDate, image, about])
     return (
         <>
           <h1>Create an event for {group.name}</h1>
@@ -40,7 +74,7 @@ export default function CreateEvent() {
             <label>
                 <p>What is the name of your event?</p>
                 <input type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
-                <p></p>
+                <p className="errors">{errors.name}</p>
             </label>
             <label>
                 <p>Is this an in person or online event?</p>
@@ -48,7 +82,7 @@ export default function CreateEvent() {
                     <option value="In person">In person</option>
                     <option value="Online">Online</option>
                 </select>
-                <p></p>
+                <p className="errors">{errors.type}</p>
             </label>
             <p>Is this event private or public?</p>
             <label>
@@ -56,32 +90,34 @@ export default function CreateEvent() {
                 <option value="Private">Private</option>
                 <option value="Public">Public</option>
             </select>
+             <p className="errors">{errors.private}</p>
             </label>
             <label>
                 <p>What is the price for your event?</p>
                 <input type="number" value={price} onChange={(e) => setPrice(e.target.value)}></input>
-                <p></p>
+                <p className="errors">{errors.price}</p>
             </label>
             <label>
                 <p>When does your event start?</p>
                 <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input>
-                <p></p>
+                <p  className="errors">{errors.startDate}</p>
             </label>
             <p>When does your event end?</p>
             <label>
                 <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}></input>
-                <p></p>
+                <p className="errors">{errors.endDate}</p>
             </label>
             <label>
                 <p>Please add in image url for your event below:</p>
                 <input type="text" value={image} onChange={(e) => setImage(e.target.value)}></input>
+                <p className="errors">{errors.image}</p>
             </label>
             <p>Please describe your event:</p>
             <label>
                 <textarea type="text" value={about} onChange={(e) => setAbout(e.target.value)}></textarea>
-                <p></p>
+                <p className="errors">{errors.about}</p>
             </label>
-            <input type="submit" value="Create Event"></input>
+            <input disabled={Object.values(errors).length} type="submit" value="Create Event"></input>
           </form>
         </>
     )
