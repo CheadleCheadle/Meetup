@@ -8,6 +8,7 @@ export default function EventList() {
     const history = useHistory();
     const dispatch = useDispatch();
     const eventList = useSelector((state) => Object.values(state.events.allEvents));
+    console.log('EVENTS',eventList);
     const goToDetails = (event) => {
         console.log("IM BEING CLICKED", event.id);
         return history.replace(`/events/${event.id}`);
@@ -32,7 +33,8 @@ export default function EventList() {
                 <div>
                     <p>{event.startDate}</p>
                     <h1>{event.name}</h1>
-                    <p>{event.Venue.city} {event.Venue.state}</p>
+                    {event.Venue ? ( <p>{event.Venue.city} {event.Venue.state}</p>) : (<p>No Venue for this event yet...</p>)}
+
                 </div>
             </div>
             </>

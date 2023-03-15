@@ -2,7 +2,7 @@ import { csrfFetch } from './csrf';
 const GET_ALL_GROUPS = "groups/getAllGroups";
 const GET_GROUP_DETAILS = "groups/details";
 const CREATE_GROUP = "/groups/new";
-
+const CREATE_GROUP_IMAGE = "/groups/image";
 const loadGroups = (groups) => {
     return {
         type: GET_ALL_GROUPS,
@@ -20,9 +20,20 @@ const loadGroupDetails = (group) => {
 const createGroup = (group) => {
     return {
         type: CREATE_GROUP,
-        group
+        group,
+
     }
 }
+
+const createGroupImage = (image, groupId) => {
+    return {
+        type: CREATE_GROUP_IMAGE,
+        image,
+        groupId:groupId
+    }
+}
+
+
 export const getAllGroups = () => async (dispatch) => {
     const response = await fetch('/api/groups');
 
@@ -48,13 +59,38 @@ export const createGroupAction = (group) => async (dispatch) => {
         method: "POST",
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(group)
-    })
+    });
     if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        dispatch(createGroup(data))
+
+        console.log('GROUP', data);
+
+        const singleObject = {
+            ...data,
+            GroupImages: [],
+            Organizer: {
+                organizerId: data.organizerId
+            },
+            Venues: null
+        }
+        dispatch(createGroup(singleObject));
+        return data;
     }
 }
+
+export const createGroupImageAction = (groupId, image) => async (dispatch) => {
+        const imageResponse = await csrfFetch(`/api/groups/${groupId}/images`, {
+        method: "POST",
+        headers: {'Content-Type': 'Application/json'},
+        body: JSON.stringify(image)
+    });
+    if (imageResponse.ok) {
+        const data = await imageResponse.json();
+        dispatch(createGroupImage(data, groupId));
+        return data;
+    }
+}
+
 
 const initalState = {allGroups: {}, singleGroup: {}, Venues: {}};
 
@@ -76,7 +112,14 @@ const groupsReducer = (state = initalState, action) => {
         case CREATE_GROUP: {
             const newState = {...state};
             console.log('STATE',newState.allGroups);
-            newState.allGroups[action.group.id] = action.group;
+            // newState.allGroups[action.group.id] = action.group;
+            newState.singleGroup = {...action.group};
+            return newState;
+        }
+        case CREATE_GROUP_IMAGE: {
+            const newState = {...state};
+            newState.singleGroup.GroupImages.push(action.image);
+            // newState.singleGroup.GroupImages.push(action.image);
             return newState;
         }
         default:

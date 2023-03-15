@@ -44,9 +44,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      private: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+      },
       capacity: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       price: {
         type: Sequelize.DECIMAL,

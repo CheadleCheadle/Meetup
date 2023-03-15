@@ -8,7 +8,7 @@ function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState([]);
+  let [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
@@ -19,11 +19,12 @@ function LoginFormModal() {
       .catch(
         async (res) => {
           const data = await res.json();
-          if (data && data.errors) setErrors(data.errors);
+          console.log('data', data.message);
+          if (data) setErrors({errors: data.message});
         }
       );
   };
-
+errors = Object.values(errors);
   return (
     <>
       <h1>Log In</h1>

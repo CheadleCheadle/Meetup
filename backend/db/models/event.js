@@ -40,9 +40,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    private: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
+    },
     capacity: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     price: {
       type: DataTypes.DECIMAL,

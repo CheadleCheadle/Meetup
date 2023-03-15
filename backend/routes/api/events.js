@@ -60,10 +60,10 @@ for (let i = 0; i < events.length; i++) {
     delete event.dataValues.Group.dataValues.private;
     delete event.dataValues.Group.dataValues.createdAt;
     delete event.dataValues.Group.dataValues.updatedAt;
-    delete event.dataValues.Venue.dataValues.groupId;
-    delete event.dataValues.Venue.dataValues.address;
-    delete event.dataValues.Venue.dataValues.lat;
-    delete event.dataValues.Venue.dataValues.lng;
+    // delete event.dataValues.Venue.dataValues.groupId;
+    // delete event.dataValues.Venue.dataValues.address;
+    // delete event.dataValues.Venue.dataValues.lat;
+    // delete event.dataValues.Venue.dataValues.lng;
 }
 res.status(200).json({Events:events});
 });
@@ -80,7 +80,12 @@ router.get('/:eventId', async (req, res) => {
             attributes: {
                 exclude: ["createdAt", "updatedAt"]
             }
-        }, "Venue"]
+        }, {
+            model: Venue,
+            attributes: {
+                exclude: ["groupId"]
+            }
+        }]
     });
     const numAttend = await Attendance.count({
         where: {
@@ -103,7 +108,7 @@ router.get('/:eventId', async (req, res) => {
     delete event.dataValues.Group.dataValues.organizerId;
     delete event.dataValues.Group.dataValues.type;
     delete event.dataValues.Group.dataValues.about;
-    delete event.dataValues.Venue.dataValues.groupId;
+    // delete event.dataValues.Venue.dataValues.groupId;
     return res.status(200).json(event);
 });
 //Add an Image to an Event

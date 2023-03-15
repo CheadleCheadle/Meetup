@@ -297,7 +297,12 @@ router.get('/:groupId/events', async (req, res) => {
     attributes: {
         exclude: ["capacity", "price", "description"]
     },
-    include: ["Group", "Venue"]
+    include: ["Group", {
+        model: Venue,
+        attributes: {
+            exclude: ["groupId", "address", "lat", "lng"]
+        }
+    }]
     });
 
     for (let i = 0; i < events.length; i++) {
@@ -314,16 +319,18 @@ router.get('/:groupId/events', async (req, res) => {
     if (image) {
     event.dataValues.previewImage = image.url;
     }
+
     delete event.dataValues.Group.dataValues.organizerId;
     delete event.dataValues.Group.dataValues.createdAt;
     delete event.dataValues.Group.dataValues.updatedAt;
     delete event.dataValues.Group.dataValues.type;
     delete event.dataValues.Group.dataValues.about;
     delete event.dataValues.Group.dataValues.private;
-    delete event.dataValues.Venue.dataValues.groupId;
-    delete event.dataValues.Venue.dataValues.address;
-    delete event.dataValues.Venue.dataValues.lat;
-    delete event.dataValues.Venue.dataValues.lng;
+    // delete event.dataValues.Venue.dataValues.groupId;
+    // delete event.dataValues.Venue.dataValues.address;
+    // delete event.dataValues.Venue.dataValues.lat;
+    // delete event.dataValues.Venue.dataValues.lng;
+
 }
 res.status(200).json({Events:events});
 });
