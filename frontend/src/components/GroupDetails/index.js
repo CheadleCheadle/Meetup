@@ -39,12 +39,14 @@ export default function GroupDetails({sessionUser}) {
     if (isNaN(groupId)) {
         return null;
     }
-
+    const createEvent = () => {
+        history.replace(`/groups/${groupId}/events/new`)
+    }
     const createEventUpdateDelete = () => {
         if (sessionUser?.id === group.organizerId) {
             return (
                 <div>
-                    <button>
+                    <button onClick={() => createEvent()}>
                     Create event
                     </button>
                     <button>
@@ -56,7 +58,11 @@ export default function GroupDetails({sessionUser}) {
                 </div>
             )
         } else {
-            return null;
+            return (
+                <div>
+                    <button>Join this group</button>
+                </div>
+            )
         }
     }
 return (
@@ -97,9 +103,7 @@ return (
 
                 {event.endDate}
 
-                {event.Venue.city}
-
-                {event.Venue.state}
+                {event.Venue ? (<><p>{event.Venue.city}</p> <p>{event.Venue.state}</p></> ) : <p>No Venue for this event yet...</p>}
             </div>
             </>
         ))}

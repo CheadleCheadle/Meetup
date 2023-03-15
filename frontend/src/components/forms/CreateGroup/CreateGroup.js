@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createGroupAction, createGroupImageAction } from "../../store/groups";
+import { createGroupAction, createGroupImageAction } from "../../../store/groups";
 import './CreateGroup.css';
 export default function CreateGroup() {
     const history = useHistory();

@@ -69,7 +69,7 @@ export const createGroupAction = (group) => async (dispatch) => {
             ...data,
             GroupImages: [],
             Organizer: {
-                test:"Im the user"
+                organizerId: data.organizerId
             },
             Venues: null
         }

@@ -8,8 +8,9 @@ import SeeAllGroups from "./components/LandingNavigation/SeeAllGroups";
 import GroupDetails from "./components/GroupDetails";
 import EventList from "./components/GetAllEvents";
 import EventDetails from "./components/EventDetails";
-import CreateGroup from "./components/forms/CreateGroup";
+import CreateGroup from "./components/forms/CreateGroup/CreateGroup";
 import Landing from "./components/LandingPage";
+import CreateEvent from "./components/forms/CreateEvent/CreateEvent";
 function App() {
   const sessionUser = useSelector(state => state.session.user);
   console.log(Boolean(sessionUser));
@@ -25,9 +26,14 @@ function App() {
       <Navigation isLoaded={isLoaded} />
 
       {sessionUser && (
+        <Switch>
         <Route exact path="/groups/new">
           <CreateGroup></CreateGroup>
         </Route>
+        <Route exact path="/groups/:groupId/events/new">
+          <CreateEvent></CreateEvent>
+        </Route>
+        </Switch>
       )}
       {isLoaded && (
         <Switch>
