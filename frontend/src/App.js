@@ -27,8 +27,11 @@ function App() {
 
       {sessionUser && (
         <Switch>
+          <Route exact path="/groups/:groupId/edit">
+            <CreateGroup update={true}></CreateGroup>
+          </Route>
         <Route exact path="/groups/new">
-          <CreateGroup></CreateGroup>
+          <CreateGroup update={false}></CreateGroup>
         </Route>
         <Route exact path="/groups/:groupId/events/new">
           <CreateEvent></CreateEvent>

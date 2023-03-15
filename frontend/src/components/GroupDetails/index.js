@@ -40,7 +40,10 @@ export default function GroupDetails({sessionUser}) {
         return null;
     }
     const createEvent = () => {
-        history.replace(`/groups/${groupId}/events/new`)
+        history.push(`/groups/${groupId}/events/new`)
+    }
+    const updateGroup = () => {
+        history.push(`/groups/${groupId}/edit`)
     }
     const createEventUpdateDelete = () => {
         if (sessionUser?.id === group.organizerId) {
@@ -49,7 +52,7 @@ export default function GroupDetails({sessionUser}) {
                     <button onClick={() => createEvent()}>
                     Create event
                     </button>
-                    <button>
+                    <button onClick={() => updateGroup()}>
                     Update
                     </button>
                     <button>
