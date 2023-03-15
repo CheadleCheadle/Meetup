@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroupDetails } from "../../store/groups";
+import { getGroupDetails,deleteGroupAction } from "../../store/groups";
 import { NavLink } from "react-router-dom";
 import { getGroupEvents } from "../../store/events";
 import picture from "../../images/download.jpg";
@@ -45,6 +45,10 @@ export default function GroupDetails({sessionUser}) {
     const updateGroup = () => {
         history.push(`/groups/${groupId}/edit`)
     }
+    const deleteGroup = () => {
+        dispatch(deleteGroupAction(groupId));
+        history.push(`/groups/`);
+    }
     const createEventUpdateDelete = () => {
         if (sessionUser?.id === group.organizerId) {
             return (
@@ -55,7 +59,7 @@ export default function GroupDetails({sessionUser}) {
                     <button onClick={() => updateGroup()}>
                     Update
                     </button>
-                    <button>
+                    <button onClick={() =>  deleteGroup()}>
                     Delete
                     </button>
                 </div>

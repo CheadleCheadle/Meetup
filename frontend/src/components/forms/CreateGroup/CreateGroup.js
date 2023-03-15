@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react"
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createGroupAction, createGroupImageAction } from "../../../store/groups";
+import { createGroupAction, createGroupImageAction, updateGroupAction, updateGroupImageAction } from "../../../store/groups";
 import './CreateGroup.css';
 export default function CreateGroup({update}) {
     const history = useHistory();
     const dispatch = useDispatch();
-    const group = useSelector((state) => state.groups.singleGroup);
+    const currentGroup = useSelector((state) => state.groups.singleGroup);
     const [location, setLocation] = useState("");
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
@@ -33,7 +33,11 @@ export default function CreateGroup({update}) {
         await dispatch(createGroupImageAction(newGroup.id, theImage));
          history.push(`/groups/${newGroup.id}`);
         } else if (update) {
-            console.log("Need to implement update!");
+            const updatedGroup = await dispatch(updateGroupAction(group, currentGroup.id));
+            if (currentGroup.GroupImages) {
+            await dispatch(updateGroupImageAction(currentGroup.GroupImages[0].id, theImage));
+            }
+            history.push(`/groups/${updatedGroup.id}`);
         }
     }
 
@@ -65,13 +69,14 @@ export default function CreateGroup({update}) {
 
     useEffect(() => {
         if (update) {
-        console.log('Group',group);
-        setLocation(`${group.city}, ${group.state}`);
-        setName(group.name);
-        setAbout(group.about);
-        setType(group.type);
-        setisPrivate(group.private === true ? "Private" : "Public");
-        setImage(group.GroupImages[0].url);
+        setLocation(`${currentGroup.city}, ${currentGroup.state}`);
+        setName(currentGroup.name);
+        setAbout(currentGroup.about);
+        setType(currentGroup.type);
+        setisPrivate(currentGroup.private === true ? "Private" : "Public");
+        if (currentGroup.GroupImages) {
+        setImage(currentGroup.GroupImages[0].url);
+        }
         validation();
     }
     }, [])
