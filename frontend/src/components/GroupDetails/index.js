@@ -33,7 +33,7 @@ export default function GroupDetails({sessionUser}) {
         dispatch(getGroupDetails(groupId));
         dispatch(getGroupEvents(groupId));
     }, [dispatch]);
-    if (!group) {
+    if (!group.id) {
         return null;
     }
     if (isNaN(groupId)) {
@@ -75,6 +75,7 @@ export default function GroupDetails({sessionUser}) {
             )
         }
     }
+    console.log("CURRENT GROUP:", group);
 return (
     <>
     <section>

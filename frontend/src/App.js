@@ -25,7 +25,7 @@ function App() {
 
       <Navigation isLoaded={isLoaded} />
 
-      {sessionUser && (
+      {sessionUser && isLoaded &&(
         <Switch>
           <Route exact path="/groups/:groupId/edit">
             <CreateGroup update={true}></CreateGroup>

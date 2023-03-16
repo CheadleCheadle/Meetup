@@ -17,6 +17,7 @@ export default function EventDetails({sessionUser}) {
     console.log('CURRENT GROUP',eventsGroup);
     const groupId = event.groupId;
 
+
     useEffect(() => {
         dispatch(getEventDetails(eventId));
     }, [dispatch]);
@@ -24,9 +25,14 @@ export default function EventDetails({sessionUser}) {
         return null;
     }
 
+    if (!event.id) {
+        return null;
+    }
+
+
 
      const renderDeleteButton = () => {
-        if (sessionUser.id === eventsGroup.organizerId) {
+        if (sessionUser?.id === eventsGroup.organizerId) {
             return (
                 <div>
                 <button onClick={() => deleteEvent()}> Delete</button>

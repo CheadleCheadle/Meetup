@@ -26,8 +26,8 @@ const GroupList = () => {
         </nav>
         <section className="displayGroups">
         {groupList?.map((group) => (
-            <>
-            <div className="groups-container"
+
+            <div  key={group.id} className="groups-container"
                  onClick={() => goToDetails(group)}>
             <img src={picture}></img>
             <div className="groupInfo">
@@ -38,7 +38,6 @@ const GroupList = () => {
                 {/* Will need to add number of events later. Will make a function that gets all events by groupId, import that function here and pass in group to it */}
             </div>
             </div>
-            </>
         ))}
         </section>
         </>
