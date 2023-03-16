@@ -223,9 +223,11 @@ const groupsReducer = (state = initialState, action) => {
         }
         case DELETE_GROUP: {
             const newState = {...state};
+            console.log("STATE", newState);
             newState.singleGroup = {};
             newState.allGroups = {...state.allGroups};
             delete newState.allGroups[action.groupId];
+            console.log("newState", newState);
             return newState;
         }
         default:

@@ -47,9 +47,9 @@ export default function GroupDetails({sessionUser}) {
     }
     const deleteGroup = () => {
         dispatch(deleteGroupAction(groupId));
-        events.forEach(event => {
-        dispatch(deleteEventAction(event.id));
-        })
+        // events.forEach(event => {
+        // dispatch(deleteEventAction(event.id));
+        // })
         history.push(`/groups/`);
     }
     const createEventUpdateDelete = () => {
