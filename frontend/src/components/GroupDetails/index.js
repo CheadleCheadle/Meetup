@@ -105,7 +105,6 @@ return (
         ) : (<h1>No Upcoming Events</h1>)}
 
         {newEvents.map((event) => (
-            <>
             <div onClick={() => goToDetails(event)} key={event.id}>
                 <img src={picture}></img>
                 {event.name}
@@ -116,7 +115,6 @@ return (
 
                 {event.Venue ? (<><p>{event.Venue.city}</p> <p>{event.Venue.state}</p></> ) : <p>No Venue for this event yet...</p>}
             </div>
-            </>
         ))}
     </section>
     <section>
@@ -124,7 +122,6 @@ return (
         <h1>Past Events {`(${pastEvents.length})`}</h1>
         ) : null}
         {pastEvents.map((event) => (
-            <>
             <div onClick={() => goToDetails(event)} key={event.id}>
                 <img src={picture}></img>
                  {event.name}
@@ -136,7 +133,6 @@ return (
 
                 {event.Venue.state}
             </div>
-            </>
         ))}
     </section>
     </>

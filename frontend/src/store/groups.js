@@ -181,7 +181,7 @@ const initialState = {
 const groupsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_GROUPS: {
-            const newState = {...state};
+            const newState = {...state, allGroups: {}};
             action.groups.Groups.forEach((group) => (newState.allGroups[group.id] = group));
             return newState;
         }
