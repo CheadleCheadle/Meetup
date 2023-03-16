@@ -19,8 +19,8 @@ export default function DeleteEventButtonModal({eventId, groupId}) {
         <div>
             <h3>Confirm Delete</h3>
             <p> Are you sure want to remove this event?</p>
-            <button onClick={() => handleDelete(eventId, groupId)}></button>
-            <button onClick={closeModal} ></button>
+            <button onClick={() => handleDelete(eventId, groupId)}>Yes</button>
+            <button onClick={closeModal}>No</button>
         </div>
     )
 }

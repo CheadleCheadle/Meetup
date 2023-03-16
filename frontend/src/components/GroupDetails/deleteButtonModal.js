@@ -17,8 +17,8 @@ export default function DeleteButtonModal({groupId}) {
         <div>
         <h3>Confirm Delete</h3>
         <p> Are you sure you want to remove this group?</p>
-        <button onClick={() => handleDelete(groupId)}></button>
-        <button onClick={closeModal}></button>
+        <button onClick={() => handleDelete(groupId)}>Yes</button>
+        <button onClick={closeModal}>No</button>
         </div>
     )
 }
