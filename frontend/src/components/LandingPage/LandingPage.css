@@ -84,5 +84,6 @@ margin-bottom: 70px;
 
 .button-container button {
     width: 10%;
-    background-color: rgb(0, 81, 94)
+    background-color: rgb(0, 81, 94);
+    cursor: pointer;
 }

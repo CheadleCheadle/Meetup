@@ -1,6 +1,4 @@
-.hidden {
-    display: none;
-}
+
 .home > a {
     text-decoration: none;
     color: #56BC3B;
@@ -11,6 +9,7 @@
 .nav-bar {
     display:flex;
     height: 70px;
+    justify-content: space-between;
     flex-direction: row;
     padding-left: 20px;
     padding-right: 20px;
@@ -18,16 +17,28 @@
     border-bottom: 2px solid lightgray;
 }
 .container {
-width: 100%;
 display: flex;
 justify-content: flex-end;
+width: 50px;
 }
-.profile {
-    display:flex;
 
-    justify-content: flex-end;
-    gap: 10px;
-}
 .button {
     background-color: #941200;
+    position: relative;
+}
+
+.profile {
+    position: absolute;
+display: flex;
+justify-content: center;
+flex-direction: column;
+font-size: 1rem;
+filter: drop-shadow(1px, 1px);
+}
+.profile-dropdown {
+border: 1px solid black;
+filter: drop-shadow(1px, 1px);
+}
+.hidden {
+    display: none;
 }
