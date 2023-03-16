@@ -53,8 +53,7 @@ function App() {
           <EventDetails sessionUser={sessionUser}></EventDetails>
         </Route>
         <Route exact path="/">
-          <Landing></Landing>
-          <SeeAllGroups></SeeAllGroups>
+          <Landing sessionUser={sessionUser}></Landing>
         </Route>
       </Switch>
       )}
