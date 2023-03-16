@@ -5,6 +5,10 @@ import { getGroupDetails,deleteGroupAction } from "../../store/groups";
 import { NavLink } from "react-router-dom";
 import { deleteEventAction, getGroupEvents } from "../../store/events";
 import picture from "../../images/download.jpg";
+import {useModal} from "../../context/Modal";
+import DeleteButtonModal from "./deleteButtonModal";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import OpenModalButton from "../OpenModalButton";
 import { useHistory } from "react-router-dom";
 export default function GroupDetails({sessionUser}) {
     const history = useHistory();
@@ -13,6 +17,7 @@ export default function GroupDetails({sessionUser}) {
     groupId = parseInt(groupId);
     const dispatch = useDispatch();
     const group = useSelector((state) => state.groups.singleGroup);
+//   const { setModalContent, setOnModalClose } = useModal();
     const goToDetails = (event) => {
     return history.replace(`/events/${event.id}`);
     }
@@ -46,13 +51,16 @@ export default function GroupDetails({sessionUser}) {
         history.push(`/groups/${groupId}/edit`)
     }
     const deleteGroup = () => {
-        dispatch(deleteGroupAction(groupId));
+        // dispatch(deleteGroupAction(groupId));
         // events.forEach(event => {
         // dispatch(deleteEventAction(event.id));
         // })
-        history.push(`/groups/`);
+        // history.push(`/groups/`);
+        // return (
+        //     <OpenModalButton></OpenModalButton>
+        // )
     }
-    const createEventUpdateDelete = () => {
+    const createEventUpdateDelete = (groupId) => {
         if (sessionUser?.id === group.organizerId) {
             return (
                 <div>
@@ -62,9 +70,10 @@ export default function GroupDetails({sessionUser}) {
                     <button onClick={() => updateGroup()}>
                     Update
                     </button>
-                    <button onClick={() =>  deleteGroup()}>
-                    Delete
-                    </button>
+                    <OpenModalButton
+                     itemText="Delete"
+                     modalComponent={<DeleteButtonModal groupId={groupId}></DeleteButtonModal>}
+                    ></OpenModalButton>
                 </div>
             )
         } else {
@@ -75,7 +84,6 @@ export default function GroupDetails({sessionUser}) {
             )
         }
     }
-    console.log("CURRENT GROUP:", group);
 return (
     <>
     <section>
@@ -87,7 +95,7 @@ return (
                 <h3>{group.city} {group.state}</h3>
                 <h3>##events {group.type}</h3>
                 <h3>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</h3>
-                {createEventUpdateDelete()}
+                {createEventUpdateDelete(groupId)}
             </div>
         </div>
     </section>
