@@ -13,3 +13,43 @@ flex-direction: column;
     flex-direction: column;
 
 }
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+margin-bottom: 25px;
+}
+.event-group-heading {
+display: flex;
+flex-direction: row;
+gap: 10px;
+font-size: 24px;
+}
+
+.main-wrapper {
+    margin: 0 500px;
+}
+
+.active {
+    color: teal;
+    text-decoration: underline;
+}
+
+.sub-header {
+    color: gray;
+}
+.groups-container {
+    display: flex;
+    flex-direction: row;
+    border-top: 2px solid gray;
+    padding: 15px 0px;
+}
+
+.groupInfo {
+    display: flex;
+    flex-direction: column;
+}
+ a {
+   color: gray;
+   text-decoration: none;
+}

@@ -19,11 +19,16 @@ const GroupList = () => {
 
     return (
         <>
-        <nav>
+        <div className="main-wrapper">
+        <div className="nav-container">
+        <nav className="event-group-heading">
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/groups">Groups</NavLink>
-            <p>Groups in Meetup</p>
         </nav>
+        <div className="sub-header">
+            <p>Groups in Meetup</p>
+        </div>
+        </div>
         <section className="displayGroups">
         {groupList?.map((group) => (
 
@@ -40,6 +45,7 @@ const GroupList = () => {
             </div>
         ))}
         </section>
+        </div>
         </>
     )
 }
