@@ -5,7 +5,8 @@ import { getEventDetails, deleteEventAction } from "../../store/events";
 import { getGroupDetails } from "../../store/groups";
 import { NavLink, useHistory} from "react-router-dom";
 import picture from "../../images/download.jpg";
-
+import OpenModalButton from "../OpenModalButton";
+import DeleteEventButtonModal from "./DeleteEventButtonModal";
 export default function EventDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
@@ -33,21 +34,18 @@ export default function EventDetails({sessionUser}) {
 
      const renderDeleteButton = () => {
         if (sessionUser?.id === eventsGroup.organizerId) {
-            return (
-                <div>
-                <button onClick={() => deleteEvent()}> Delete</button>
-                </div>
-            )
+            return <OpenModalButton
+            itemText="Delete"
+            modalComponent={<DeleteEventButtonModal groupId={groupId} eventId={eventId}></DeleteEventButtonModal>}></OpenModalButton>
         } else {
             return null;
 
         }
     }
-    const deleteEvent = () => {
-        console.log("EVENTID", eventId);
-        dispatch(deleteEventAction(eventId));
-        history.push(`/groups/${groupId}`);
-    }
+    // const deleteEvent = () => {
+    //     dispatch(deleteEventAction(eventId));
+    //     history.push(`/groups/${groupId}`);
+    // }
 
 return (
     <>
