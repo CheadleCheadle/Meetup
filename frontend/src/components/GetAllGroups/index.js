@@ -39,8 +39,10 @@ const GroupList = () => {
                 <h2>{group.name}</h2>
                 <h3>{group.city}, {group.state}</h3>
                 <p>{group.about}</p>
+                <div className="num-events">
+                <h3>{group.Events.length} {group.Events.length > 1 ? "events": "event"}</h3>
                 <h3>{group.type}</h3>
-                {/* Will need to add number of events later. Will make a function that gets all events by groupId, import that function here and pass in group to it */}
+                </div>
             </div>
             </div>
         ))}
