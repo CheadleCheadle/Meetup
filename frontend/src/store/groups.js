@@ -155,10 +155,10 @@ export const deleteGroupAction = (groupId) => async (dispatch) => {
     if (response.ok) {
         const data = await response.json();
         dispatch(deleteGroup(groupId));
-        console.log('returned Data', data);
         return data;
     }
 }
+
 
 
 // const initalState = {allGroups: {}, singleGroup: {GroupImages: []}, Venues: {}};
@@ -193,6 +193,7 @@ const groupsReducer = (state = initialState, action) => {
         case CREATE_GROUP: {
             const newState = {...state};
             newState.singleGroup = {...action.group};
+            console.log("CREATE STATE", newState);
             return newState;
         }
         case CREATE_GROUP_IMAGE: {

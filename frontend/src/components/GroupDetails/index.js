@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupDetails,deleteGroupAction } from "../../store/groups";
 import { NavLink } from "react-router-dom";
-import { getGroupEvents } from "../../store/events";
+import { deleteEventAction, getGroupEvents } from "../../store/events";
 import picture from "../../images/download.jpg";
 import { useHistory } from "react-router-dom";
 export default function GroupDetails({sessionUser}) {
@@ -47,6 +47,9 @@ export default function GroupDetails({sessionUser}) {
     }
     const deleteGroup = () => {
         dispatch(deleteGroupAction(groupId));
+        events.forEach(event => {
+        dispatch(deleteEventAction(event.id));
+        })
         history.push(`/groups/`);
     }
     const createEventUpdateDelete = () => {

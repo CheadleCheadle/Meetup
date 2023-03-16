@@ -5,7 +5,8 @@ const GET_ALL_EVENTS = "events/getAllEvents";
 const GET_EVENT_DETAILS = "events/getEventDetails";
 const GET_GROUP_EVENTS = "events/getGroupEvents";
 const CREATE_EVENT = "events/new";
-const CREATE_EVENT_IMAGE = "events/image/new"
+const CREATE_EVENT_IMAGE = "events/image/new";
+const DELETE_EVENT = "/events/delet";
 const loadEvents = (events) => {
     return {
         type: GET_ALL_EVENTS,
@@ -38,6 +39,13 @@ const createEventImage = (image) => {
     return {
         type: CREATE_EVENT_IMAGE,
         image
+    }
+}
+
+const deleteEvent = (eventId) => {
+    return {
+        type: DELETE_EVENT,
+        eventId: eventId
     }
 }
 
@@ -77,7 +85,6 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(event)
     });
-    console.log(response);
     if (response.ok) {
         const data = await response.json();
         console.log('HELLO FROM REDUCER',data);
@@ -112,6 +119,21 @@ export const createEventImageAction = (eventId, image) => async (dispatch) => {
     }
 
 }
+
+export const deleteEventAction = (eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}`, {
+        method: "DELETE",
+        headers: {'Content-Type': 'Application/json'},
+        body: null
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(deleteEvent(eventId));
+        return data;
+    }
+}
+
 
 // const initialState = { allEvents: {}, singleEvent: {} };
 const initialState = {
@@ -160,6 +182,13 @@ const eventsReducer = (state = initialState, action) => {
         case CREATE_EVENT_IMAGE: {
             const newState = {...state};
             newState.singleEvent.EventImages = [action.image, ...state.singleEvent.EventImages];
+            return newState;
+        }
+        case DELETE_EVENT: {
+            const newState = {...state};
+            newState.singleEvent = {};
+            newState.allEvents = {...state.allEvents};
+            delete newState.allEvents[action.eventId];
             return newState;
         }
         default: {

@@ -4,14 +4,18 @@ import { getAllEvents } from "../../store/events";
 import { useHistory } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import picture from "../../images/download.jpg";
+import { getGroupDetails } from "../../store/groups";
 export default function EventList() {
     const history = useHistory();
     const dispatch = useDispatch();
     const eventList = useSelector((state) => Object.values(state.events.allEvents));
     console.log('EVENTS',eventList);
+    const setGroup = (event) => {
+        dispatch(getGroupDetails(event.groupId))
+    }
+
     const goToDetails = (event) => {
-        console.log("IM BEING CLICKED", event.id);
-        return history.replace(`/events/${event.id}`);
+       return history.push(`/events/${event.id}`);
     }
     useEffect(() => {
         dispatch(getAllEvents())
@@ -28,7 +32,11 @@ export default function EventList() {
         {eventList.map((event) => (
             <>
             <div className="events-container"
-                 onClick={() => goToDetails(event)}>
+                 onClick={() => {
+                    console.log('IM BEING CLICKED');
+                    setGroup(event);
+                    goToDetails(event)
+                    }}>
                 <img src={picture}></img>
                 <div>
                     <p>{event.startDate}</p>

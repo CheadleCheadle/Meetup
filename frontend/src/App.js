@@ -50,7 +50,7 @@ function App() {
           <EventList></EventList>
         </Route>
         <Route exact path="/events/:eventId">
-          <EventDetails></EventDetails>
+          <EventDetails sessionUser={sessionUser}></EventDetails>
         </Route>
         <Route exact path="/">
           <Landing></Landing>

@@ -1,16 +1,21 @@
 import {useParams} from "react-router-dom"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getEventDetails } from "../../store/events";
-import { NavLink } from "react-router-dom";
+import { getEventDetails, deleteEventAction } from "../../store/events";
+import { getGroupDetails } from "../../store/groups";
+import { NavLink, useHistory} from "react-router-dom";
 import picture from "../../images/download.jpg";
-export default function EventDetails() {
+
+export default function EventDetails({sessionUser}) {
+    const history = useHistory();
     const params = useParams();
     let {eventId } = params;
     eventId = parseInt(eventId);
     const dispatch = useDispatch();
     const event = useSelector((state) => state.events.singleEvent);
-    console.log("CURRENT EVENT:", event);
+    const eventsGroup = useSelector((state) => state.groups.singleGroup);
+    console.log('CURRENT GROUP',eventsGroup);
+    const groupId = event.groupId;
 
     useEffect(() => {
         dispatch(getEventDetails(eventId));
@@ -18,6 +23,26 @@ export default function EventDetails() {
     if (!Object.keys(event).length) {
         return null;
     }
+
+
+     const renderDeleteButton = () => {
+        if (sessionUser.id === eventsGroup.organizerId) {
+            return (
+                <div>
+                <button onClick={() => deleteEvent()}> Delete</button>
+                </div>
+            )
+        } else {
+            return null;
+
+        }
+    }
+    const deleteEvent = () => {
+        console.log("EVENTID", eventId);
+        dispatch(deleteEventAction(eventId));
+        history.push(`/groups/${groupId}`);
+    }
+
 return (
     <>
     <section>
@@ -34,6 +59,7 @@ return (
             <h2>END {event.endDate}</h2>
             <h2>{event.price}</h2>
             <h2>{event.type}</h2>
+            {renderDeleteButton()}
         </div>
         </div>
         <h1>Details</h1>
