@@ -10,6 +10,8 @@ import DeleteButtonModal from "./deleteButtonModal";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import OpenModalButton from "../OpenModalButton";
 import { useHistory } from "react-router-dom";
+import GroupEvents from "./events";
+import "./GroupDetails.css";
 export default function GroupDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
@@ -29,6 +31,7 @@ export default function GroupDetails({sessionUser}) {
             }
         })
     }
+
 
     const newEvents = upComingEvents(events);
     newEvents.sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate));
@@ -52,20 +55,11 @@ export default function GroupDetails({sessionUser}) {
     const updateGroup = () => {
         history.push(`/groups/${groupId}/edit`)
     }
-    const deleteGroup = () => {
-        // dispatch(deleteGroupAction(groupId));
-        // events.forEach(event => {
-        // dispatch(deleteEventAction(event.id));
-        // })
-        // history.push(`/groups/`);
-        // return (
-        //     <OpenModalButton></OpenModalButton>
-        // )
-    }
+
     const createEventUpdateDelete = (groupId) => {
         if (sessionUser?.id === group.organizerId) {
             return (
-                <div>
+                <div className="group-buttons">
                     <button onClick={() => createEvent()}>
                     Create event
                     </button>
@@ -73,38 +67,53 @@ export default function GroupDetails({sessionUser}) {
                     Update
                     </button>
                     <OpenModalButton
-                     itemText="Delete"
+                     buttonText="Delete"
                      modalComponent={<DeleteButtonModal groupId={groupId}></DeleteButtonModal>}
                     ></OpenModalButton>
                 </div>
             )
         } else {
             return (
-                <div>
-                    <button>Join this group</button>
+                <div className="group-button-delete">
+                    <button onClick={() => window.alert("Feature Coming Soon...")}>Join this group</button>
                 </div>
             )
         }
     }
+
 return (
     <>
-    <section>
+    <div className="group-details-wrapper">
+        <div className="image-details-wrapper">
+        <div className="bread-crumb">
         <NavLink to="/groups">Groups</NavLink>
-        <div className="group-container">
+        </div>
+    <section className="display-img-details">
+
+            <div className="group-image-cont">
             <img src={picture}></img>
-            <div className="details">
+            </div>
+            <div className="details-container">
+                <div className = "details">
                 <h1>{group.name}</h1>
                 <h3>{group.city} {group.state}</h3>
-                <h3>##events {group.type}</h3>
+                <h3>{group.Events.length} {group.Events.length > 1 ? "events" : "event"}  •  {group.type}</h3>
                 <h3>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</h3>
+                </div>
+                <div className="button-container-group">
                 {createEventUpdateDelete(groupId)}
+                </div>
             </div>
-        </div>
+
     </section>
-    <section>
+    </div>
+    <div className="about-events-wrapper">
+        <div className="second-half">
+        <section>
+
         <div>
             <h1>Organizer</h1>
-            <h2>{group.Organizer.firstName} {group.Organizer.lastName}</h2>
+            <h3>{group.Organizer.firstName} {group.Organizer.lastName}</h3>
         </div>
         <div>
             <h1>What we're about</h1>
@@ -112,36 +121,18 @@ return (
         </div>
         {newEvents.length ? (<>
         <h1>Upcoming Events {`(${newEvents.length})`}</h1>
-        {newEvents.map((event) => (
-            <div onClick={() => goToDetails(event)} key={event.id}>
-                <img src={picture}></img>
-                {event.name}
-
-                {event.startDate}
-
-                {event.endDate}
-
-                {event.Venue ? (<><p>{event.Venue.city}</p> <p>{event.Venue.state}</p></> ) : <p>No Venue for this event yet...</p>}
-            </div>
-        ))}</>) : null}
+            <GroupEvents flag={true}></GroupEvents>
+        </>) : null}
     </section>
     <section>
         {pastEvents.length ? (<>
         <h1>Past Events {`(${pastEvents.length})`}</h1>
-        {pastEvents.map((event) => (
-            <div onClick={() => goToDetails(event)} key={event.id}>
-                <img src={picture}></img>
-                 {event.name}
-                {event.startDate}
-
-                {event.endDate}
-
-                {event.Venue.city}
-
-                {event.Venue.state}
-            </div>
-        ))}</>) : null}
+            <GroupEvents flag={false}></GroupEvents>
+        </>) : null}
     </section>
+    </div>
+    </div>
+    </div>
     </>
 
 

@@ -9,6 +9,7 @@ const GroupList = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const groupList = useSelector((state) => Object.values(state.groups.allGroups));
+    console.log('GROUPS',groupList)
     const goToDetails = (group) => {
         return history.replace(`/groups/${group.id}`)
         // return <Redirect to={`/groups/1`}/>;
@@ -41,7 +42,8 @@ const GroupList = () => {
                 <p>{group.about}</p>
                 <div className="num-events">
                 <h3>{group.Events.length} {group.Events.length > 1 ? "events": "event"}</h3>
-                <h3>{group.type}</h3>
+                <h3>•</h3>
+                <h3>{group.private ? "Private" : "Public"}</h3>
                 </div>
             </div>
             </div>
