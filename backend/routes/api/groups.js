@@ -306,7 +306,7 @@ router.get('/:groupId/events', async (req, res) => {
             groupId
         },
     attributes: {
-        exclude: ["capacity", "price", "description"]
+        exclude: ["capacity", "price"]
     },
     include: ["Group", {
         model: Venue,

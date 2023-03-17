@@ -2,6 +2,16 @@
     display: flex;
     flex-direction: column;
 }
+.details {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+}
 .bread-crumb {
     display: flex;
     flex-direction: row;
@@ -25,6 +35,13 @@
 
 .details h3{
     color: gray;
+    display: flex;
+    flex-direction: column;
+    margin: .40em 0em;
+}
+.details h1 {
+    margin-top: 0em;
+    margin-bottom: .4em;
 }
 
 .bread-crumb {
@@ -34,6 +51,7 @@
 
 .group-image-cont {
     width: 50%;
+    border: 2px solid black;
 }
 
 .image-details-wrapper {
@@ -41,7 +59,7 @@
     flex-direction: column;
     justify-content: flex-start;
     height: 29em;
-    margin: 80px 250px 20px 250px;
+    margin: 5em 12em 4em 12em;
 }
 
 .about-events-wrapper {
@@ -49,18 +67,77 @@ background-color: rgba(238, 238, 238, 1);
 }
 
 .second-half {
-    margin: 0px 250px 80px 250px;
+    margin: 0em 12em 4em 12em;
+}
+.second-half h3 {
+    color: gray;
+}
+.second-half h4 {
+    color: teal;
 }
 
 .group-buttons {
     display: flex;
-    flex-direction: row;
-    margin-top: 15em;
-    gap: 1em;
+    align-content: flex-end;
+    gap: .5em;
+    margin-bottom: 10px;
+    height: 1.5em;
 }
 .group-buttons button {
     background-color: rgb(102, 102, 102);
     color: white;
     box-shadow: .25em .2em black;
     border: 2px solid black;
+}
+
+.group-button-delete button {
+    background-color: rgb(207, 42, 39);
+    color: white;
+    box-shadow: .25em .25em black;
+    border: 2px solid black;
+    width: 100%;
+    height: 3.5em;
+}
+
+.group-button-delete {
+    width: 100%;
+}
+
+
+.up-coming-events-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    border-radius: 25px;
+    background-color: white;
+    margin-bottom: 2em;
+}
+.image-container-event-group {
+    border: 2px solid black;
+}
+
+.image-container-event-group img {
+    width: 100%;
+    height: 100%;
+}
+
+.description-image-event-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1em;
+    margin-left: 1em;
+    gap: 1em;
+    margin-bottom: 1em;
+
+}
+
+.button-container-group {
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+    width: 100%;
+}
+
+.event-description-group {
+    margin: 0em 0em 1em 1em;
 }
