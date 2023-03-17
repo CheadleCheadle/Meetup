@@ -29,10 +29,12 @@ export default function GroupDetails({sessionUser}) {
             }
         })
     }
+
     const newEvents = upComingEvents(events);
     newEvents.sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate));
     const pastEvents = events.filter(event => !newEvents.includes(event));
     pastEvents.sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
+
 
     useEffect(() => {
         dispatch(getGroupDetails(groupId));
@@ -108,10 +110,8 @@ return (
             <h1>What we're about</h1>
             <p>{group.about}</p>
         </div>
-        {newEvents.length ? (
+        {newEvents.length ? (<>
         <h1>Upcoming Events {`(${newEvents.length})`}</h1>
-        ) : (<h1>No Upcoming Events</h1>)}
-
         {newEvents.map((event) => (
             <div onClick={() => goToDetails(event)} key={event.id}>
                 <img src={picture}></img>
@@ -123,12 +123,11 @@ return (
 
                 {event.Venue ? (<><p>{event.Venue.city}</p> <p>{event.Venue.state}</p></> ) : <p>No Venue for this event yet...</p>}
             </div>
-        ))}
+        ))}</>) : null}
     </section>
     <section>
-        {pastEvents.length ? (
+        {pastEvents.length ? (<>
         <h1>Past Events {`(${pastEvents.length})`}</h1>
-        ) : null}
         {pastEvents.map((event) => (
             <div onClick={() => goToDetails(event)} key={event.id}>
                 <img src={picture}></img>
@@ -141,7 +140,7 @@ return (
 
                 {event.Venue.state}
             </div>
-        ))}
+        ))}</>) : null}
     </section>
     </>
 

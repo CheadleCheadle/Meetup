@@ -9,7 +9,14 @@ const {  handleValidationErrors } = require('../../utils/validation');
 const { validateGroupBody, validateVenueBody, validateEventBody, validateMemberBody } = require('../../utils/body-validation');
 //Get All Groups
 router.get('/',  async(req, res) => {
-    const groups = await Group.findAll();
+    const groups = await Group.findAll({
+        include: [{
+            model: Event,
+            attributes: {
+                exclude: ["name", "description", "venueId", "type", "private", "capacity", "price", "startDate", "endDate", "createdAt", "updatedAt", "groupId"]
+            }
+        }]
+    });
     for (let i = 0; i < groups.length; i++) {
         const members = await Membership.findAll({
             where: {groupId: groups[i].id}

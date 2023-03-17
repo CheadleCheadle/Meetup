@@ -1,0 +1,18 @@
+.displayEvents {
+    display: flex;
+    flex-direction: column;
+}
+
+.events-container {
+    display: flex;
+    flex-direction: row;
+    border-top: 2px solid gray;
+}
+.events-container img {
+   height: 25%;
+   padding: 15px 0px;
+}
+
+.event-desc {
+    display: flex;
+}
