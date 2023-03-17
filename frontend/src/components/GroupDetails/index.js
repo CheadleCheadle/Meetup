@@ -10,6 +10,7 @@ import DeleteButtonModal from "./deleteButtonModal";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import OpenModalButton from "../OpenModalButton";
 import { useHistory } from "react-router-dom";
+import "./GroupDetails.css";
 export default function GroupDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
@@ -52,20 +53,11 @@ export default function GroupDetails({sessionUser}) {
     const updateGroup = () => {
         history.push(`/groups/${groupId}/edit`)
     }
-    const deleteGroup = () => {
-        // dispatch(deleteGroupAction(groupId));
-        // events.forEach(event => {
-        // dispatch(deleteEventAction(event.id));
-        // })
-        // history.push(`/groups/`);
-        // return (
-        //     <OpenModalButton></OpenModalButton>
-        // )
-    }
+
     const createEventUpdateDelete = (groupId) => {
         if (sessionUser?.id === group.organizerId) {
             return (
-                <div>
+                <div className="group-buttons">
                     <button onClick={() => createEvent()}>
                     Create event
                     </button>
@@ -73,35 +65,46 @@ export default function GroupDetails({sessionUser}) {
                     Update
                     </button>
                     <OpenModalButton
-                     itemText="Delete"
+                     buttonText="Delete"
                      modalComponent={<DeleteButtonModal groupId={groupId}></DeleteButtonModal>}
                     ></OpenModalButton>
                 </div>
             )
         } else {
             return (
-                <div>
-                    <button>Join this group</button>
+                <div className="group-button-delete">
+                    <button onClick={() => window.alert("Feature Coming Soon...")}>Join this group</button>
                 </div>
             )
         }
     }
 return (
     <>
-    <section>
+    <div className="group-details-wrapper">
+        <div className="image-details-wrapper">
+        <div className="bread-crumb">
+            <p>{"<123123"}</p>
         <NavLink to="/groups">Groups</NavLink>
-        <div className="group-container">
+        </div>
+    <section className="display-img-details">
+
+            <div className="group-image-cont">
             <img src={picture}></img>
+            </div>
             <div className="details">
                 <h1>{group.name}</h1>
                 <h3>{group.city} {group.state}</h3>
-                <h3>##events {group.type}</h3>
+                <h3>{group.Events.length} {group.Events.length > 1 ? "events" : "event"}  •  {group.type}</h3>
                 <h3>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</h3>
                 {createEventUpdateDelete(groupId)}
             </div>
-        </div>
+
     </section>
-    <section>
+    </div>
+    <div className="about-events-wrapper">
+        <div className="second-half">
+        <section>
+
         <div>
             <h1>Organizer</h1>
             <h2>{group.Organizer.firstName} {group.Organizer.lastName}</h2>
@@ -142,6 +145,9 @@ return (
             </div>
         ))}</>) : null}
     </section>
+    </div>
+    </div>
+    </div>
     </>
 
 

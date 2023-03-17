@@ -98,7 +98,12 @@ router.get('/:groupId', async (req, res) => {
             attributes: {
                 exclude: ["groupId", "createdAt", "updatedAt"]
             }
-        }, Venue,]
+        }, Venue, {
+            model: Event,
+            attributes: {
+                exclude: ["name", "description", "createdAt", "updatedAt", "venueId", "type", "price", "private", "capacity", "startDate", "endDate"]
+            }
+        }]
     });
     if (!group) {
          return res.status(404).json({message: "Group couldn't be found", statusCode: 404});

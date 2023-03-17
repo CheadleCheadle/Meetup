@@ -58,6 +58,7 @@ font-size: 24px;
     flex-direction: row;
     border-top: 2px solid gray;
     padding: 15px 0px;
+    cursor: pointer;
 }
 .groups-container img {
     height: 20%;
