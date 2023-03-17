@@ -13,3 +13,67 @@ flex-direction: column;
     flex-direction: column;
 
 }
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50px;
+margin-bottom: 25px;
+}
+.event-group-heading {
+display: flex;
+flex-direction: row;
+gap: 10px;
+font-size: 24px;
+}
+
+.groupInfo h3 {
+    color: gray;
+    margin: 10px 0px;
+}
+.groupInfo h2 {
+    margin-bottom: 0px;
+}
+
+.main-wrapper {
+    margin: 0 500px;
+}
+
+.active {
+    color: teal;
+    text-decoration: underline;
+}
+
+.sub-header {
+    color: gray;
+}
+
+.num-events {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.groups-container {
+    display: flex;
+    flex-direction: row;
+    border-top: 2px solid gray;
+    padding: 15px 0px;
+}
+.groups-container img {
+    height: 20%;
+}
+
+.groupInfo {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+ .event-group-heading a {
+   color: gray;
+   text-decoration: none;
+}
+
+.event-group-heading .active {
+    color: teal;
+    text-decoration: underline;
+}

@@ -1,8 +1,12 @@
+import { detect } from 'underscore';
 import { csrfFetch } from './csrf';
 const GET_ALL_GROUPS = "groups/getAllGroups";
 const GET_GROUP_DETAILS = "groups/details";
 const CREATE_GROUP = "/groups/new";
 const CREATE_GROUP_IMAGE = "/groups/image";
+const UPDATE_GROUP = "/groups/edit"
+const UPDATE_GROUP_IMAGE = "/groups/image/edit"
+const DELETE_GROUP = "/groups/delete";
 const loadGroups = (groups) => {
     return {
         type: GET_ALL_GROUPS,
@@ -25,11 +29,32 @@ const createGroup = (group) => {
     }
 }
 
-const createGroupImage = (image, groupId) => {
+const createGroupImage = (image) => {
     return {
         type: CREATE_GROUP_IMAGE,
-        image,
-        groupId:groupId
+        image
+    }
+}
+
+const updateGroup = (group) => {
+    return {
+        type: UPDATE_GROUP,
+        group
+    }
+}
+
+const updateGroupImage = (image) => {
+    return {
+        type: UPDATE_GROUP_IMAGE,
+        image
+
+    }
+}
+
+const deleteGroup = (groupId) => {
+    return {
+        type: DELETE_GROUP,
+        groupId: groupId
     }
 }
 
@@ -86,40 +111,123 @@ export const createGroupImageAction = (groupId, image) => async (dispatch) => {
     });
     if (imageResponse.ok) {
         const data = await imageResponse.json();
-        dispatch(createGroupImage(data, groupId));
+        dispatch(createGroupImage(data));
+        return data;
+    }
+}
+
+export const updateGroupAction = (group, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        method: "PUT",
+        headers: {'Content-Type': 'Application/json'},
+        body: JSON.stringify(group)
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(updateGroup(data));
+        return data;
+    }
+}
+
+export const updateGroupImageAction = (imageId, image) => async (dispatch) => {
+    const imageResponse = await csrfFetch(`/api/group-images/${imageId}`, {
+        method: "PUT",
+        headers: {'Content-Type': 'Application/json'},
+        body: JSON.stringify(image)
+    });
+
+    if (imageResponse.ok) {
+        const data = await imageResponse.json();
+        dispatch(updateGroupImage(data));
+        return data;
+    }
+
+}
+
+export const deleteGroupAction = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        method: "DELETE",
+        headers: {'Content-Type': 'Application/json'},
+        body: null
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(deleteGroup(groupId));
         return data;
     }
 }
 
 
-const initalState = {allGroups: {}, singleGroup: {}, Venues: {}};
+
+// const initalState = {allGroups: {}, singleGroup: {GroupImages: []}, Venues: {}};
+const initialState = {
+    allGroups: {
 
 
-const groupsReducer = (state = initalState, action) => {
+    },
+    singleGroup: {
+
+      GroupImages: [],
+      Organizer: {
+
+      },
+      Venues: [],
+    },
+}
+
+
+const groupsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_GROUPS: {
-            const newState = {};
-            action.groups.Groups.forEach((group) => (newState[group.id] = group));
-            console.log('STATE', newState)
+            const newState = {...state, allGroups: {}};
+            action.groups.Groups.forEach((group) => (newState.allGroups[group.id] = group));
             return newState;
         }
         case GET_GROUP_DETAILS: {
             const newState = {...state};
             newState.singleGroup = {...action.group};
-            console.log('NEW STATE',newState);
             return newState;
         }
         case CREATE_GROUP: {
             const newState = {...state};
-            console.log('STATE',newState.allGroups);
-            // newState.allGroups[action.group.id] = action.group;
             newState.singleGroup = {...action.group};
+            console.log("CREATE STATE", newState);
             return newState;
         }
         case CREATE_GROUP_IMAGE: {
             const newState = {...state};
-            newState.singleGroup.GroupImages.push(action.image);
-            // newState.singleGroup.GroupImages.push(action.image);
+            newState.singleGroup.GroupImages = [action.image, ...state.singleGroup.GroupImages];
+            return newState;
+        }
+        case UPDATE_GROUP: {
+            const newState = {...state};
+            newState.singleGroup = {...state.singleGroup};
+            newState.singleGroup.name = action.group.name;
+            newState.singleGroup.location = action.group.location;
+            newState.singleGroup.about = action.group.about;
+            newState.singleGroup.type = action.group.type;
+            newState.singleGroup.private = action.group.private;
+            return newState;
+        }
+        case UPDATE_GROUP_IMAGE: {
+            const newState = {...state};
+            newState.singleGroup.GroupImages = [...state.singleGroup.GroupImages];
+            newState.singleGroup.GroupImages.forEach(image => {
+                if (image.id === action.image.id) {
+                    image.url = action.image.url;
+                }
+            });
+            return newState;
+        }
+        case DELETE_GROUP: {
+            const newState = {...state};
+            console.log("STATE", newState);
+            newState.singleGroup = {};
+            newState.allGroups = {...state.allGroups};
+            delete newState.allGroups[action.groupId];
+            console.log("newState", newState);
             return newState;
         }
         default:

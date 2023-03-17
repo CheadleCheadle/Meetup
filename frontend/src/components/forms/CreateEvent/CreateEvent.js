@@ -1,7 +1,7 @@
 import React, {useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createEventAction } from "../../../store/events";
+import { createEventAction, createEventImageAction} from "../../../store/events";
 import { useSelector } from "react-redux";
 export default function CreateEvent() {
     const group = useSelector((state) => state.groups.singleGroup);
@@ -27,10 +27,10 @@ export default function CreateEvent() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const event = {name, type, private: stringToBool(isPrivate), price:Number(price), description:about, startDate, endDate};
-        console.log('NEW EVENT',event);
-        console.log("id", group)
+        const theImage = {url:image, preview: true}
         const newEvent = await dispatch(createEventAction(event, group.id));
-        console.log("awaited Event", newEvent);
+        console.log("ID", newEvent.id);
+        await dispatch(createEventImageAction(newEvent.id,theImage));
         history.push(`/events/${newEvent.id}`);
     }
 

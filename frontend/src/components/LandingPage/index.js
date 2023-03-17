@@ -1,7 +1,22 @@
 
 import './LandingPage.css';
-import image from "../../images/graph.jpg"
-export default function Landing() {
+import image from "../../images/online_events.jpg";
+import handsUp from "../../images/handsUp.jpg";
+import ticket from "../../images/ticket.jpg";
+import group from "../../images/joinGroup.jpg";
+import { NavLink } from 'react-router-dom';
+import OpenModalButton from '../OpenModalButton';
+import SignupFormModal from '../SignupFormModal';
+export default function Landing({sessionUser}) {
+
+    const handleStartNewGroup = () => {
+        if (!sessionUser) {
+            return `disabled`;
+        } else {
+            return 'clickable';
+        }
+    }
+
     return (
         <main>
             <div className="first-container">
@@ -17,6 +32,33 @@ export default function Landing() {
                 <img src={image}></img>
             </div>
             </div>
+            <div className="description-middle">
+                <h2>How Meetup works</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisiucing elit.</p>
+            </div>
+            <div className="landing-nav">
+                <div className="see-groups">
+                <img src={handsUp}></img>
+                <NavLink to="/groups">See all groups</NavLink>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+
+                <div className="find-event">
+                <img src={ticket}></img>
+                <NavLink to="/events">Find an event</NavLink>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+
+                <div className="start-group">
+                <img src={group}></img>
+                <NavLink to="/groups/new" className={handleStartNewGroup} onClick={(e) => !sessionUser ? e.preventDefault() : undefined}>Start a new group</NavLink>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+            <div className="button-container">
+                <OpenModalButton buttonText={"Join meetup"} modalComponent={<SignupFormModal></SignupFormModal>}></OpenModalButton>
+            </div>
+
         </main>
     )
 }

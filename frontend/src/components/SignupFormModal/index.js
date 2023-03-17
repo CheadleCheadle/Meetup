@@ -17,6 +17,7 @@ function SignupFormModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    validateBody();
     if (password === confirmPassword) {
       setErrors([]);
       return dispatch(sessionActions.signup({ email, username, firstName, lastName, password }))
@@ -28,6 +29,37 @@ function SignupFormModal() {
     }
     return setErrors(['Confirm Password field must be the same as the Password field']);
   };
+
+  const handleDisable = () => {
+    if (firstName === "") return true;
+    if ( lastName === "") return true;
+    if (username.length < 4) return true;
+    if (password.length < 6) return true;
+    if (password !== confirmPassword) return true;
+  }
+
+  const validateBody = () => {
+    const tempArr = [];
+    if (email === "") {
+      tempArr.push("Please Provide an email");
+    }
+    if (username === "") {
+      tempArr.push("Please Provide a username");
+    }
+    if (firstName === "") {
+      tempArr.push("Please Provide a firstname");
+    }
+    if (lastName === "") {
+      tempArr.push("Please Provide a lastname")
+    }
+    if (password === "") {
+      tempArr.push("Please provide a password")
+    }
+    if (confirmPassword === "") {
+      tempArr.push("Please confirm password");
+    }
+    return setErrors(...errors, ...tempArr);
+  }
   errors = Object.values(errors);
 
 
@@ -92,7 +124,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <button disabled={handleDisable()} type="submit">Sign Up</button>
       </form>
     </>
   );

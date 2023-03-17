@@ -25,7 +25,7 @@ function App() {
 
       <Navigation isLoaded={isLoaded} />
 
-      {sessionUser && (
+      {sessionUser && isLoaded &&(
         <Switch>
           <Route exact path="/groups/:groupId/edit">
             <CreateGroup update={true}></CreateGroup>
@@ -50,11 +50,10 @@ function App() {
           <EventList></EventList>
         </Route>
         <Route exact path="/events/:eventId">
-          <EventDetails></EventDetails>
+          <EventDetails sessionUser={sessionUser}></EventDetails>
         </Route>
         <Route exact path="/">
-          <Landing></Landing>
-          <SeeAllGroups></SeeAllGroups>
+          <Landing sessionUser={sessionUser}></Landing>
         </Route>
       </Switch>
       )}

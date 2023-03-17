@@ -8,7 +8,7 @@ import './GetAllGroups.css';
 const GroupList = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    const groupList = useSelector((state) => Object.values(state.groups));
+    const groupList = useSelector((state) => Object.values(state.groups.allGroups));
     const goToDetails = (group) => {
         return history.replace(`/groups/${group.id}`)
         // return <Redirect to={`/groups/1`}/>;
@@ -19,28 +19,35 @@ const GroupList = () => {
 
     return (
         <>
-        <nav>
+        <div className="main-wrapper">
+        <div className="nav-container">
+        <nav className="event-group-heading">
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/groups">Groups</NavLink>
-            <p>Groups in Meetup</p>
         </nav>
+        <div className="sub-header">
+            <p>Groups in Meetup</p>
+        </div>
+        </div>
         <section className="displayGroups">
         {groupList?.map((group) => (
-            <>
-            <div className="groups-container"
+
+            <div key={group.id} className="groups-container"
                  onClick={() => goToDetails(group)}>
             <img src={picture}></img>
             <div className="groupInfo">
                 <h2>{group.name}</h2>
                 <h3>{group.city}, {group.state}</h3>
                 <p>{group.about}</p>
+                <div className="num-events">
+                <h3>{group.Events.length} {group.Events.length > 1 ? "events": "event"}</h3>
                 <h3>{group.type}</h3>
-                {/* Will need to add number of events later. Will make a function that gets all events by groupId, import that function here and pass in group to it */}
+                </div>
             </div>
             </div>
-            </>
         ))}
         </section>
+        </div>
         </>
     )
 }

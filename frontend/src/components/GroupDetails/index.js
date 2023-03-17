@@ -1,10 +1,14 @@
 import {useParams} from "react-router-dom"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroupDetails } from "../../store/groups";
+import { getGroupDetails,deleteGroupAction } from "../../store/groups";
 import { NavLink } from "react-router-dom";
-import { getGroupEvents } from "../../store/events";
+import { deleteEventAction, getGroupEvents } from "../../store/events";
 import picture from "../../images/download.jpg";
+import {useModal} from "../../context/Modal";
+import DeleteButtonModal from "./deleteButtonModal";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import OpenModalButton from "../OpenModalButton";
 import { useHistory } from "react-router-dom";
 export default function GroupDetails({sessionUser}) {
     const history = useHistory();
@@ -13,6 +17,7 @@ export default function GroupDetails({sessionUser}) {
     groupId = parseInt(groupId);
     const dispatch = useDispatch();
     const group = useSelector((state) => state.groups.singleGroup);
+//   const { setModalContent, setOnModalClose } = useModal();
     const goToDetails = (event) => {
     return history.replace(`/events/${event.id}`);
     }
@@ -24,16 +29,18 @@ export default function GroupDetails({sessionUser}) {
             }
         })
     }
+
     const newEvents = upComingEvents(events);
     newEvents.sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate));
     const pastEvents = events.filter(event => !newEvents.includes(event));
     pastEvents.sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
 
+
     useEffect(() => {
         dispatch(getGroupDetails(groupId));
         dispatch(getGroupEvents(groupId));
     }, [dispatch]);
-    if (!group) {
+    if (!group.id) {
         return null;
     }
     if (isNaN(groupId)) {
@@ -45,7 +52,17 @@ export default function GroupDetails({sessionUser}) {
     const updateGroup = () => {
         history.push(`/groups/${groupId}/edit`)
     }
-    const createEventUpdateDelete = () => {
+    const deleteGroup = () => {
+        // dispatch(deleteGroupAction(groupId));
+        // events.forEach(event => {
+        // dispatch(deleteEventAction(event.id));
+        // })
+        // history.push(`/groups/`);
+        // return (
+        //     <OpenModalButton></OpenModalButton>
+        // )
+    }
+    const createEventUpdateDelete = (groupId) => {
         if (sessionUser?.id === group.organizerId) {
             return (
                 <div>
@@ -55,9 +72,10 @@ export default function GroupDetails({sessionUser}) {
                     <button onClick={() => updateGroup()}>
                     Update
                     </button>
-                    <button>
-                    Delete
-                    </button>
+                    <OpenModalButton
+                     itemText="Delete"
+                     modalComponent={<DeleteButtonModal groupId={groupId}></DeleteButtonModal>}
+                    ></OpenModalButton>
                 </div>
             )
         } else {
@@ -79,7 +97,7 @@ return (
                 <h3>{group.city} {group.state}</h3>
                 <h3>##events {group.type}</h3>
                 <h3>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</h3>
-                {createEventUpdateDelete()}
+                {createEventUpdateDelete(groupId)}
             </div>
         </div>
     </section>
@@ -92,13 +110,10 @@ return (
             <h1>What we're about</h1>
             <p>{group.about}</p>
         </div>
-        {newEvents.length ? (
+        {newEvents.length ? (<>
         <h1>Upcoming Events {`(${newEvents.length})`}</h1>
-        ) : (<h1>No Upcoming Events</h1>)}
-
         {newEvents.map((event) => (
-            <>
-            <div onClick={() => goToDetails(event)}>
+            <div onClick={() => goToDetails(event)} key={event.id}>
                 <img src={picture}></img>
                 {event.name}
 
@@ -108,16 +123,13 @@ return (
 
                 {event.Venue ? (<><p>{event.Venue.city}</p> <p>{event.Venue.state}</p></> ) : <p>No Venue for this event yet...</p>}
             </div>
-            </>
-        ))}
+        ))}</>) : null}
     </section>
     <section>
-        {pastEvents.length ? (
+        {pastEvents.length ? (<>
         <h1>Past Events {`(${pastEvents.length})`}</h1>
-        ) : null}
         {pastEvents.map((event) => (
-            <>
-            <div onClick={() => goToDetails(event)}>
+            <div onClick={() => goToDetails(event)} key={event.id}>
                 <img src={picture}></img>
                  {event.name}
                 {event.startDate}
@@ -128,8 +140,7 @@ return (
 
                 {event.Venue.state}
             </div>
-            </>
-        ))}
+        ))}</>) : null}
     </section>
     </>
 

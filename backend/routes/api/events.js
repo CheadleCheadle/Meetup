@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
 const events = await Event.findAll({
         ...pagination,
     attributes: {
-        exclude: ["capacity", "price", "description"]
+        exclude: ["capacity", "price",]
     },
     include: ["Group", "Venue"]
 });
