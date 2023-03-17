@@ -1,4 +1,3 @@
-import { detect } from 'underscore';
 import { csrfFetch } from './csrf';
 const GET_ALL_GROUPS = "groups/getAllGroups";
 const GET_GROUP_DETAILS = "groups/details";
