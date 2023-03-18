@@ -19,6 +19,7 @@ export default function GroupDetails({sessionUser}) {
     groupId = parseInt(groupId);
     const dispatch = useDispatch();
     const group = useSelector((state) => state.groups.singleGroup);
+    console.log("Group", group);
 //   const { setModalContent, setOnModalClose } = useModal();
     const goToDetails = (event) => {
     return history.replace(`/events/${event.id}`);
@@ -91,7 +92,7 @@ return (
     <section className="display-img-details">
 
             <div className="group-image-cont">
-            <img src={picture}></img>
+            <img src={group.GroupImages[0].url}></img>
             </div>
             <div className="details-container">
                 <div className = "details">
