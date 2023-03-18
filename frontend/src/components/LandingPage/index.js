@@ -55,9 +55,11 @@ export default function Landing({sessionUser}) {
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </div>
             </div>
+            { !sessionUser ?
             <div className="button-container">
                 <OpenModalButton buttonText={"Join meetup"} modalComponent={<SignupFormModal></SignupFormModal>}></OpenModalButton>
             </div>
+            : null }
 
         </main>
     )
