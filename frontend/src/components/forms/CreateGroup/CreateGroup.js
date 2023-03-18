@@ -10,8 +10,8 @@ export default function CreateGroup({update}) {
     const [location, setLocation] = useState("");
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
-    const [type, setType] = useState("");
-    const [isPrivate, setisPrivate] = useState("");
+    const [type, setType] = useState("In person");
+    const [isPrivate, setisPrivate] = useState("Private");
     const [image, setImage] = useState("");
     const [errors, setErrors] = useState({});
 
@@ -26,7 +26,8 @@ export default function CreateGroup({update}) {
         e.preventDefault();
         const spaceRemoved = location.replaceAll(' ', '');
         const split = spaceRemoved.split(',')
-        const group = {city:split[0], state:split[1], name, about, type, private:stringToBool(isPrivate)}
+        const group = {city:split[0], state:split[1].slice(0,2).toUpperCase(), name, about, type, private:stringToBool(isPrivate)};
+        console.log("MY GROUP", group);
         const theImage = {url:image, preview: true};
         if (!update) {
         const newGroup = await dispatch(createGroupAction(group));
@@ -83,25 +84,27 @@ export default function CreateGroup({update}) {
 
     return (
         <>
-        <div>
+        <div className="create-group-wrap">
+        <div className="organizer-div">
             { !update ? <h3>Become an Organizer</h3> : <h3>Update your group's information</h3>}
             { !update ? <h1>We'll walk you through a few steps to build your local community</h1> : <h1>We'll walk you through a few steps to update your group's information</h1>}
         </div>
         <form
         onSubmit={handleSubmit}>
-            <label>
+            <label id="first-label">
                 <h1>First, set your group's location</h1>
-                <p>Meetup groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.</p>
-                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)}/>
+                <p id="firstP">Meetup groups meet locally, in person and online. We'll connect you with people</p>
+                 <p id="secondP">in your area, and more can join you online.</p>
+                <input placeholder="City, STATE" type="text" value={location} onChange={(e) => setLocation(e.target.value)}/>
             </label>
-            <p className="errors">{errors.location}</p>
+            <p className={errors.location ? "errors": "handleBlank"}>{errors.location || "Blank filler text"}</p>
             <label>
                 {!update ? <h1>What will your group's name be?</h1> : <h1>What is the name of your group?</h1>}
                 <p>Choose a name that will give people a clear idea of what the group is about.</p>
                 { !update ? <p>Feel free to get creative! You can edit this later if you change your mind.</p> : <p>Feel free to get creative!</p>}
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                <input placeholder="What is your group name?" type="text" value={name} onChange={(e) => setName(e.target.value)} />
             </label>
-            <p className="errors">{errors.name}</p>
+            <p className={errors.name ? "errors" : "handleBlank"}>{errors.name || "Blank filler text"}</p>
             <label>
                 <h1>Now describe what your group will be about</h1>
                 { !update ? <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p> : <p>People will see this when we promote your group.</p>}
@@ -110,29 +113,32 @@ export default function CreateGroup({update}) {
                     <li>Who should join?</li>
                     <li>What will you do at your events?</li>
                 </ol>
-                <textarea type="text" value={about} onChange={(e) => setAbout(e.target.value)}></textarea>
+                <textarea placeholder="Please write atleast 30 characters"type="text" value={about} onChange={(e) => setAbout(e.target.value)}></textarea>
             </label>
-            <p className="errors">{errors.about}</p>
+            <p className={errors.about ? "errors" : "handleBlank"}>{errors.about || "Blank filler text"}</p>
             <label>
                 <h1>Final steps...</h1>
                 <p>Is this an in person or online group?</p>
-                <select value={type} name="options" onChange={(e) => setType(e.target.value)}>
+                <select placeholder="(select one)" value={type} name="options" onChange={(e) => setType(e.target.value)}>
                     <option value='In person'>In person</option>
                     <option value='Online'>Online</option>
                 </select>
-                <p className="errors">{errors.type}</p>
+                <p className={errors.type ? "errors" : "handleBlank"}>{errors.type || "Blank filler text"}</p>
                 <p>Is this group private or public?</p>
-                <select value={isPrivate}  onChange={(e) => setisPrivate(e.target.value)} name="options">
+                <select placeholder="(select one)" value={isPrivate}  onChange={(e) => setisPrivate(e.target.value)} name="options">
                     <option value="Private">Private</option>
                     <option value="Public">Public</option>
                 </select>
-                <p className="errors">{errors.private}</p>
+                <p className={errors.type ? "errors" : "handleBlank"}>{errors.private || "Blank filler text"}</p>
                 <p>Please add an image url for your group below:</p>
-                <input type="text" value={image} onChange={(e) => setImage(e.target.value)}/>
+                <input placeholder="image Url" type="text" value={image} onChange={(e) => setImage(e.target.value)}/>
             </label>
-            <p className="errors">{errors.image}</p>
-            <input disabled ={Object.values(errors).length}  type="submit" value={!update ? "Create group" : "Update group"}/>
+            <p className={errors.image ? "errors" : "handleBlank"}>{errors.image || "Blank filler text"}</p>
+            <div id="button-container-create">
+            <input id="submit-button" disabled ={Object.values(errors).length}  type="submit" value={!update ? "Create group" : "Update group"}/>
+            </div>
         </form>
+        </div>
         </>
     )
 }

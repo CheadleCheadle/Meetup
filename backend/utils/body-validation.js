@@ -20,7 +20,7 @@ const { query } = require('express-validator/check');
       .exists( {checkFalsy: true })
       .isString()
       .notEmpty()
-      .isLength({min: 50, max: 1000})
+      .isLength({min: 30, max: 1000})
       .withMessage("About must be 50 characters or more"),
     check('type')
       .exists({ checkFalsy: true })

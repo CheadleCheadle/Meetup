@@ -36,8 +36,8 @@ export default function EventList() {
 
         <section className="displayEvents">
         {eventList?.map((event) => (
-            <>
-            <div className="events">
+
+            <div key={event.id} className="events">
             <div className="events-container"
                  onClick={() => {
                     setGroup(event);
@@ -57,7 +57,6 @@ export default function EventList() {
                 goToDetails(event);
             }} className="event-desc">{event.description}</div>
             </div>
-            </>
         ))}
         </section>
 </div>
