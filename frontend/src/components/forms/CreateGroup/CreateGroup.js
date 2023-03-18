@@ -58,7 +58,7 @@ export default function CreateGroup({update}) {
         if (isPrivate === "") {
             tempErrors.private = "Visibility Type is required";
         }
-        if (!["jpg", "jpeg", "png"].includes(image.split('.')[1])) {
+        if (!["jpg", "jpeg", "png"].includes(image.slice(image.length - 5).split(".")[1])) {
             tempErrors.image = "Image URL must end in .png, .jpg, or .jpeg";
         }
         setErrors(tempErrors);
