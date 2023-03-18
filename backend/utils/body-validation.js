@@ -103,6 +103,7 @@ const validateEventBody = [
       .exists( {checkFalsy: true})
       .isString()
       .notEmpty()
+      .isLength({min: 30, max: 2000})
       .withMessage("Description is required"),
      check('startDate')
       .exists( {checkFalsy: true})

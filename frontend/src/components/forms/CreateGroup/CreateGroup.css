@@ -69,3 +69,7 @@ label select {
 form {
     margin-bottom: 5em;
 }
+
+#first-h3 {
+    border-top: 2px solid white;
+}

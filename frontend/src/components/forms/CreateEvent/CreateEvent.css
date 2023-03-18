@@ -1,3 +1,73 @@
 .errors {
     color: red;
 }
+
+.create-event-wrap {
+    margin: 0em 35em;
+}
+select {
+    margin-top: .5em;
+}
+input {
+    margin-top: .5em;
+}
+label h3 {
+    border-top: 2px solid gray;
+}
+#title {
+    margin-bottom: 0;
+}
+h3 {
+    margin-bottom: 0;
+    padding-top: 1em;
+    margin-top: .25em;
+}
+
+.event-name {
+    width: 30em;
+    height: 2em;
+    border: 3px solid black;
+    border-radius: 3px;
+}
+#first-h3 {
+    padding-top: 0;
+    margin-top: .5em;
+}
+.drop-downs {
+    width: 10em;
+    height: 2em;
+}
+
+#price {
+    width: 7em;
+    height: 2em;
+}
+
+#price-h3 {
+    border-top: 0px solid white;
+}
+
+#event-description {
+    width: 100%;
+    height: 18em;
+}
+ #submit-button {
+
+    background-color: rgb(207, 42, 39);
+    border: 3px solid black;
+    color: white;
+    box-shadow: 2px 2px black;
+    width: 12em;
+    height: 4em;
+}
+
+#button-container-update{
+    padding-top: 2em;
+}
+#title {
+    font-size: 2em;
+}
+
+#description-head {
+    border-top: 2px solid gray;
+}
