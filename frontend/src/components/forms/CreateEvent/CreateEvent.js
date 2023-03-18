@@ -54,7 +54,7 @@ export default function CreateEvent() {
         if (endDate === "") {
             tempErrors.endDate = "Event end is required";
         }
-        if (image.endsWith(".jpeg") || image.endsWith(".jpg") || image.endsWith(".png")) {
+        if (!image.endsWith(".jpeg") || !image.endsWith(".jpg") || !image.endsWith(".png")) {
             tempErrors.image = "Image URL must end in .png, .jpg, or .jpeg";
         }
         if (about.length < 30) {
