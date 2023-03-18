@@ -1,7 +1,7 @@
 
 .home > a {
     text-decoration: none;
-    color: #56BC3B;
+    color: #FF5A5F;
     font-size: 40px;
     font-family:sans-serif;
     font-weight: bold;
@@ -11,8 +11,8 @@
     height: 70px;
     justify-content: space-between;
     flex-direction: row;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
     align-content:center;
     border-bottom: 2px solid lightgray;
 }
@@ -23,7 +23,7 @@ width: 50px;
 }
 
 .button {
-    background-color: #941200;
+    background-color: #FF5A5F;
     position: relative;
 }
 

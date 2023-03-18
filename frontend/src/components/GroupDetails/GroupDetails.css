@@ -118,6 +118,8 @@ background-color: rgba(238, 238, 238, 1);
 }
 .image-container-event-group {
     border: 2px solid black;
+     width: 18em;
+    height: 10em;
 }
 
 .image-container-event-group img {

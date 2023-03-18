@@ -10,9 +10,39 @@
 }
 .events-container img {
    height: 25%;
-   padding: 15px 0px;
 }
 
 .event-desc {
     display: flex;
+}
+
+.events-image-container {
+    display: flex;
+    width: 18em;
+    height: 10em;
+    margin-right: .5em;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+.events-image-container img {
+    width: 100%;
+    height: 100%;
+
+    border: 2px solid black;
+}
+
+.events {
+    margin-bottom: 1em;
+}
+
+.eventInfo p{
+    color: teal;
+}
+
+.eventInfo h3 {
+    color: gray;
+}
+.sub-header {
+    margin-top: 1em;
+    margin-bottom: 0em;
 }

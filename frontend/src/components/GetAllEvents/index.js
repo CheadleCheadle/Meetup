@@ -37,19 +37,26 @@ export default function EventList() {
         <section className="displayEvents">
         {eventList?.map((event) => (
             <>
+            <div className="events">
             <div className="events-container"
                  onClick={() => {
                     setGroup(event);
                     goToDetails(event)
                     }}>
-                <img src={picture}></img>
+                <div className="events-image-container">
+                <img src={event.previewImage}></img>
+                </div>
                 <div className="eventInfo">
-                    <p>{event.startDate}</p>
+                    <p>{event.startDate.slice(0,10)}</p>
                     <h1>{event.name}</h1>
-                    {event.Venue ? ( <p>{event.Venue.city} {event.Venue.state}</p>) : (<p>No Venue for this event yet...</p>)}
+                    {event.Venue ? ( <h3>{event.Venue.city} {event.Venue.state}</h3>) : (<p>No Venue for this event yet...</p>)}
                 </div>
             </div>
-            <div className="event-desc">{event.description}</div>
+            <div onClick={() => {
+                setGroup(event);
+                goToDetails(event);
+            }} className="event-desc">{event.description}</div>
+            </div>
             </>
         ))}
         </section>

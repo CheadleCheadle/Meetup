@@ -1,0 +1,155 @@
+.events-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.events-navigation {
+    display: flex;
+    flex-direction: column;
+    margin: 2.5em 8em 1em 8em;
+}
+
+.event-container {
+    background-color:  rgba(238, 238, 238, 1);
+}
+
+.first-event-section {
+    display: flex;
+    flex-direction: row;
+    margin: 1em 8em 1em 8em;
+    height: 25em;
+    gap: 1em;
+}
+
+.event-image-container {
+    width: 50%;
+    border: 2px solid black;
+}
+.event-image-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.group-event-details {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    gap: 1em;
+    /* align-items: center; */
+}
+
+.group-details {
+    height: 8em;
+    display: flex;
+    background-color: white;
+    border-radius: 15px;
+}
+.group-image-container-event {
+    margin: 1em 0em 1em 1em;
+    border: 2px solid black;
+}
+.group-image-container-event img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.group-event-detail-public {
+display: flex;
+flex-direction: column;
+margin: 0em 1em 0em 1em;
+justify-content: space-around
+}
+
+.group-event-detail-public h1 {
+    margin-bottom: 0em;
+}
+
+.group-event-detail-public p {
+    color: gray;
+}
+
+.event-details-container {
+    background-color: white;
+    border-radius: 15px;
+    height: 18em;
+}
+
+.event-details {
+    margin: 1em 1em 1em 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+/* .event-details h3 {
+    margin: .7em;
+    color: gray;
+} */
+
+.section-one-event {
+    display: flex;
+    flex-direction: row;
+    gap: .6em;
+
+}
+
+.section-two-event {
+    display: flex;
+    flex-direction: row;
+    gap: .6em;
+}
+
+.section-three-event {
+    display: flex;
+    flex-direction: row;
+    gap: .6em;
+    justify-content: space-between;
+}
+
+.clock {
+    display: flex;
+    align-items: center;
+    width: 30px;
+    height: 30px
+}
+
+.dollar {
+    display: flex;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+
+}
+
+.pin {
+    display: flex;
+    align-content: center;
+    width: 30px;
+    height: 30px
+}
+
+.time {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: gray;
+}
+
+.price  {
+    display: flex;
+    align-items: center;
+    color: gray;
+}
+
+.type-wrap {
+    display: flex;
+    flex-direction: row;
+    color: gray;
+}
+
+.about-wrapper-event {
+    margin: .5em 8em 1em 8em;
+}
+
+.start-end {
+    color: teal;
+}

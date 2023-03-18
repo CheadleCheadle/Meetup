@@ -33,11 +33,11 @@ img {
 .image-container img {
 width: 80%;
 }
-.disabled {
+/* .disabled {
 cursor: default;
 color: lightgray;
 text-decoration: none;
-}
+} */
 
 .description-middle {
     display: flex;
@@ -60,6 +60,10 @@ text-decoration: none;
     text-align: center;
     width: 15%
 }
+.see-groups a {
+    color: teal;
+    text-decoration: none;
+}
 
 .find-event {
     display: flex;
@@ -68,12 +72,18 @@ text-decoration: none;
     width: 15%
 }
 
+.find-event a {
+    color: teal;
+    text-decoration: none;
+}
+
 .start-group {
     display: flex;
     flex-direction: column;
     text-align: center;
     width: 15%
 }
+
 
 .button-container {
 display:flex;
@@ -86,4 +96,16 @@ margin-bottom: 70px;
     width: 10%;
     background-color: rgb(0, 81, 94);
     cursor: pointer;
+}
+
+
+.disabled {
+cursor: default;
+color: lightgray;
+text-decoration: none;
+}
+
+.clickable {
+    color: teal;
+    text-decoration: none;
 }
