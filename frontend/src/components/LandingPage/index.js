@@ -57,7 +57,7 @@ export default function Landing({sessionUser}) {
             </div>
             { !sessionUser ?
             <div className="button-container">
-                <OpenModalButton buttonText={"Join meetup"} modalComponent={<SignupFormModal></SignupFormModal>}></OpenModalButton>
+                <OpenModalButton buttonText={"Join Meetup"} modalComponent={<SignupFormModal></SignupFormModal>}></OpenModalButton>
             </div>
             : null }
 

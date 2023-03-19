@@ -5,6 +5,8 @@
     font-size: 40px;
     font-family:sans-serif;
     font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 .nav-bar {
     display:flex;
@@ -13,34 +15,65 @@
     flex-direction: row;
     padding-left: 15px;
     padding-right: 15px;
-    align-content:center;
+    align-items: center;
     border-bottom: 2px solid lightgray;
 }
-.container {
-display: flex;
-justify-content: flex-end;
-width: 50px;
+.noLogin{
+    display:flex;
+    height: 70px;
+    flex-direction: row;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-content:center;
+    padding-bottom: .5em;
+    border-bottom: 2px solid lightgray;
 }
 
-/* .button {
-    background-color: #FF5A5F;
-    position: relative;
-    border-radius: 50%;
-    height: 2em;
-    width: 2em;
+.container{
     display: flex;
-    justify-content: center;
+    width: 10em;
+    justify-content: flex-end;
+}
+
+.login {
+    display: flex;
+    width: 10em;
+    justify-content: flex-end;
+}
+
+.login-signup-cont {
+    display: flex;
+    flex-direction: row;
+    gap: 3em;
+    text-align: center;
+    list-style-type: none;
     align-items: center;
-} */
+}
+.login-signup-cont li {
+    cursor: pointer;
+}
+
+.nav-first {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.nav-second {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
 
 .profile {
     position: absolute;
     background-color: white;
-display: flex;
-justify-content: center;
-flex-direction: row;
-font-size: 1rem;
-filter: drop-shadow(1px, 1px);
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    font-size: 1rem;
+    filter: drop-shadow(1px, 1px);
+    padding-top: .8em;
 }
 
 .profile-wrap {
@@ -54,6 +87,7 @@ filter: drop-shadow(1px, 1px);
     font-size: 2rem;
     margin-top: .25em;
     gap: .15em;
+    cursor: pointer;
 }
 
 .fixed {
@@ -63,6 +97,7 @@ filter: drop-shadow(1px, 1px);
     margin-top: .25em;
     gap: .15em;
     justify-content: flex-end;
+    cursor: pointer;
 }
 .profile-dropdown {
     margin: .25em 0em 0em 0em;

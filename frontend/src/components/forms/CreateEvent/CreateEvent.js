@@ -71,7 +71,7 @@ export default function CreateEvent() {
         <>
         <div className="create-event-wrap">
           <h1 id="title">Create an event for {group.name}</h1>
-          <form onSubmit={handleSubmit}>
+          <form id="create-event-form" onSubmit={handleSubmit}>
             <label>
                 <h3 id="first-h3">What is the name of your event?</h3>
                 <input placeholder="Event Name"className="event-name" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>

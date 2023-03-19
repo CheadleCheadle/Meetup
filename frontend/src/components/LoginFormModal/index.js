@@ -24,6 +24,7 @@ function LoginFormModal() {
         }
       );
   };
+
 errors = Object.values(errors);
   return (
     <>
