@@ -78,12 +78,9 @@ justify-content: space-around
     margin: 1em 1em 1em 1em;
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 4em;
 }
-/* .event-details h3 {
-    margin: .7em;
-    color: gray;
-} */
+
 
 .section-one-event {
     display: flex;
