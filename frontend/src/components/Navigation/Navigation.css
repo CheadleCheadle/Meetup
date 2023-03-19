@@ -22,23 +22,84 @@ justify-content: flex-end;
 width: 50px;
 }
 
-.button {
+/* .button {
     background-color: #FF5A5F;
     position: relative;
-}
+    border-radius: 50%;
+    height: 2em;
+    width: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
 
 .profile {
     position: absolute;
+    background-color: white;
 display: flex;
 justify-content: center;
-flex-direction: column;
+flex-direction: row;
 font-size: 1rem;
 filter: drop-shadow(1px, 1px);
 }
+
+.profile-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-icons {
+    display: flex;
+    flex-direction: row;
+    font-size: 2rem;
+    margin-top: .25em;
+    gap: .15em;
+}
+
+.fixed {
+    display: flex;
+    flex-direction: row;
+    font-size: 2rem;
+    margin-top: .25em;
+    gap: .15em;
+    justify-content: flex-end;
+}
 .profile-dropdown {
-border: 1px solid black;
-filter: drop-shadow(1px, 1px);
+    margin: .25em 0em 0em 0em;
+    display: flex;
+    flex-direction: column;
+    padding: .5em;
+    gap: .5em;
+    border: 3px solid black;
+    border-radius: 3px;
+    filter: drop-shadow(1px, 1px);
+    list-style-type: none;
 }
 .hidden {
     display: none;
+}
+
+.fa-user-circle  {
+    background-color: white;
+}
+
+.fas{
+    color: #FF5A5F;
+}
+
+.active-up {
+    color: gray;
+}
+.inactive-up {
+    display: none;
+}
+.inactive-down {
+    display: none;
+}
+.active-down {
+    color: gray;
+}
+
+.fa-duotone {
+    color: red;
 }

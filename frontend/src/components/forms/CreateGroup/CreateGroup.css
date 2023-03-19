@@ -19,7 +19,7 @@ label h1{
    padding-top: .5em;
    margin-top: 0;
 }
-label input {
+#create-group-form label input {
     border: 2px solid black;
     border-radius: 2px;
     background-color: #E8F0FE;
@@ -66,7 +66,7 @@ label select {
    border-top: 2px solid gray;
 }
 
-form {
+#create-group-form {
     margin-bottom: 5em;
 }
 

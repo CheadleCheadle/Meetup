@@ -10,8 +10,8 @@ export default function CreateGroup({update}) {
     const [location, setLocation] = useState("");
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
-    const [type, setType] = useState("In person");
-    const [isPrivate, setisPrivate] = useState("Private");
+    const [type, setType] = useState("");
+    const [isPrivate, setisPrivate] = useState("");
     const [image, setImage] = useState("");
     const [errors, setErrors] = useState({});
 
@@ -89,7 +89,7 @@ export default function CreateGroup({update}) {
             { !update ? <h3>Become an Organizer</h3> : <h3>Update your group's information</h3>}
             { !update ? <h1>We'll walk you through a few steps to build your local community</h1> : <h1>We'll walk you through a few steps to update your group's information</h1>}
         </div>
-        <form
+        <form id="create-group-form"
         onSubmit={handleSubmit}>
             <label id="first-label">
                 <h1>First, set your group's location</h1>
@@ -119,13 +119,15 @@ export default function CreateGroup({update}) {
             <label>
                 <h1>Final steps...</h1>
                 <p>Is this an in person or online group?</p>
-                <select placeholder="(select one)" value={type} name="options" onChange={(e) => setType(e.target.value)}>
+                <select value={type} name="options" onChange={(e) => setType(e.target.value)}>
+                    <option value="" disabled selected hidden>(select one)</option>
                     <option value='In person'>In person</option>
                     <option value='Online'>Online</option>
                 </select>
                 <p className={errors.type ? "errors" : "handleBlank"}>{errors.type || "Blank filler text"}</p>
                 <p>Is this group private or public?</p>
-                <select placeholder="(select one)" value={isPrivate}  onChange={(e) => setisPrivate(e.target.value)} name="options">
+                <select value={isPrivate}  onChange={(e) => setisPrivate(e.target.value)} name="options">
+                    <option value="" disabled selected hidden>(select one)</option>
                     <option value="Private">Private</option>
                     <option value="Public">Public</option>
                 </select>
