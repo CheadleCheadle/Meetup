@@ -1,0 +1,31 @@
+.delete-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0em 1em 1em 1em;
+}
+
+.delete-group h3 {
+    margin-top: 0;
+}
+.delete-group button {
+    width: 100%;
+    height: 4em;
+    border: 2px solid black;
+    box-shadow: 3px 3px black;
+    color: white;
+}
+
+.button-holder {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+#delete-group-yes {
+    background-color:#FF5A5F ;
+}
+
+#delete-group-no {
+    background-color: #999999;
+}

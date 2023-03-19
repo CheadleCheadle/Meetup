@@ -21,7 +21,7 @@ export default function Landing({sessionUser}) {
         <main>
             <div className="first-container">
             <div className="landing-message">
-                <h1>The people platform Where interests become friendships</h1>
+                <h1>The people platform-Where interests become friendships</h1>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -34,7 +34,7 @@ export default function Landing({sessionUser}) {
             </div>
             <div className="description-middle">
                 <h2>How Meetup works</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisiucing elit.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
             <div className="landing-nav">
                 <div className="see-groups">
@@ -55,9 +55,11 @@ export default function Landing({sessionUser}) {
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </div>
             </div>
+            { !sessionUser ?
             <div className="button-container">
-                <OpenModalButton buttonText={"Join meetup"} modalComponent={<SignupFormModal></SignupFormModal>}></OpenModalButton>
+                <OpenModalButton buttonText={"Join Meetup"} modalComponent={<SignupFormModal></SignupFormModal>}></OpenModalButton>
             </div>
+            : null }
 
         </main>
     )

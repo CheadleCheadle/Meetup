@@ -1,3 +1,75 @@
 .errors {
     color:red;
+    margin: 0;
+}
+.handleBlank {
+    color: white;
+    margin: 0;
+}
+.create-group-wrap {
+    margin: 0em 12em;
+}
+
+.organizer-div h3{
+    color: teal;
+}
+
+label h1{
+   border-top: 2px solid gray;
+   padding-top: .5em;
+   margin-top: 0;
+}
+#create-group-form label input {
+    border: 2px solid black;
+    border-radius: 2px;
+    background-color: #E8F0FE;
+}
+
+label textarea {
+    height: 12em;
+    width: 28em;
+    border: 3px solid black;
+    border-radius: 2px;
+    background-color: #E8F0FE;
+;
+}
+
+label ol {
+    padding-left: 1em;
+}
+
+#firstP {
+    margin-bottom: 0;
+}
+#secondP {
+    margin-top: 0;
+}
+
+label select {
+    border: 2px solid black;
+    border-radius: 2px;
+    background-color: #E8F0FE;
+}
+
+ #submit-button {
+
+    background-color: rgb(207, 42, 39);
+    border: 3px solid black;
+    color: white;
+    box-shadow: 2px 2px black;
+    width: 12em;
+    height: 4em;
+}
+
+#button-container-create {
+    padding-top: 1em;
+   border-top: 2px solid gray;
+}
+
+#create-group-form {
+    margin-bottom: 5em;
+}
+
+#first-h3 {
+    border-top: 2px solid white;
 }

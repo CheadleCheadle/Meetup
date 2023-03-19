@@ -98,7 +98,7 @@ return (
                 <div className = "details">
                 <h1>{group.name}</h1>
                 <h3>{group.city} {group.state}</h3>
-                <h3>{group.Events.length} {group.Events.length > 1 ? "events" : "event"}  •  {group.type}</h3>
+                { group.Events ? <h3>{group.Events.length} {group.Events.length > 1 ? "events" : group.Events.length < 1 ? "events" : "event"}  •  {group.private ? "Private" : "Public"}</h3> : `No Events... • ${group.private ? "Private" : "Public"}` }
                 <h3>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</h3>
                 </div>
                 <div className="button-container-group">

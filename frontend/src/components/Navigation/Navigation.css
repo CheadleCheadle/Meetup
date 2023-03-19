@@ -1,44 +1,140 @@
 
 .home > a {
     text-decoration: none;
-    color: #56BC3B;
+    color: #FF5A5F;
     font-size: 40px;
     font-family:sans-serif;
     font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 .nav-bar {
     display:flex;
     height: 70px;
     justify-content: space-between;
     flex-direction: row;
-    padding-left: 20px;
-    padding-right: 20px;
-    align-content:center;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-items: center;
     border-bottom: 2px solid lightgray;
 }
-.container {
-display: flex;
-justify-content: flex-end;
-width: 50px;
+.noLogin{
+    display:flex;
+    height: 70px;
+    flex-direction: row;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-content:center;
+    padding-bottom: .5em;
+    border-bottom: 2px solid lightgray;
 }
 
-.button {
-    background-color: #941200;
-    position: relative;
+.container{
+    display: flex;
+    width: 10em;
+    justify-content: flex-end;
+}
+
+.login {
+    display: flex;
+    width: 10em;
+    justify-content: flex-end;
+}
+
+.login-signup-cont {
+    display: flex;
+    flex-direction: row;
+    gap: 3em;
+    text-align: center;
+    list-style-type: none;
+    align-items: center;
+}
+.login-signup-cont li {
+    cursor: pointer;
+}
+
+.nav-first {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.nav-second {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .profile {
     position: absolute;
-display: flex;
-justify-content: center;
-flex-direction: column;
-font-size: 1rem;
-filter: drop-shadow(1px, 1px);
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    font-size: 1rem;
+    filter: drop-shadow(1px, 1px);
+    padding-top: .8em;
+}
+
+.profile-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-icons {
+    display: flex;
+    flex-direction: row;
+    font-size: 2rem;
+    margin-top: .25em;
+    gap: .15em;
+    cursor: pointer;
+}
+
+.fixed {
+    display: flex;
+    flex-direction: row;
+    font-size: 2rem;
+    margin-top: .25em;
+    gap: .15em;
+    justify-content: flex-end;
+    cursor: pointer;
 }
 .profile-dropdown {
-border: 1px solid black;
-filter: drop-shadow(1px, 1px);
+    margin: .25em 0em 0em 0em;
+    display: flex;
+    flex-direction: column;
+    padding: .5em;
+    gap: .5em;
+    border: 3px solid black;
+    border-radius: 3px;
+    filter: drop-shadow(1px, 1px);
+    list-style-type: none;
 }
 .hidden {
     display: none;
+}
+
+.fa-user-circle  {
+    background-color: white;
+}
+
+.fas{
+    color: #FF5A5F;
+}
+
+.active-up {
+    color: gray;
+}
+.inactive-up {
+    display: none;
+}
+.inactive-down {
+    display: none;
+}
+.active-down {
+    color: gray;
+}
+
+.fa-duotone {
+    color: red;
 }

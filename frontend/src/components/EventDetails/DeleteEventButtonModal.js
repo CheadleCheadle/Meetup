@@ -16,11 +16,15 @@ export default function DeleteEventButtonModal({eventId, groupId}) {
     }
 
     return (
-        <div>
-            <h3>Confirm Delete</h3>
-            <p> Are you sure want to remove this event?</p>
-            <button onClick={() => handleDelete(eventId, groupId)}>Yes</button>
-            <button onClick={closeModal}>No</button>
+        <div className="delete-group">
+        <span className="header-text">
+        <h1>Confirm Delete</h1>
+        </span>
+        <h3> Are you sure you want to remove this event?</h3>
+        <div className="button-holder">
+        <button id="delete-group-yes" onClick={() => handleDelete(groupId)}>Yes (Delete Event)</button>
+        <button id="delete-group-no" onClick={closeModal}>No (Keep Event)</button>
+        </div>
         </div>
     )
 }

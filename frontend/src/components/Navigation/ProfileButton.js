@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-import DemoLogin from "../signinDemo";
+import { useHistory } from "react-router-dom";
+import "./Navigation.css";
 function ProfileButton({ user }) {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -35,23 +39,26 @@ function ProfileButton({ user }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    history.replace(`/`);
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
+  const profileClassName = "profile-icons" + (showMenu ? " fixed" : "");
   return (
     <>
-      <button className="button"onClick={openMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
+    <div className="profile-wrap">
+      <div className={profileClassName}>
+      <i className="fas fa-user-circle" onClick={openMenu}/>
+    <FontAwesomeIcon className={!showMenu ? "active-up" : "inactive-up"} icon={faAngleUp} />
+    <FontAwesomeIcon className={!showMenu ? "inactive-down" : "active-down"} icon={faAngleDown}/>
+      </div>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+            <li>Hello, {user.username}</li>
             <li>{user.email}</li>
-            <li>
-              <button onClick={logout}>Log Out</button>
+            <li id="logout">
+              <p onClick={logout}>Log Out</p>
             </li>
           </>
         ) : (
@@ -66,12 +73,10 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-            <DemoLogin
-              onItemClick={closeMenu}
-            ></DemoLogin>
           </>
         )}
       </ul>
+      </div>
     </>
   );
 }

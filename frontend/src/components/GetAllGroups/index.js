@@ -35,11 +35,13 @@ const GroupList = () => {
 
             <div key={group.id} className="groups-container"
                  onClick={() => goToDetails(group)}>
-            <img src={picture}></img>
+            <div className="group-image-container">
+            <img src={group.previewImage}></img>
+            </div>
             <div className="groupInfo">
                 <h2>{group.name}</h2>
                 <h3>{group.city}, {group.state}</h3>
-                <p>{group.about}</p>
+                <p>{group.about.slice(0, 255)} ... </p>
                 <div className="num-events">
                 <h3>{group.Events.length} {group.Events.length > 1 ? "events": "event"}</h3>
                 <h3>•</h3>

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import picture from "../../images/download.jpg";
+import "./GroupDetails.css";
 export default function GroupEvents ({flag}) {
     const history = useHistory();
     const events = useSelector((state) => Object.values(state.events.allEvents));
@@ -32,7 +32,7 @@ export default function GroupEvents ({flag}) {
             <div className="up-coming-events-container" onClick={() => goToDetails(event)} key={event.id}>
                 <div className="description-image-event-container">
                 <div className="image-container-event-group">
-                <img src={picture}></img>
+                <img src={event.previewImage}></img>
                 </div>
                 <div>
 
