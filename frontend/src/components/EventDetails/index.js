@@ -101,7 +101,7 @@ return (
         </div>
         </div>
         </div>
-        <div class="about-wrapper-event">
+        <div className="about-wrapper-event">
         <h1>Details</h1>
         <p>{event.description}</p>
         </div>
