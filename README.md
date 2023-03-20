@@ -22,10 +22,10 @@ General flow of Yeetup is as follows:
 To launch the application locally:
 * Clone the repository
 * Open the root folder and type "npm install" to install root dependencies
-* Open the backend folder and type "npm install" to install backend dependencies
-* Open the frontend folder and type "npm install" to install frontend dependencies
-* Inside the backend folder, type "npm start" to start the express server
-* Inside the frontend folder, type "npm start" to start the react frontend server
+* Open the backend folder and type "npm i && npx dotenv sequelize-cli db:migrate && npx dotenv sequelize-cli db:seed:all && npm start" to install backend dependencies
+* Open the frontend folder and type "npm i" to install frontend dependencies
+* Inside the backend folder, type "npm start" to start the express server on localhost:8000
+* Inside the frontend folder, type "npm start" to start the react frontend server on localhost:3000
 * The application should now be running!
 
 ![meetup-landing](https://user-images.githubusercontent.com/108553712/226253222-ada3c36f-ed14-437c-a24e-15c428a52361.PNG)
