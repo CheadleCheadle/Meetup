@@ -5,12 +5,12 @@ https://meetup-au8t.onrender.com
 Yeetup is a meetup clone looking to replicate the functionality and features of the website Meetup. Yeetup currently allows for groups to created, updated, and deleted as well as events to be created and deleted.
 
 Technologies Used:
- * RDBMS: Sequelize
+ * ORM: Sequelize
  * Backend: Express.js
  * Frontend: REACT 18
  * State manager: Redux 4.2.1
- * Development ORM: Sqlite3
- * Production ORM: Postgresql
+ * Development RDBMS: Sqlite3
+ * Production RDBMS: Postgresql
  
 General flow of Yeetup is as follows:
  * Users registers or logs in
