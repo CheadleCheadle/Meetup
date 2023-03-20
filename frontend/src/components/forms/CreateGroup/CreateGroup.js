@@ -106,7 +106,7 @@ export default function CreateGroup({update, sessionUser}) {
         <>
         <div className="create-group-wrap">
         <div className="organizer-div">
-            { !update ? <h3>Become an Organizer</h3> : <h3>Update your group's information</h3>}
+            { !update ? <h3>Start a New Group</h3> : <h3>Update your group's information</h3>}
             { !update ? <h1>We'll walk you through a few steps to build your local community</h1> : <h1>We'll walk you through a few steps to update your group's information</h1>}
         </div>
         <form id="create-group-form"
