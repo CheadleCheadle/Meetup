@@ -16,9 +16,7 @@ export default function EventDetails({sessionUser}) {
     const dispatch = useDispatch();
     const event = useSelector((state) => state.events.singleEvent);
     const eventsGroup = useSelector((state) => state.groups.singleGroup);
-    console.log('CURRENT GROUP',eventsGroup);
     const groupId = event.groupId;
-    console.log("EVENT", event);
 
     useEffect(() => {
         dispatch(getEventDetails(eventId));
@@ -38,16 +36,14 @@ export default function EventDetails({sessionUser}) {
             return <div className="group-buttons"><OpenModalButton
             buttonText="Delete"
             modalComponent={<DeleteEventButtonModal groupId={groupId} eventId={eventId}></DeleteEventButtonModal>}></OpenModalButton>
+            <button onClick={() => window.alert('Feature coming soon...')}>Update</button>
             </div>
         } else {
             return null;
 
         }
     }
-    // const deleteEvent = () => {
-    //     dispatch(deleteEventAction(eventId));
-    //     history.push(`/groups/${groupId}`);
-    // }
+
 
 return (
     <>
@@ -82,14 +78,14 @@ return (
                         <div>End</div>
                     </div>
                     <div className="start-end">
-                        <div>{event.startDate}</div>
-                        <div>{event.endDate}</div>
+                        <div>{new Date(event.startDate).toDateString()} • {event.startDate.slice(11, 19)}</div>
+                        <div>{new Date(event.endDate).toDateString()} • {event.endDate.slice(11,19)}</div>
                     </div>
                 </div>
 
                 <div className="section-two-event">
                     <div className="dollar">💲</div>
-                    <div className="price">${event.price}</div>
+                    <div className="price">${event.price > 0 ? event.price : " Free"}</div>
                 </div>
 
                 <div className="section-three-event">

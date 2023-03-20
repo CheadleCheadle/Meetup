@@ -72,7 +72,6 @@ export const getGroupDetails = (id) => async (dispatch) => {
     const response = await fetch(`/api/groups/${id}`);
     if (response.ok) {
         const data = await response.json();
-        console.log('FETCHED DATA',data);
         dispatch(loadGroupDetails(data));
         return data;
     }
@@ -87,7 +86,6 @@ export const createGroupAction = (group) => async (dispatch) => {
     if (response.ok) {
         const data = await response.json();
 
-        console.log('GROUP', data);
 
         const singleObject = {
             ...data,
@@ -192,7 +190,6 @@ const groupsReducer = (state = initialState, action) => {
         case CREATE_GROUP: {
             const newState = {...state};
             newState.singleGroup = {...action.group};
-            console.log("CREATE STATE", newState);
             return newState;
         }
         case CREATE_GROUP_IMAGE: {
@@ -222,11 +219,9 @@ const groupsReducer = (state = initialState, action) => {
         }
         case DELETE_GROUP: {
             const newState = {...state};
-            console.log("STATE", newState);
             newState.singleGroup = {};
             newState.allGroups = {...state.allGroups};
             delete newState.allGroups[action.groupId];
-            console.log("newState", newState);
             return newState;
         }
         default:

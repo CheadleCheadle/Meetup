@@ -9,6 +9,9 @@
     margin: 2.5em 8em 1em 8em;
 }
 
+.events-navigation h3{
+    color: gray;
+}
 .event-container {
     background-color:  rgba(238, 238, 238, 1);
 }
@@ -22,7 +25,7 @@
 }
 
 .event-image-container {
-    width: 50%;
+    width: 43vw;
     border: 2px solid black;
 }
 .event-image-container img {
@@ -35,7 +38,6 @@
     flex-direction: column;
     width: 45%;
     gap: 1em;
-    /* align-items: center; */
 }
 
 .group-details {
@@ -149,4 +151,8 @@ justify-content: space-around
 
 .start-end {
     color: teal;
+}
+
+.group-buttons button {
+    cursor: pointer;
 }

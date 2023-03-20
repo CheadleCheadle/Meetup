@@ -49,14 +49,16 @@ function ProfileButton({ user }) {
     <div className="profile-wrap">
       <div className={profileClassName}>
       <i className="fas fa-user-circle" onClick={openMenu}/>
-    <FontAwesomeIcon className={!showMenu ? "active-up" : "inactive-up"} icon={faAngleUp} />
-    <FontAwesomeIcon className={!showMenu ? "inactive-down" : "active-down"} icon={faAngleDown}/>
+    <FontAwesomeIcon className={!showMenu ? "active-up" : "inactive-up"} icon={faAngleDown} />
+    <FontAwesomeIcon className={!showMenu ? "inactive-down" : "active-down"} icon={faAngleUp}/>
       </div>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>Hello, {user.username}</li>
+            <li>Hello, {user.firstName}</li>
             <li>{user.email}</li>
+            <li id="view-groups"onClick={() => history.push(`/groups`)}>View Groups</li>
+            <li id="view-groups"onClick={() => history.push(`/events`)}>View Events</li>
             <li id="logout">
               <p onClick={logout}>Log Out</p>
             </li>

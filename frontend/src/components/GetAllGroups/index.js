@@ -9,10 +9,8 @@ const GroupList = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const groupList = useSelector((state) => Object.values(state.groups.allGroups));
-    console.log('GROUPS',groupList)
     const goToDetails = (group) => {
         return history.replace(`/groups/${group.id}`)
-        // return <Redirect to={`/groups/1`}/>;
     }
     useEffect(() => {
         dispatch(getAllGroups());

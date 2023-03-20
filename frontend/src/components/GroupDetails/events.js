@@ -35,8 +35,7 @@ export default function GroupEvents ({flag}) {
                 <img src={event.previewImage}></img>
                 </div>
                 <div>
-
-                <h4>{event.startDate.slice(0,13)}</h4>
+                <h4>{ new Date(event.startDate).toDateString()} • {event.startDate.slice(11,19)}</h4>
 
                 <h2>{event.name}</h2>
 

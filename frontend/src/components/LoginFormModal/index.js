@@ -19,7 +19,6 @@ function LoginFormModal() {
       .catch(
         async (res) => {
           const data = await res.json();
-          console.log('data', data.message);
           if (data) setErrors({errors: data.message});
         }
       );

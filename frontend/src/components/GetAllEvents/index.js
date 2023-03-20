@@ -10,7 +10,20 @@ export default function EventList() {
     const history = useHistory();
     const dispatch = useDispatch();
     const eventList = useSelector((state) => Object.values(state.events.allEvents));
-    console.log('EVENTS',eventList);
+
+    const upComingEvents = (events) => {
+        return events.filter(event => {
+            if (Date.parse(event.startDate) >= Date.now()) {
+                return true;
+            }
+        })
+    }
+    // const orderEventList = eventList.sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate));
+    const newEvents = upComingEvents(eventList);
+    newEvents.sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate));
+    const pastEvents = eventList.filter(event => !newEvents.includes(event));
+    pastEvents.sort((a, b) => Date.parse(a.startDate) - Date.parse(b.startDate));
+    const orderedEvents = [...newEvents, ...pastEvents];
     const setGroup = (event) => {
         dispatch(getGroupDetails(event.groupId))
     }
@@ -21,6 +34,7 @@ export default function EventList() {
     useEffect(() => {
         dispatch(getAllEvents())
     }, [dispatch]);
+
     return (
         <>
         <div className="main-wrapper">
@@ -35,7 +49,7 @@ export default function EventList() {
         </div>
 
         <section className="displayEvents">
-        {eventList?.map((event) => (
+        {orderedEvents?.map((event) => (
 
             <div key={event.id} className="events">
             <div className="events-container"
@@ -47,7 +61,7 @@ export default function EventList() {
                 <img src={event.previewImage}></img>
                 </div>
                 <div className="eventInfo">
-                    <p>{event.startDate.slice(0,10)}</p>
+                    <p>{event.startDate.slice(0,10)} • {event.startDate.slice(11, 19)}</p>
                     <h1>{event.name}</h1>
                     {event.Venue ? ( <h3>{event.Venue.city} {event.Venue.state}</h3>) : (<p>No Venue for this event yet...</p>)}
                 </div>

@@ -22,7 +22,7 @@ export default function DeleteEventButtonModal({eventId, groupId}) {
         </span>
         <h3> Are you sure you want to remove this event?</h3>
         <div className="button-holder">
-        <button id="delete-group-yes" onClick={() => handleDelete(groupId)}>Yes (Delete Event)</button>
+        <button id="delete-group-yes" onClick={() => handleDelete(eventId)}>Yes (Delete Event)</button>
         <button id="delete-group-no" onClick={closeModal}>No (Keep Event)</button>
         </div>
         </div>
