@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import "./CreateEvent.css"
 export default function CreateEvent() {
     const group = useSelector((state) => state.groups.singleGroup);
-    console.log("group", group);
     const history = useHistory();
     const dispatch = useDispatch();
     const [name, setName] = useState("");
@@ -26,11 +25,11 @@ export default function CreateEvent() {
         }
     }
     const handleSubmit = async (e) => {
+        validation();
         e.preventDefault();
         const event = {name, type, private: stringToBool(isPrivate), price:Number(price), description:about, startDate, endDate};
         const theImage = {url:image, preview: true}
         const newEvent = await dispatch(createEventAction(event, group.id));
-        console.log("ID", event);
         await dispatch(createEventImageAction(newEvent.id,theImage));
         history.push(`/events/${newEvent.id}`);
     }
@@ -67,6 +66,10 @@ export default function CreateEvent() {
     useEffect(() => {
         validation();
     }, [name, type, isPrivate, price, startDate, endDate, image, about])
+
+    useEffect(() => {
+        setErrors([]);
+    },[]);
     return (
         <>
         <div className="create-event-wrap">
@@ -74,7 +77,7 @@ export default function CreateEvent() {
           <form id="create-event-form" onSubmit={handleSubmit}>
             <label>
                 <h3 id="first-h3">What is the name of your event?</h3>
-                <input placeholder="Event Name"className="event-name" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
+                <input  id="event-name"placeholder="Event Name"className="event-name" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
                 <p className="errors">{errors.name}</p>
             </label>
             <label>
@@ -97,17 +100,17 @@ export default function CreateEvent() {
             </label>
             <label>
                 <h3 id="price-h3">What is the price for your event?</h3>
-                <input placeholder="$" id="price" type="text" value={price} onChange={(e) => setPrice(e.target.value)}></input>
+                <input placeholder="$ 0" id="price" type="text" value={price} onChange={(e) => setPrice(e.target.value)}></input>
                 <p className="errors">{errors.price}</p>
             </label>
             <label>
                 <h3>When does your event start?</h3>
-            <input type="datetime-local" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input>
+            <input id="startDate-event" type="datetime-local" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input>
                 <p  className="errors">{errors.startDate}</p>
             </label>
             <h3>When does your event end?</h3>
             <label>
-                <input type="datetime-local" value={endDate} onChange={(e) => setEndDate(e.target.value)}></input>
+                <input id="startDate-event" type="datetime-local" value={endDate} onChange={(e) => setEndDate(e.target.value)}></input>
                 <p className="errors">{errors.endDate}</p>
             </label>
             <label>

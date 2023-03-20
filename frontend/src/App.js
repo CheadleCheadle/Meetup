@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory, Redirect} from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GroupList from "./components/GetAllGroups";
@@ -11,9 +11,10 @@ import EventDetails from "./components/EventDetails";
 import CreateGroup from "./components/forms/CreateGroup/CreateGroup";
 import Landing from "./components/LandingPage";
 import CreateEvent from "./components/forms/CreateEvent/CreateEvent";
+import { getGroupDetails } from "./store/groups";
 function App() {
+  const history = useHistory();
   const sessionUser = useSelector(state => state.session.user);
-  console.log(Boolean(sessionUser));
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
@@ -28,17 +29,30 @@ function App() {
       {sessionUser && isLoaded &&(
         <Switch>
           <Route exact path="/groups/:groupId/edit">
-            <CreateGroup update={true}></CreateGroup>
+            <CreateGroup update={true} sessionUser={sessionUser}></CreateGroup>
           </Route>
         <Route exact path="/groups/new">
-          <CreateGroup update={false}></CreateGroup>
+          <CreateGroup update={false} sessionUser={sessionUser}></CreateGroup>
         </Route>
         <Route exact path="/groups/:groupId/events/new">
           <CreateEvent></CreateEvent>
         </Route>
         </Switch>
       )}
-      {isLoaded && (
+      {isLoaded && !sessionUser && (
+        <Switch>
+
+        <Route exact path="/groups/:groupId/edit">
+        {() => history.replace("/")}
+        </Route>
+
+        <Route exact path="/groups/new">
+          {() => history.replace("/")}
+        </Route>
+
+        </Switch>
+      )}
+      {isLoaded &&  (
         <Switch>
         <Route exact path="/groups">
           <GroupList></GroupList>

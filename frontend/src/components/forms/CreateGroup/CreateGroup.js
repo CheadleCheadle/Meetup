@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from "react"
-import { useHistory } from "react-router-dom";
+import React, {useEffect, useState, useLayoutEffect, useMemo} from "react"
+import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createGroupAction, createGroupImageAction, updateGroupAction, updateGroupImageAction } from "../../../store/groups";
+import { createGroupAction, createGroupImageAction, updateGroupAction, updateGroupImageAction, getGroupDetails} from "../../../store/groups";
 import './CreateGroup.css';
-export default function CreateGroup({update}) {
-    const history = useHistory();
+export default function CreateGroup({update, sessionUser}) {
     const dispatch = useDispatch();
+    const history = useHistory();
+    const params = useParams();
+    let { groupId } = params;
+    groupId = parseInt(groupId);
+
     const currentGroup = useSelector((state) => state.groups.singleGroup);
     const [location, setLocation] = useState("");
     const [name, setName] = useState("");
@@ -15,6 +19,7 @@ export default function CreateGroup({update}) {
     const [image, setImage] = useState("");
     const [errors, setErrors] = useState({});
 
+
     const stringToBool = (bool) => {
         if (bool === "Private") {
             return true
@@ -23,11 +28,11 @@ export default function CreateGroup({update}) {
         }
     }
     const handleSubmit = async (e) => {
+        validation();
         e.preventDefault();
         const spaceRemoved = location.replaceAll(' ', '');
         const split = spaceRemoved.split(',')
         const group = {city:split[0], state:split[1].slice(0,2).toUpperCase(), name, about, type, private:stringToBool(isPrivate)};
-        console.log("MY GROUP", group);
         const theImage = {url:image, preview: true};
         if (!update) {
         const newGroup = await dispatch(createGroupAction(group));
@@ -64,23 +69,38 @@ export default function CreateGroup({update}) {
         }
         setErrors(tempErrors);
     }
-    useEffect(() => {
-        validation();
-    }, [location, name, about, type, isPrivate, image])
+
+
 
     useEffect(() => {
+        dispatch(getGroupDetails(groupId));
         if (update) {
         setLocation(`${currentGroup.city}, ${currentGroup.state}`);
         setName(currentGroup.name);
         setAbout(currentGroup.about);
         setType(currentGroup.type);
         setisPrivate(currentGroup.private === true ? "Private" : "Public");
-        if (currentGroup.GroupImages) {
+        if (currentGroup.GroupImages.length > 0) {
         setImage(currentGroup.GroupImages[0].url);
         }
-        validation();
     }
-    }, [])
+    },[])
+
+    useEffect(() => {
+        validation();
+    }, [location, name, about, type, isPrivate, image]);
+
+    useEffect(() => {
+        setErrors([]);
+    }, []);
+
+
+    if (update && currentGroup.organizerId !== sessionUser.id) {
+        history.push("/");
+    }
+    if (!sessionUser) {
+        history.replace("/");
+    }
 
     return (
         <>
@@ -133,7 +153,7 @@ export default function CreateGroup({update}) {
                 </select>
                 <p className={errors.type ? "errors" : "handleBlank"}>{errors.private || "Blank filler text"}</p>
                 <p>Please add an image url for your group below:</p>
-                <input placeholder="image Url" type="text" value={image} onChange={(e) => setImage(e.target.value)}/>
+                <input placeholder="Image Url" type="text" value={image} onChange={(e) => setImage(e.target.value)}/>
             </label>
             <p className={errors.image ? "errors" : "handleBlank"}>{errors.image || "Blank filler text"}</p>
             <div id="button-container-create">

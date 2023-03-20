@@ -94,7 +94,7 @@ const validateEventBody = [
       .notEmpty()
       .withMessage("Type must be Online or In person"),
      check('price')
-      .exists( {checkFalsy: true})
+      .exists( {checkFalsy: false})
       .notEmpty()
       .not()
       .isString()

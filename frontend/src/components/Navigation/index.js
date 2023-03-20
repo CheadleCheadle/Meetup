@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import OpenModalMenuItem from './OpenModalMenuItem';
@@ -11,6 +11,7 @@ import { useState, useRef} from "react"
 import './Navigation.css';
 
 function Navigation({ isLoaded }){
+  const history = useHistory();
       const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
@@ -32,6 +33,7 @@ function Navigation({ isLoaded }){
         </div>
         </div>
         <div className="nav-second">
+          { sessionUser ? <span onClick={() => history.push(`/groups/new`)} id="start-new-group">Start a new group</span> : null}
         <div className={isLoggedInIcon}>
           {isLoaded && !sessionUser && (
           <div className ="login-signup-cont">

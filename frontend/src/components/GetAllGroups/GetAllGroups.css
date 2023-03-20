@@ -32,10 +32,11 @@ font-size: 24px;
 }
 .groupInfo h2 {
     margin-bottom: 0px;
+    font-size: 1.25vw;
 }
 
 .main-wrapper {
-    margin: 0 500px;
+    margin: 0 26vw;
 }
 
 .active {

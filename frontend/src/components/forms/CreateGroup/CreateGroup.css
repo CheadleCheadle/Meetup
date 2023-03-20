@@ -23,6 +23,8 @@ label h1{
     border: 2px solid black;
     border-radius: 2px;
     background-color: #E8F0FE;
+    width: 28em;
+    height: 2em;
 }
 
 label textarea {
@@ -49,6 +51,7 @@ label select {
     border: 2px solid black;
     border-radius: 2px;
     background-color: #E8F0FE;
+    height: 2em;
 }
 
  #submit-button {
@@ -59,6 +62,7 @@ label select {
     box-shadow: 2px 2px black;
     width: 12em;
     height: 4em;
+    cursor: pointer;
 }
 
 #button-container-create {

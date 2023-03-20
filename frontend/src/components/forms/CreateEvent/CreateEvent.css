@@ -17,11 +17,6 @@ label h3 {
 #title {
     margin-bottom: 0;
 }
-/* h3 {
-    margin-bottom: 0;
-    padding-top: 1em;
-    margin-top: .25em;
-} */
 
 #create-event-form h3{
     margin-bottom: 0;
@@ -29,11 +24,14 @@ label h3 {
     margin-top: .25em;
 }
 
+
+
 .event-name {
     width: 30em;
     height: 2em;
     border: 3px solid black;
     border-radius: 3px;
+    background-color: #E8F0FE;
 }
 #first-h3 {
     padding-top: 0;
@@ -47,6 +45,7 @@ label h3 {
 #price {
     width: 7em;
     height: 2em;
+    background-color: #E8F0FE;
 }
 
 #price-h3 {
@@ -76,4 +75,17 @@ label h3 {
 
 #description-head {
     border-top: 2px solid gray;
+}
+
+/* #create-event-form input :not(button) {
+    background-color: #E8F0FE;
+} */
+
+#event-name {
+    background-color: #E8F0FE;
+}
+
+#startDate-event {
+    background-color: #E8F0FE;
+
 }

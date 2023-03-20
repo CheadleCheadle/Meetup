@@ -51,10 +51,8 @@ const deleteEvent = (eventId) => {
 
 export const getAllEvents = () => async (dispatch) => {
     const response = await fetch(`/api/events`);
-    console.log('RESPONSE', response)
     if (response.ok) {
         const data = await response.json();
-        console.log("THUNK DATA:", data);
         dispatch(loadEvents(data));
         return data;
     }
@@ -64,7 +62,6 @@ export const getEventDetails = (id) => async (dispatch) => {
     const response = await fetch(`/api/events/${id}`);
     if (response.ok) {
         const data = await response.json();
-        console.log("THE DATA", data);
         dispatch(loadEventDetails(data));
         return data;
     }
@@ -87,7 +84,6 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
     });
     if (response.ok) {
         const data = await response.json();
-        console.log('HELLO FROM REDUCER',data);
         const singleObject = {
             ...data,
             Group: {

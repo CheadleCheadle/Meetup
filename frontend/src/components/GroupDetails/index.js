@@ -19,8 +19,6 @@ export default function GroupDetails({sessionUser}) {
     groupId = parseInt(groupId);
     const dispatch = useDispatch();
     const group = useSelector((state) => state.groups.singleGroup);
-    console.log("Group", group);
-//   const { setModalContent, setOnModalClose } = useModal();
     const goToDetails = (event) => {
     return history.replace(`/events/${event.id}`);
     }
@@ -73,7 +71,7 @@ export default function GroupDetails({sessionUser}) {
                     ></OpenModalButton>
                 </div>
             )
-        } else {
+        } else if (sessionUser){
             return (
                 <div className="group-button-delete">
                     <button onClick={() => window.alert("Feature Coming Soon...")}>Join this group</button>
