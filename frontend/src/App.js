@@ -37,6 +37,9 @@ function App() {
         <Route exact path="/groups/:groupId/events/new">
           <CreateEvent></CreateEvent>
         </Route>
+        <Route exact path="/events/:eventId/edit">
+          <CreateEvent update={true} sessionUser={sessionUser}></CreateEvent>
+        </Route>
         </Switch>
       )}
       {isLoaded && !sessionUser && (

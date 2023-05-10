@@ -35,13 +35,16 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
         return res.status(403).json({message: "Forbidden", statusCode: 403});
     }
 });
-
+//Update Image for a group
 router.put('/:imageId', requireAuth, async (req, res) => {
     const { user } = req;
     const { url } = req.body;
+    console.log("IM the req body", req.body);
     let { imageId } = req.params;
     imageId = parseInt(imageId);
     const image = await GroupImage.findByPk(imageId);
+
+    console.log("Im the image", image);
 
     if (!image) {
         return res.status(404).json({message: "Group image couldn't be found", statusCode: 404});
@@ -53,6 +56,8 @@ router.put('/:imageId', requireAuth, async (req, res) => {
             groupId: image.dataValues.groupId
         }
     });
+
+    console.log("Im the currentMembership", currentMembership);
 
     if (!currentMembership && user.id !== image.dataValues.Group.dataValues.organizerId) {
         return res.status(403).json({message: "Forbidden", status: 403});

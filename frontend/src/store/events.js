@@ -6,7 +6,10 @@ const GET_EVENT_DETAILS = "events/getEventDetails";
 const GET_GROUP_EVENTS = "events/getGroupEvents";
 const CREATE_EVENT = "events/new";
 const CREATE_EVENT_IMAGE = "events/image/new";
-const DELETE_EVENT = "/events/delet";
+const DELETE_EVENT = "/events/delete";
+const UPDATE_EVENT = "/events/edit";
+const UPDATE_EVENT_IMAGE = "/eventImages/edit";
+
 const loadEvents = (events) => {
     return {
         type: GET_ALL_EVENTS,
@@ -49,6 +52,19 @@ const deleteEvent = (eventId) => {
     }
 }
 
+const updateEvent = (event) => {
+    return {
+        type: UPDATE_EVENT,
+        event
+    }
+}
+
+const updateEventImage = (image) => {
+    return {
+        type: UPDATE_EVENT_IMAGE,
+        image
+    }
+}
 export const getAllEvents = () => async (dispatch) => {
     const response = await fetch(`/api/events`);
     if (response.ok) {
@@ -98,6 +114,9 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
         }
          dispatch(createEvent(singleObject));
         return data;
+    } else {
+        const errors = await response.json();
+        console.log("Hi errors", errors);
     }
 }
 
@@ -129,6 +148,36 @@ export const deleteEventAction = (eventId) => async (dispatch) => {
         return data;
     }
 }
+
+export const updateEventAction = (event) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/{event.id}/edit`, {
+        method: "PUT",
+        headers: {'Content-Type': 'Application/json'},
+        body: JSON.stringify(event)
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+        dispatch(updateEvent(event));
+        return data;
+    }
+
+}
+
+export const updateEventImageAction = (image) => async (dispatch) => {
+    const response = await csrfFetch(`/api/event-images/${image.id}`, {
+        method: "PUT",
+        headers: {'Content-Type': 'Application/json'},
+        body: JSON.stringify(image)
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updateEventImage(data));
+      return data;
+    }
+}
+
 
 
 // const initialState = { allEvents: {}, singleEvent: {} };
@@ -186,6 +235,30 @@ const eventsReducer = (state = initialState, action) => {
             newState.allEvents = {...state.allEvents};
             delete newState.allEvents[action.eventId];
             return newState;
+        }
+
+        case UPDATE_EVENT: {
+            const newState = {...state};
+            newState.singleEvent = {...state.singleEvent}
+            newState.singleEvent.name = action.event.name;
+            newState.singleEvent.type = action.event.type;
+            newState.singleEvent.capacity = action.event.capacity;
+            newState.singleEvent.price = action.event.price;
+            newState.singleEvent.description = action.event.description;
+            newState.singleEvent.startDate = action.event.startDate;
+            newState.singleEvent.endDate = action.event.endDate;
+        }
+
+        case UPDATE_EVENT_IMAGE: {
+            const newState = {...state};
+            newState.singlEvent.EventImages = [...state.singleEvent.EventImages];
+            newState.singlEvent.EventImages.forEach(image => {
+                if (image.id === action.image.id) {
+                    image.url = action.image.url;
+                }
+            });
+            return newState;
+
         }
         default: {
             return state;

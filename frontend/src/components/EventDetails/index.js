@@ -36,7 +36,7 @@ export default function EventDetails({sessionUser}) {
             return <div className="group-buttons"><OpenModalButton
             buttonText="Delete"
             modalComponent={<DeleteEventButtonModal groupId={groupId} eventId={eventId}></DeleteEventButtonModal>}></OpenModalButton>
-            <button onClick={() => window.alert('Feature coming soon...')}>Update</button>
+            <button onClick={() =>  history.push(`/events/{eventId}/edit`)}>Update</button>
             </div>
         } else {
             return null;

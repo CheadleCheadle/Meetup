@@ -365,11 +365,15 @@ router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, re
     if (!membership) return res.json({message: "Forbidden", statusCode: 403});
 
     if (membership.userId === group.organizerId || membership.status === "co-host") {
-        const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
-        await Attendance.create({eventId: newEvent.dataValues.id, userId: user.id, status: "host"});
-        delete newEvent.dataValues.createdAt;
-        delete newEvent.dataValues.updatedAt;
-        res.status(200).json(newEvent);
+        try {
+            const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
+            await Attendance.create({eventId: newEvent.dataValues.id, userId: user.id, status: "host"});
+            delete newEvent.dataValues.createdAt;
+            delete newEvent.dataValues.updatedAt;
+            res.status(200).json(newEvent);
+        } catch (error) {
+            res.status(400).json({errors: error});
+        }
     } else {
         return res.status(403).json({message: "Forbidden", statusCode: 403});
     }

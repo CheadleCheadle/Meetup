@@ -14,6 +14,23 @@
     color: teal;
 }
 
+
+
+#first-label {
+    display: flex;
+    flex-direction: column;
+}
+#location-cont {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+#location-cont select {
+    height: 2.3em;
+    border: 2px solid black;
+    border-radius: 2px;
+    background-color: #E8F0FE;
+}
 label h1{
    border-top: 2px solid gray;
    padding-top: .5em;
@@ -25,6 +42,7 @@ label h1{
     background-color: #E8F0FE;
     width: 28em;
     height: 2em;
+    margin-bottom: 1em;
 }
 
 label textarea {
@@ -33,6 +51,7 @@ label textarea {
     border: 3px solid black;
     border-radius: 2px;
     background-color: #E8F0FE;
+    margin-bottom: .7em;
 ;
 }
 
@@ -53,6 +72,8 @@ label select {
     background-color: #E8F0FE;
     height: 2em;
 }
+
+
 
  #submit-button {
 
