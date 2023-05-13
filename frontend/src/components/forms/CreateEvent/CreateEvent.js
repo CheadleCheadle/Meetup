@@ -52,7 +52,7 @@ export default function CreateEvent({update}) {
         }
     }
     }
-
+    //Handle validations
     useEffect(() => {
         const tempErrors = {};
         if (name.replaceAll(' ', '') === "") {
