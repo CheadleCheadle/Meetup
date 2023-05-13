@@ -53,35 +53,6 @@ export default function CreateEvent({update}) {
     }
     }
 
-    // const validation = () => {
-    //     const tempErrors = {};
-    //     if (name === "") {
-    //         tempErrors.name = "Name is required";
-    //     }
-    //     if (type === "") {
-    //         tempErrors.type = "Event Type is required";
-    //     }
-    //     if (isPrivate === "") {
-    //         tempErrors.private = "Visibility is required";
-    //     }
-    //     if (price === "") {
-    //         tempErrors.price = "Price is required";
-    //     }
-    //     if (startDate === "") {
-    //         tempErrors.startDate = "Event start is required";
-    //     }
-    //     if (endDate === "") {
-    //         tempErrors.endDate = "Event end is required";
-    //     }
-    //     if (!["jpg", "jpeg", "png"].includes(image.slice(image.length - 5).split(".")[1])) {
-    //         tempErrors.image = "Image URL must end in .png, .jpg, or .jpeg";
-    //     }
-    //     if (about.length < 30) {
-    //         tempErrors.about = "Description must be at least 30 characters long";
-    //     }
-    //     setErrors(tempErrors);
-    // }
-
     useEffect(() => {
         const tempErrors = {};
         if (name.replaceAll(' ', '') === "") {
