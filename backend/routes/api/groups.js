@@ -337,10 +337,7 @@ router.get('/:groupId/events', async (req, res) => {
     delete event.dataValues.Group.dataValues.type;
     delete event.dataValues.Group.dataValues.about;
     delete event.dataValues.Group.dataValues.private;
-    // delete event.dataValues.Venue.dataValues.groupId;
-    // delete event.dataValues.Venue.dataValues.address;
-    // delete event.dataValues.Venue.dataValues.lat;
-    // delete event.dataValues.Venue.dataValues.lng;
+
 
 }
 res.status(200).json({Events:events});
