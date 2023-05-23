@@ -10,6 +10,9 @@ import OpenModalButton from "../OpenModalButton";
 import DeleteEventButtonModal from "./DeleteEventButtonModal";
 import "./EventDetails.css";
 import Loading from "../loading";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock, faDollarSign, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import MapContainer from "./map";
 export default function EventDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
@@ -50,6 +53,30 @@ export default function EventDetails({sessionUser}) {
             event.target.src = fallbackSrc
         }
         return <img src={src} onError={handleImageError} alt={alt} />;
+    }
+
+
+    const handleDate = (date, flag) => {
+        console.log(date, typeof date);
+        const utcDate = new Date(date);
+        const options = {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        };
+        const localTimeString = utcDate.toLocaleDateString(undefined, options);
+        if (flag) {
+            return (
+                <div>{localTimeString} to</div>
+            )
+        }
+        return (
+            <div>{localTimeString}</div>
+        )
     }
 
 
@@ -102,27 +129,36 @@ return ( isLoaded &&
         </div>
         <div className="event-details-container">
             <div className="event-details">
+                <div id="event-details-cont">
 
                 <div className="section-one-event">
-                    <div className="clock">🕒</div>
+                    <div className="clock">
+                        <FontAwesomeIcon className="fa-lg" icon={faClock} style={{color: "#80858e",}} />
+                    </div>
                     <div className="time">
-                        <div>Start</div>
-                        <div>End</div>
+
                     </div>
                     <div className="start-end">
-                        <div>{new Date(event.startDate).toDateString()} • {event.startDate.slice(11, 19)}</div>
-                        <div>{new Date(event.endDate).toDateString()} • {event.endDate.slice(11,19)}</div>
+                        {/* <div>{new Date(event.startDate).toDateString()} • {event.startDate.slice(11, 19)}</div> */}
+                        {/* <div>{new Date(event.endDate).toDateString()} • {event.endDate.slice(11,19)}</div> */}
+                        {handleDate(event.startDate, true)}
+                        {handleDate(event.endDate)}
+
                     </div>
                 </div>
 
                 <div className="section-two-event">
-                    <div className="dollar">💲</div>
+                    <div className="dollar">
+                        <FontAwesomeIcon className="fa-lg" icon={faDollarSign} style={{color: "#80858e",}} />
+                    </div>
                     <div className="price">${event.price > 0 ? event.price : " Free"}</div>
                 </div>
 
                 <div className="section-three-event">
                     <div className="type-wrap">
-                    <div className="pin">📍</div>
+                    <div className="pin">
+                        <FontAwesomeIcon className="fa-lg" icon={faLocationDot} style={{color: "#80858e",}} />
+                    </div>
                     <div className="type">{event.type}</div>
                     </div>
                     <div className="button-cont">
@@ -130,6 +166,10 @@ return ( isLoaded &&
                     </div>
                 </div>
             </div>
+                <div id="map-cont">
+                <MapContainer  lat={event.Venue.lat} lng={event.Venue.lng}apiKey="AIzaSyCuR8c72mbLTAxw7jcDrnbCakHUZ6kNT3k" />
+                </div>
+                </div>
         </div>
         </div>
         </div>

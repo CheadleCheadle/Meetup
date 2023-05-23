@@ -24,32 +24,32 @@ module.exports = {
       address: '12345 S Main St',
       city: 'Newport',
       state: "OR",
-      lat: 120.6,
-      lng: 219.4
+      lat: 44.6368,
+      lng: -124.0535
     },
     {
       groupId: 2,
       address: '12345 S Main St',
       city: 'Athena',
       state: "OR",
-      lat: 124.6,
-      lng: 212.4
+      lat: 45.8118,
+      lng: -118.4905
     },
     {
       groupId: 3,
       address: '12345 S Main St',
       city: 'Beaverton',
       state: "OR",
-      lat: 210.6,
-      lng: 234.4
+      lat:45.4869,
+      lng: -122.8040
     },
     {
       groupId: 4,
       address: '12345 S Main St',
       city: 'Portland',
       state: "OR",
-      lat: 930.6,
-      lng: 231.4
+      lat: 45.5152,
+      lng: -122.6784
     },
    ], {});
   },
