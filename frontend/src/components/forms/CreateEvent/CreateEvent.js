@@ -1,13 +1,15 @@
 import React, {useEffect, useState } from "react";
 import { useHistory, useParams} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getEventDetails,createEventAction, createEventImageAction, updateEventAction, updateEventImageAction} from "../../../store/events";
+import { getEventDetails,createEventAction, createEventImageAction, updateEventAction, updateEventImageAction, getAllEvents} from "../../../store/events";
 import { useSelector } from "react-redux";
 import "./CreateEvent.css"
+import { getGroupDetails } from "../../../store/groups";
 export default function CreateEvent({update}) {
     const group = useSelector((state) => state.groups.singleGroup);
-    const params = useParams();
-    let {eventId} = params;
+    const singleEvent = useSelector(state => state.events.singleEvent);
+    let {eventId, groupId } = useParams()
+    groupId = parseInt(groupId);
     eventId = parseInt(eventId);
 
     const history = useHistory();
@@ -24,7 +26,7 @@ export default function CreateEvent({update}) {
     const [errors, setErrors] = useState({});
     const [disabled, setDisabled] = useState(false);
     const [submitted, setSubmitted] = useState(false);
-
+    const [isLoaded, setIsLoaded] = useState(false);
 
      const stringToBool = (bool) => {
         if (bool === "Private") {
@@ -33,6 +35,7 @@ export default function CreateEvent({update}) {
             return false
         }
     }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitted(true);
@@ -46,9 +49,18 @@ export default function CreateEvent({update}) {
             await dispatch(updateEventAction(event))
             await dispatch(updateEventImageAction(theImage));
         } else if (!update) {
-        const newEvent = await dispatch(createEventAction(event, group.id));
-        await dispatch(createEventImageAction(newEvent.id,theImage));
-        history.push(`/events/${newEvent.id}`);
+            console.log("Group Id", group.id, group)
+            try {
+
+                const newEvent = dispatch(createEventAction(event, group.id))
+                .then((event) => {
+                    dispatch(createEventImageAction(event.id,theImage))
+                    .then(() => {
+                        history.push(`/events/${event.id}`);
+                    });
+                });
+            } catch (e) {
+            }
         }
     }
     }
@@ -96,6 +108,11 @@ export default function CreateEvent({update}) {
     }, [name, type, isPrivate, price, startDate, endDate, image, about, submitted])
 
     useEffect(() => {
+        dispatch(getAllEvents())
+        dispatch(getGroupDetails(groupId))
+        .then(() => {
+            setIsLoaded(true)
+        })
         setErrors([]);
     },[]);
 
@@ -117,7 +134,7 @@ export default function CreateEvent({update}) {
         }
     },[]);
 
-    return (
+    return ( isLoaded &&
         <>
         <div className="create-event-wrap">
             {!update ? <h1 id="title">Create an event for {group.name}</h1> : <h1 id="title">Update your event's information</h1>}

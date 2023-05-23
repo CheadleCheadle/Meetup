@@ -32,6 +32,7 @@ export default function EventList() {
        return history.push(`/events/${event.id}`);
     }
     useEffect(() => {
+        console.log("Im running");
         dispatch(getAllEvents())
     }, [dispatch]);
 

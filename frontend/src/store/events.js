@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import normalize from "./normalize";
 
 
 const GET_ALL_EVENTS = "events/getAllEvents";
@@ -69,8 +70,10 @@ export const getAllEvents = () => async (dispatch) => {
     const response = await fetch(`/api/events`);
     if (response.ok) {
         const data = await response.json();
-        dispatch(loadEvents(data));
-        return data;
+        console.log("events", data);
+        const events = normalize(data.Events);
+        dispatch(loadEvents(events));
+        return events
     }
 }
 
@@ -87,8 +90,9 @@ export const getGroupEvents = (groupId) => async (dispatch) => {
     const response = await fetch(`/api/groups/${groupId}/events`);
     if (response.ok) {
         const data = await response.json();
-        dispatch(loadGroupEvents(data));
-        return data;
+        const events = normalize(data.Events);
+        dispatch(loadGroupEvents(events));
+        return events
     }
 }
 
@@ -100,6 +104,7 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
     });
     if (response.ok) {
         const data = await response.json();
+        console.log("THis is the data", data);
         const singleObject = {
             ...data,
             Group: {
@@ -186,6 +191,10 @@ const initialState = {
 
     },
 
+    groupEvents: {
+
+    },
+
     singleEvent: {
 
       Group: {
@@ -202,25 +211,34 @@ const initialState = {
   }
 
 const eventsReducer = (state = initialState, action) => {
+    let newState = {};
     switch (action.type) {
         case GET_ALL_EVENTS: {
-            const newState = {...state, allEvents: {}};
-            action.events.Events.forEach((event) => (newState.allEvents[event.id] = event));
+            newState = {
+                ...state,
+                allEvents: {...action.events}
+            }
             return newState;
         }
         case GET_EVENT_DETAILS: {
-            const newState = {...state};
+            newState = {...state};
             newState.singleEvent = {...action.event};
             return newState;
         }
         case GET_GROUP_EVENTS: {
-            const newState = {...state};
-            newState.allEvents = {};
-            action.events.Events.forEach((event) => (newState.allEvents[event.id] = event));
+            newState = {
+                ...state,
+                groupEvents: {...action.events}
+            }
+
             return newState;
         }
         case CREATE_EVENT: {
-            const newState = {...state};
+            const newState = {
+                ...state,
+                allEvents : {...state.allEvents, [action.event.id]: action.event}
+            };
+
             newState.singleEvent = {...action.event};
             return newState;
         }

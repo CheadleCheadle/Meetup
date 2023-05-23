@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {useParams} from "react-router-dom"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +9,7 @@ import picture from "../../images/download.jpg";
 import OpenModalButton from "../OpenModalButton";
 import DeleteEventButtonModal from "./DeleteEventButtonModal";
 import "./EventDetails.css";
+import Loading from "../loading";
 export default function EventDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
@@ -17,16 +19,37 @@ export default function EventDetails({sessionUser}) {
     const event = useSelector((state) => state.events.singleEvent);
     const eventsGroup = useSelector((state) => state.groups.singleGroup);
     const groupId = event.groupId;
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         dispatch(getEventDetails(eventId));
     }, [dispatch]);
+
+    useEffect(() => {
+        if (event.id) {
+            console.log("uSeffect is running", event)
+            dispatch(getGroupDetails(event.groupId))
+            .then(() => {
+                setIsLoaded(true);
+            })
+        }
+    }, [event]);
+
     if (!Object.keys(event).length) {
         return null;
     }
 
     if (!event.id) {
         return null;
+    }
+
+
+    const ImageFallBack = ( { src, fallbackSrc, alt }) => {
+        console.log("fal", fallbackSrc)
+        const handleImageError = (event) => {
+            event.target.src = fallbackSrc
+        }
+        return <img src={src} onError={handleImageError} alt={alt} />;
     }
 
 
@@ -44,8 +67,12 @@ export default function EventDetails({sessionUser}) {
         }
     }
 
-
-return (
+if (!isLoaded) {
+    return (
+        <Loading />
+    )
+}
+return ( isLoaded &&
     <>
     <section className="events-wrapper">
         <div className="events-navigation">
@@ -56,7 +83,12 @@ return (
         <div className="event-container">
             <div className="first-event-section">
         <div className="event-image-container">
-        <img src={event.EventImages[0].url}></img>
+            <ImageFallBack
+            src={event.EventImages[0]?.url}
+            fallbackSrc="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"
+            alt="Image of Meetup logo"
+            />
+        {/* <img src={event.EventImages[0]?.url} onError={this.src="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"}></img> */}
         </div>
         <div className="group-event-details">
         <div className="group-details">

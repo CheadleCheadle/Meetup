@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupDetails,deleteGroupAction } from "../../store/groups";
 import { NavLink } from "react-router-dom";
@@ -12,12 +12,14 @@ import OpenModalButton from "../OpenModalButton";
 import { useHistory } from "react-router-dom";
 import GroupEvents from "./events";
 import "./GroupDetails.css";
+import Loading from "../loading";
 export default function GroupDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
     let { groupId } = params;
     groupId = parseInt(groupId);
     const dispatch = useDispatch();
+    const [isLoaded, setIsLoaded] = useState(false);
     const group = useSelector((state) => state.groups.singleGroup);
     const goToDetails = (event) => {
     return history.replace(`/events/${event.id}`);
@@ -40,8 +42,14 @@ export default function GroupDetails({sessionUser}) {
 
     useEffect(() => {
         dispatch(getGroupDetails(groupId));
-        dispatch(getGroupEvents(groupId));
-    }, [dispatch]);
+        dispatch(getGroupEvents(groupId))
+        .then(() => {
+            console.log("Im being upodate");
+            setIsLoaded(true);
+        })
+    }, [dispatch, groupId]);
+
+
     if (!group.id) {
         return null;
     }
@@ -49,6 +57,7 @@ export default function GroupDetails({sessionUser}) {
         return null;
     }
     const createEvent = () => {
+        // dispatch
         history.push(`/groups/${groupId}/events/new`)
     }
     const updateGroup = () => {
@@ -80,7 +89,13 @@ export default function GroupDetails({sessionUser}) {
         }
     }
 
-return (
+    if (!isLoaded) {
+        return (
+            <Loading />
+        )
+    }
+
+return ( isLoaded &&
     <>
     <div className="group-details-wrapper">
         <div className="image-details-wrapper">

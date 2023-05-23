@@ -1,10 +1,18 @@
 .login-modal-wrap {
     height: 100%;
+    width: 35em;
 }
 
 .header-text {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3em;
+}
+
+.header-text img {
+    width: 48;
+    height: 48;
 }
 .login-form-cont {
     height: 50%;
@@ -16,23 +24,69 @@
     margin-bottom: 1em;
 }
 
+#icon-cont {
+    width: 48px;
+    height: 48px;
+}
+
+#icon-cont h1 {
+    margin-bottom: 0em;
+}
+
+#icon-cont img {
+    width: 100%;
+    height: 100%;
+}
+
+#not-members {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: .5em;
+    font-weight: 400;
+    font-size: 1.2em;
+    color: #413f3c;
+}
+#not-members p {
+    margin-top: 0em;
+}
+
+#not-members a {
+    color: teal;
+    text-decoration: none;
+}
+
 .login-form-cont form {
     display: flex;
     flex-direction: column;
     gap: .25em;
-    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 4em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+#login-form label {
+    font-weight: 500;
 }
 
-#login-form input{
-    width: 25em;
-    height: 1.5em;
-    border: 3px solid black;
-    border-radius: 3px;
-    background-color: #E8F0FE;;
+#login-form input {
+    outline-offset: 2px;
+    border-color: rgba(0, 0, 0, 0.5);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-width: 1px;
+    border-radius: 0.5rem;
+    height: 2rem;
+    outline-color: teal;
 }
+
 
 #login-form ul {
     margin: 0em 0em;
+    padding-left: 0em;
 }
 
 #login-form button {
@@ -44,19 +98,31 @@
     list-style-type: none;
 }
 .modal-content {
-     width: 25em;
     border-radius: 15px;
 }
 
 #inactive {
-    box-shadow: 3px 3px gray;
+    border-radius: 8px;
+    cursor: not-allowed;
+    color: #fff;
+    fill: #fff;
+    background-color: gray;
+    padding: 8px 12px;
+    width: 100%;
 }
 #active {
-    background-color: #FF5A5F;
-    box-shadow: 3px 3px black;
-    border: 2px solid black;
-    color: white;
+    border-radius: 8px;
     cursor: pointer;
+    color: #fff;
+    fill: #fff;
+    background-color: #e32359;
+    border-color: #e32359;
+    padding: 8px 12px;
+    width: 100%;
+}
+
+#active:hover {
+    background-color: #db3b68;
 }
 
 #demo-user  {

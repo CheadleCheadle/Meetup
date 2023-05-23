@@ -343,7 +343,7 @@ router.get('/:groupId/events', async (req, res) => {
 res.status(200).json({Events:events});
 });
 //Create an Event by Group Id
-router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, res) => {
+router.post('/:groupId/events', [requireAuth], async (req, res) => {
     const { user } = req;
     let { groupId } = req.params;
     groupId = parseInt(groupId);
@@ -369,6 +369,7 @@ router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, re
             delete newEvent.dataValues.updatedAt;
             res.status(200).json(newEvent);
         } catch (error) {
+            console.log("IM CATCHING THE ERRORS")
             res.status(400).json({errors: error});
         }
     } else {
