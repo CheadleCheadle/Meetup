@@ -7,7 +7,8 @@ import group from "../../images/joinGroup.jpg";
 import { NavLink } from 'react-router-dom';
 import OpenModalButton from '../OpenModalButton';
 import SignupFormModal from '../SignupFormModal';
-export default function Landing({sessionUser}) {
+import Loading from '../loading';
+export default function Landing({sessionUser, isLoaded}) {
 
     const handleStartNewGroup = () => {
         if (!sessionUser) {
@@ -17,7 +18,13 @@ export default function Landing({sessionUser}) {
         }
     }
 
-    return (
+    if (!isLoaded) {
+        return (
+            <Loading />
+        )
+    }
+
+    return ( isLoaded &&
         <main>
             <div className="first-container">
                 <img id="right-blob" src="https://secure.meetupstatic.com/next/images/blobs/green-blob.svg"></img>

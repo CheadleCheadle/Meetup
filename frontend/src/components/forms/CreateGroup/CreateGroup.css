@@ -95,6 +95,22 @@ label select {
     margin-bottom: 5em;
 }
 
+#create-group-form p:not(.errs) {
+    font-weight: 400;
+    font-size: 1.2em;
+    color: #413f3c;
+}
+
+#create-group-form li {
+    font-weight: 400;
+    font-size: 1.2em;
+    color: #413f3c;
+}
+
 #first-h3 {
     border-top: 2px solid white;
+}
+
+.errs {
+    color: red;
 }

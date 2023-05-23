@@ -48,7 +48,7 @@ errors = Object.values(errors);
           ))}
         </ul>
         <label>
-          Email Or Username
+          Email or Username
         </label>
           <input
 

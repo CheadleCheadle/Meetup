@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import './SignupForm.css';
-
+import LoginFormModal from "../LoginFormModal";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 function SignupFormModal() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ function SignupFormModal() {
   let [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
 
+  const { setModalContent, setOnModalClose } = useModal();
   const handleSubmit = (e) => {
     e.preventDefault();
     validateBody();
@@ -66,8 +68,12 @@ function SignupFormModal() {
   return (
     <>
     <div className="signup-modal-wrap">
-      <span className="header-text">
+      <span className="header-text-signup">
       <h1>Sign Up</h1>
+      <span id="not-members">
+      <p>Already a member? </p>
+      <Link onClick={() => setModalContent(<LoginFormModal />)}>Log in</Link>
+      </span>
       </span>
       <div className="signup-form-cont">
       <form id="login-form" onSubmit={handleSubmit}>
@@ -75,61 +81,60 @@ function SignupFormModal() {
           {errors.map((error, idx) => <li key={idx}>{error}</li>)}
         </ul>
         <label>
-
+          Email address
+        </label>
           <input
-            placeholder="Email"
+            placeholder="example@email.com"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </label>
         <label>
-
+          Username
+        </label>
           <input
-            placeholder="Username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
         <label>
+          Your first name
+        </label>
           <input
-            placeholder="First Name"
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-        </label>
         <label>
+          Your last name
+        </label>
           <input
-            placeholder="Last Name"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-        </label>
         <label>
+          Password
+        </label>
           <input
-            placeholder="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
         <label>
+          Confirm Password
+        </label>
           <input
-            placeholder="Confirm Password"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
         <button id={handleDisable() ? "inactive" : "active"}disabled={handleDisable()} type="submit">Sign Up</button>
       </form>
       </div>

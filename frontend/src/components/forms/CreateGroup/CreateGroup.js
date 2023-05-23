@@ -194,15 +194,15 @@ export default function CreateGroup({update, sessionUser}) {
 </select>
 </div>
         </label>
-        { submitted && errors.location ? <p className="errors">{errors.location}</p>: null}
-        { submitted && errors.state ? <p className="errors">{errors.state}</p>: null}
+        { submitted && errors.location ? <p className="errs">{errors.location}</p>: null}
+        { submitted && errors.state ? <p className="errs">{errors.state}</p>: null}
         <label>
         {!update ? <h1>What will your group's name be?</h1> : <h1>What is the name of your group?</h1>}
         <p>Choose a name that will give people a clear idea of what the group is about.</p>
         { !update ? <p>Feel free to get creative! You can edit this later if you change your mind.</p> : <p>Feel free to get creative!</p>}
         <input placeholder="What is your group name?" type="text" value={name} onChange={(e) => setName(e.target.value)} />
         </label>
-        { submitted && errors.name? <p className="errors">{errors.name}</p>: null}
+        { submitted && errors.name? <p className="errs">{errors.name}</p>: null}
         <label>
         <h1>Now describe what your group will be about</h1>
         { !update ? <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p> : <p>People will see this when we promote your group.</p>}
@@ -213,7 +213,7 @@ export default function CreateGroup({update, sessionUser}) {
         </ol>
         <textarea placeholder="Please write atleast 30 characters"type="text" value={about} onChange={(e) => setAbout(e.target.value)}></textarea>
         </label>
-        { submitted && errors.about ? <p className="errors">{errors.about}</p>: null}
+        { submitted && errors.about ? <p className="errs">{errors.about}</p>: null}
         <label>
         <h1>Final steps...</h1>
         <p>Is this an in person or online group?</p>
@@ -222,18 +222,18 @@ export default function CreateGroup({update, sessionUser}) {
         <option value='In person'>In person</option>
         <option value='Online'>Online</option>
         </select>
-        { submitted && errors.type ? <p className="errors">{errors.type}</p>: null}
+        { submitted && errors.type ? <p className="errs">{errors.type}</p>: null}
         <p>Is this group private or public?</p>
         <select value={isPrivate}  onChange={(e) => setisPrivate(e.target.value)} name="options">
         <option value="" disabled selected hidden>(select one)</option>
         <option value="Private">Private</option>
         <option value="Public">Public</option>
         </select>
-        { submitted && errors.private? <p className="errors">{errors.private}</p>: null}
+        { submitted && errors.private? <p className="errs">{errors.private}</p>: null}
         <p>Please add an image url for your group below: (optional)</p>
         <input placeholder="Image Url" type="text" value={image} onChange={(e) => setImage(e.target.value)}/>
         </label>
-        { submitted && errors.image ? <p className="errors">{errors.image}</p>: null}
+        { submitted && errors.image ? <p className="errs">{errors.image}</p>: null}
         <div id="button-container-create">
         <input id="submit-button" type="submit" value={!update ? "Create group" : "Update group"}/>
         </div>

@@ -101,8 +101,9 @@
 
 .login {
     display: flex;
-    width: 10em;
+    width: 8em;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .login-signup-cont {
@@ -145,19 +146,20 @@
 }
 
 .profile {
-    position: absolute;
     background-color: white;
     display: flex;
     justify-content: center;
     flex-direction: row;
     font-size: 1rem;
     filter: drop-shadow(1px, 1px);
-    padding-top: .8em;
 }
 
 .profile-wrap {
     display: flex;
     flex-direction: column;
+    position: absolute;
+    top: 1.7em;
+    right: 1.5em;
 }
 
 .profile-icons {
@@ -179,7 +181,6 @@
     cursor: pointer;
 }
 .profile-dropdown {
-    margin: .25em 0em 0em 0em;
     display: flex;
     flex-direction: column;
     padding: .5em;
@@ -188,6 +189,7 @@
     border-radius: 3px;
     filter: drop-shadow(1px, 1px);
     list-style-type: none;
+    position: relative;
 }
 .hidden {
     display: none;

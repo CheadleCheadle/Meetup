@@ -19,6 +19,7 @@ function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const EventDetails = lazy(() => import('./components/EventDetails'));
+  const Landing = lazy(() => import('./components/LandingPage') );
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
@@ -74,7 +75,9 @@ function App() {
           </Suspense>
         </Route>
         <Route exact path="/">
-          <Landing sessionUser={sessionUser}></Landing>
+          <Suspense fallback={<Loading />}>
+          <Landing sessionUser={sessionUser} isLoaded={isLoaded}></Landing>
+          </Suspense>
         </Route>
       </Switch>
       )}

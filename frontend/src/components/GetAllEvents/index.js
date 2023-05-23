@@ -28,6 +28,24 @@ export default function EventList() {
         dispatch(getGroupDetails(event.groupId))
     }
 
+    const handleDate = (date) => {
+        console.log(date, typeof date);
+        const utcDate = new Date(date);
+        const options = {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        };
+        const localTimeString = utcDate.toLocaleDateString(undefined, options);
+        return (
+            <p>{localTimeString}</p>
+        )
+    }
+
     const goToDetails = (event) => {
        return history.push(`/events/${event.id}`);
     }
@@ -62,7 +80,8 @@ export default function EventList() {
                 <img src={event.previewImage}></img>
                 </div>
                 <div className="eventInfo">
-                    <p>{event.startDate.slice(0,10)} • {event.startDate.slice(11, 19)}</p>
+                    {/* <p>{event.startDate.slice(0,10)} • {event.startDate.slice(11, 19)}</p> */}
+                    {handleDate(event.startDate)}
                     <h1>{event.name}</h1>
                     {event.Venue ? ( <h3>{event.Venue.city} {event.Venue.state}</h3>) : (<p>No Venue for this event yet...</p>)}
                 </div>

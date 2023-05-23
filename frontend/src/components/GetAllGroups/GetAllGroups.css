@@ -11,6 +11,9 @@ flex-direction: column;
 .groupInfo {
     display: flex;
     flex-direction: column;
+    font-weight: 400;
+    font-size: 1em;
+    color: #413f3c;
 
 }
 .nav-container {
@@ -29,6 +32,7 @@ font-size: 24px;
 .groupInfo h3 {
     color: gray;
     margin: 10px 0px;
+    font-weight: 500;
 }
 .groupInfo h2 {
     margin-bottom: 0px;
