@@ -15,7 +15,7 @@ export default function DemoLogin({onItemClick}) {
     return (
         <h3 id="demo-user"
         onClick={handleSubmit}>
-             DemoUser
+             Demo User
         </h3>
     )
 }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {useParams} from "react-router-dom"
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +9,10 @@ import picture from "../../images/download.jpg";
 import OpenModalButton from "../OpenModalButton";
 import DeleteEventButtonModal from "./DeleteEventButtonModal";
 import "./EventDetails.css";
+import Loading from "../loading";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock, faDollarSign, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import MapContainer from "./map";
 export default function EventDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
@@ -17,10 +22,22 @@ export default function EventDetails({sessionUser}) {
     const event = useSelector((state) => state.events.singleEvent);
     const eventsGroup = useSelector((state) => state.groups.singleGroup);
     const groupId = event.groupId;
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         dispatch(getEventDetails(eventId));
     }, [dispatch]);
+
+    useEffect(() => {
+        if (event.id) {
+            console.log("uSeffect is running", event)
+            dispatch(getGroupDetails(event.groupId))
+            .then(() => {
+                setIsLoaded(true);
+            })
+        }
+    }, [event]);
+
     if (!Object.keys(event).length) {
         return null;
     }
@@ -30,13 +47,46 @@ export default function EventDetails({sessionUser}) {
     }
 
 
+    const ImageFallBack = ( { src, fallbackSrc, alt }) => {
+        console.log("fal", fallbackSrc)
+        const handleImageError = (event) => {
+            event.target.src = fallbackSrc
+        }
+        return <img src={src} onError={handleImageError} alt={alt} />;
+    }
+
+
+    const handleDate = (date, flag) => {
+        console.log(date, typeof date);
+        const utcDate = new Date(date);
+        const options = {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        };
+        const localTimeString = utcDate.toLocaleDateString(undefined, options);
+        if (flag) {
+            return (
+                <div>{localTimeString} to</div>
+            )
+        }
+        return (
+            <div>{localTimeString}</div>
+        )
+    }
+
+
 
      const renderDeleteButton = () => {
         if (sessionUser?.id === eventsGroup.organizerId) {
             return <div className="group-buttons"><OpenModalButton
             buttonText="Delete"
             modalComponent={<DeleteEventButtonModal groupId={groupId} eventId={eventId}></DeleteEventButtonModal>}></OpenModalButton>
-            <button onClick={() => window.alert('Feature coming soon...')}>Update</button>
+            <button onClick={() =>  history.push(`/events/{eventId}/edit`)}>Update</button>
             </div>
         } else {
             return null;
@@ -44,8 +94,12 @@ export default function EventDetails({sessionUser}) {
         }
     }
 
-
-return (
+if (!isLoaded) {
+    return (
+        <Loading />
+    )
+}
+return ( isLoaded &&
     <>
     <section className="events-wrapper">
         <div className="events-navigation">
@@ -56,7 +110,12 @@ return (
         <div className="event-container">
             <div className="first-event-section">
         <div className="event-image-container">
-        <img src={event.EventImages[0].url}></img>
+            <ImageFallBack
+            src={event.EventImages[0]?.url}
+            fallbackSrc="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"
+            alt="Image of Meetup logo"
+            />
+        {/* <img src={event.EventImages[0]?.url} onError={this.src="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"}></img> */}
         </div>
         <div className="group-event-details">
         <div className="group-details">
@@ -70,27 +129,36 @@ return (
         </div>
         <div className="event-details-container">
             <div className="event-details">
+                <div id="event-details-cont">
 
                 <div className="section-one-event">
-                    <div className="clock">🕒</div>
+                    <div className="clock">
+                        <FontAwesomeIcon className="fa-lg" icon={faClock} style={{color: "#80858e",}} />
+                    </div>
                     <div className="time">
-                        <div>Start</div>
-                        <div>End</div>
+
                     </div>
                     <div className="start-end">
-                        <div>{new Date(event.startDate).toDateString()} • {event.startDate.slice(11, 19)}</div>
-                        <div>{new Date(event.endDate).toDateString()} • {event.endDate.slice(11,19)}</div>
+                        {/* <div>{new Date(event.startDate).toDateString()} • {event.startDate.slice(11, 19)}</div> */}
+                        {/* <div>{new Date(event.endDate).toDateString()} • {event.endDate.slice(11,19)}</div> */}
+                        {handleDate(event.startDate, true)}
+                        {handleDate(event.endDate)}
+
                     </div>
                 </div>
 
                 <div className="section-two-event">
-                    <div className="dollar">💲</div>
+                    <div className="dollar">
+                        <FontAwesomeIcon className="fa-lg" icon={faDollarSign} style={{color: "#80858e",}} />
+                    </div>
                     <div className="price">${event.price > 0 ? event.price : " Free"}</div>
                 </div>
 
                 <div className="section-three-event">
                     <div className="type-wrap">
-                    <div className="pin">📍</div>
+                    <div className="pin">
+                        <FontAwesomeIcon className="fa-lg" icon={faLocationDot} style={{color: "#80858e",}} />
+                    </div>
                     <div className="type">{event.type}</div>
                     </div>
                     <div className="button-cont">
@@ -98,6 +166,10 @@ return (
                     </div>
                 </div>
             </div>
+                <div id="map-cont">
+                <MapContainer  lat={event.Venue.lat} lng={event.Venue.lng}apiKey="AIzaSyCuR8c72mbLTAxw7jcDrnbCakHUZ6kNT3k" />
+                </div>
+                </div>
         </div>
         </div>
         </div>

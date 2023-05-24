@@ -4,13 +4,15 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
 import DemoLogin from "./signinDemo";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import SignupFormModal from "../SignupFormModal";
 function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   let [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
-
+  const { setModalContent, setOnModalClose } = useModal();
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors([]);
@@ -29,7 +31,14 @@ errors = Object.values(errors);
     <>
     <div className="login-modal-wrap">
       <span className="header-text">
+        <div id="icon-cont">
+        <img src="https://img.icons8.com/ios/50/F64060/meetup.png" alt="meetup"/>
+        </div>
       <h1>Log In</h1>
+      <span id="not-members">
+      <p>Not a member yet? </p>
+      <Link onClick={() => setModalContent(<SignupFormModal />)}>Sign up</Link>
+      </span>
       </span>
       <div className="login-form-cont">
       <form id="login-form" onSubmit={handleSubmit}>
@@ -39,24 +48,25 @@ errors = Object.values(errors);
           ))}
         </ul>
         <label>
+          Email or Username
+        </label>
           <input
-          placeholder="Username or Email"
+
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
-        </label>
         <label>
-
+            Password
+        </label>
           <input
-          placeholder="password"
+
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
         <button id={credential.length < 4 || password.length < 6 ? "inactive" : "active"}disabled={credential.length < 4 || password.length < 6} type="submit">Log In</button>
       </form>
       </div>

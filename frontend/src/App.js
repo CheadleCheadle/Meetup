@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, useHistory, Redirect} from "react-router-dom";
 import * as sessionActions from "./store/session";
@@ -7,16 +7,19 @@ import GroupList from "./components/GetAllGroups";
 import SeeAllGroups from "./components/LandingNavigation/SeeAllGroups";
 import GroupDetails from "./components/GroupDetails";
 import EventList from "./components/GetAllEvents";
-import EventDetails from "./components/EventDetails";
+// import EventDetails from "./components/EventDetails";
 import CreateGroup from "./components/forms/CreateGroup/CreateGroup";
 import Landing from "./components/LandingPage";
 import CreateEvent from "./components/forms/CreateEvent/CreateEvent";
 import { getGroupDetails } from "./store/groups";
+import Loading from "./components/loading";
 function App() {
   const history = useHistory();
   const sessionUser = useSelector(state => state.session.user);
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const EventDetails = lazy(() => import('./components/EventDetails'));
+  const Landing = lazy(() => import('./components/LandingPage') );
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
@@ -36,6 +39,9 @@ function App() {
         </Route>
         <Route exact path="/groups/:groupId/events/new">
           <CreateEvent></CreateEvent>
+        </Route>
+        <Route exact path="/events/:eventId/edit">
+          <CreateEvent update={true} sessionUser={sessionUser}></CreateEvent>
         </Route>
         </Switch>
       )}
@@ -64,10 +70,14 @@ function App() {
           <EventList></EventList>
         </Route>
         <Route exact path="/events/:eventId">
+          <Suspense fallback={<Loading />}>
           <EventDetails sessionUser={sessionUser}></EventDetails>
+          </Suspense>
         </Route>
         <Route exact path="/">
-          <Landing sessionUser={sessionUser}></Landing>
+          <Suspense fallback={<Loading />}>
+          <Landing sessionUser={sessionUser} isLoaded={isLoaded}></Landing>
+          </Suspense>
         </Route>
       </Switch>
       )}

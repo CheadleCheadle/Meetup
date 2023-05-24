@@ -337,16 +337,13 @@ router.get('/:groupId/events', async (req, res) => {
     delete event.dataValues.Group.dataValues.type;
     delete event.dataValues.Group.dataValues.about;
     delete event.dataValues.Group.dataValues.private;
-    // delete event.dataValues.Venue.dataValues.groupId;
-    // delete event.dataValues.Venue.dataValues.address;
-    // delete event.dataValues.Venue.dataValues.lat;
-    // delete event.dataValues.Venue.dataValues.lng;
+
 
 }
 res.status(200).json({Events:events});
 });
 //Create an Event by Group Id
-router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, res) => {
+router.post('/:groupId/events', [requireAuth], async (req, res) => {
     const { user } = req;
     let { groupId } = req.params;
     groupId = parseInt(groupId);
@@ -365,11 +362,16 @@ router.post('/:groupId/events', [requireAuth, validateEventBody], async (req, re
     if (!membership) return res.json({message: "Forbidden", statusCode: 403});
 
     if (membership.userId === group.organizerId || membership.status === "co-host") {
-        const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
-        await Attendance.create({eventId: newEvent.dataValues.id, userId: user.id, status: "host"});
-        delete newEvent.dataValues.createdAt;
-        delete newEvent.dataValues.updatedAt;
-        res.status(200).json(newEvent);
+        try {
+            const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
+            await Attendance.create({eventId: newEvent.dataValues.id, userId: user.id, status: "host"});
+            delete newEvent.dataValues.createdAt;
+            delete newEvent.dataValues.updatedAt;
+            res.status(200).json(newEvent);
+        } catch (error) {
+            console.log("IM CATCHING THE ERRORS")
+            res.status(400).json({errors: error});
+        }
     } else {
         return res.status(403).json({message: "Forbidden", statusCode: 403});
     }

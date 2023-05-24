@@ -47,7 +47,7 @@ function ProfileButton({ user }) {
   return (
     <>
     <div className="profile-wrap">
-      <div className={profileClassName}>
+      <div onClick={openMenu} className={profileClassName}>
       <i className="fas fa-user-circle" onClick={openMenu}/>
     <FontAwesomeIcon className={!showMenu ? "active-up" : "inactive-up"} icon={faAngleDown} />
     <FontAwesomeIcon className={!showMenu ? "inactive-down" : "active-down"} icon={faAngleUp}/>

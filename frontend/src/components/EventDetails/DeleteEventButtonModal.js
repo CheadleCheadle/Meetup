@@ -14,7 +14,7 @@ export default function DeleteEventButtonModal({eventId, groupId}) {
         history.push(`/groups/${groupId}`)
         closeModal();
     }
-
+	
     return (
         <div className="delete-group">
         <span className="header-text">

@@ -28,8 +28,8 @@ function Navigation({ isLoaded }){
 
       <nav className={isLoggedIn}>
         <div className="nav-first">
-        <div className="home">
-        <NavLink exact to="/">Yeetup</NavLink>
+        <div className="home" onClick={() => history.push('/')}>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Meetup_1.svg"></img>
         </div>
         </div>
         <div className="nav-second">
@@ -38,14 +38,16 @@ function Navigation({ isLoaded }){
           {isLoaded && !sessionUser && (
           <div className ="login-signup-cont">
           <OpenModalMenuItem
-              itemText="Log In"
+              itemText="Log in"
               onItemClick={closeMenu}
               modalComponent={<LoginFormModal />}
+              className="login-button"
             />
             <OpenModalMenuItem
               itemText="Sign Up"
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
+              className="signup-button"
             />
           </div>)}
 

@@ -41,7 +41,7 @@ const GroupList = () => {
                 <h3>{group.city}, {group.state}</h3>
                 <p>{group.about.slice(0, 255)} ... </p>
                 <div className="num-events">
-                <h3>{group.Events.length} {group.Events.length > 1 ? "events": "event"}</h3>
+                <h3>{group.Events.length} {group.Events.length > 1 || group.Events.length === 0 ? "events": "event"}</h3>
                 <h3>•</h3>
                 <h3>{group.private ? "Private" : "Public"}</h3>
                 </div>

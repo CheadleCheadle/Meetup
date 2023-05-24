@@ -73,6 +73,13 @@ background-color: rgba(238, 238, 238, 1);
 .second-half {
     margin: 0em 12em 4em 12em;
 }
+
+.second-half p {
+        font-weight: 400;
+    font-size: 1.2em;
+    color: #413f3c;
+
+}
 .second-half h3 {
     color: gray;
 }
@@ -148,4 +155,8 @@ background-color: rgba(238, 238, 238, 1);
 
 .event-description-group {
     margin: 0em 1em 1em 1em;
+        font-weight: 400;
+    font-size: 1.2em;
+    color: #413f3c;
+
 }

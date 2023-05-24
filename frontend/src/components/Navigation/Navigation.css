@@ -1,12 +1,65 @@
 
-.home > a {
-    text-decoration: none;
-    color: #FF5A5F;
-    font-size: 40px;
-    font-family:sans-serif;
-    font-weight: bold;
+.home {
     display: flex;
+    justify-content: center;
     align-items: center;
+    width: 10em;
+    height: 3em;
+    cursor: pointer;
+}
+
+.home img {
+    width: 100%;
+    height: 100%;
+
+}
+
+.login-button {
+    background-color: inherit;
+
+    color: #4c4f4f;
+    font-weight: bold;
+    font-size: .875rem;
+    font-style: normal;
+    line-height: 20px;
+    letter-spacing: 0;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 7em;
+    height: 3em;
+    font-family: Graphik Meetup,-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+}
+
+.signup-button {
+    background-color: #00798a;
+    display: flex;
+    height: 3em;
+    width: 7em;
+    border-radius: 10px;
+    color: #fbfdfd;
+    cursor: pointer;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: .875rem;
+    font-style: normal;
+    line-height: 20px;
+    letter-spacing: 0;
+}
+
+.signup-button:hover {
+    background-color: #0291a5;
+}
+
+
+.login-button:hover {
+    color: #0291a5;
 }
 
 #logout {
@@ -38,7 +91,6 @@
     padding-right: 15px;
     align-content:center;
     padding-bottom: .5em;
-    border-bottom: 2px solid lightgray;
 }
 
 .container{
@@ -49,17 +101,18 @@
 
 .login {
     display: flex;
-    width: 10em;
+    width: 8em;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .login-signup-cont {
     display: flex;
     flex-direction: row;
-    gap: 3em;
     text-align: center;
     list-style-type: none;
     align-items: center;
+    gap: .5em;
 }
 .login-signup-cont li {
     cursor: pointer;
@@ -75,30 +128,38 @@
     width: 50%;
     display: flex;
     justify-content: flex-end;
+    z-index: 10;
 
 }
 #start-new-group {
     display: flex;
     align-items: center;
-    color: teal;
+    color: #4c4f4f;
     font-size: 1.2em;
     cursor: pointer;
+    font-weight: 500;
+}
+
+#start-new-group:hover {
+    transition-duration: .22s;
+    color: #0291a5 ;
 }
 
 .profile {
-    position: absolute;
     background-color: white;
     display: flex;
     justify-content: center;
     flex-direction: row;
     font-size: 1rem;
     filter: drop-shadow(1px, 1px);
-    padding-top: .8em;
 }
 
 .profile-wrap {
     display: flex;
     flex-direction: column;
+    position: absolute;
+    top: 1.7em;
+    right: 1.5em;
 }
 
 .profile-icons {
@@ -120,7 +181,6 @@
     cursor: pointer;
 }
 .profile-dropdown {
-    margin: .25em 0em 0em 0em;
     display: flex;
     flex-direction: column;
     padding: .5em;
@@ -129,6 +189,7 @@
     border-radius: 3px;
     filter: drop-shadow(1px, 1px);
     list-style-type: none;
+    position: relative;
 }
 .hidden {
     display: none;

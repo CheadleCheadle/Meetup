@@ -11,6 +11,7 @@
 
 .events-navigation h3{
     color: gray;
+    font-weight: 500;
 }
 .event-container {
     background-color:  rgba(238, 238, 238, 1);
@@ -77,10 +78,11 @@ justify-content: space-around
 }
 
 .event-details {
-    margin: 1em 1em 1em 1em;
+    padding: 1em;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 4em;
+    height: 100%;
 }
 
 
@@ -94,44 +96,31 @@ justify-content: space-around
 .section-two-event {
     display: flex;
     flex-direction: row;
-    gap: .6em;
+    gap: 1.6em;
 }
 
 .section-three-event {
     display: flex;
     flex-direction: row;
-    gap: .6em;
     justify-content: space-between;
 }
 
 .clock {
     display: flex;
     align-items: center;
-    width: 30px;
-    height: 30px
-}
 
+}
 .dollar {
     display: flex;
     align-items: center;
-    width: 30px;
-    height: 30px;
-
 }
 
 .pin {
     display: flex;
     align-content: center;
-    width: 30px;
-    height: 30px
 }
 
-.time {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    color: gray;
-}
+
 
 .price  {
     display: flex;
@@ -143,10 +132,18 @@ justify-content: space-around
     display: flex;
     flex-direction: row;
     color: gray;
+    gap: 1.6em;
 }
 
 .about-wrapper-event {
     margin: .5em 8em 1em 8em;
+}
+
+.about-wrapper-event p {
+        font-weight: 400;
+    font-size: 1.2em;
+    color: #413f3c;
+
 }
 
 .start-end {
@@ -155,4 +152,19 @@ justify-content: space-around
 
 .group-buttons button {
     cursor: pointer;
+}
+
+#event-details-cont {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+
+#map-cont {
+    width: 35vw;
+    height: 12vw;
+  position: relative;
 }
