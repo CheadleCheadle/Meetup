@@ -139,6 +139,13 @@ justify-content: space-around
     margin: .5em 8em 1em 8em;
 }
 
+.about-wrapper-event p {
+        font-weight: 400;
+    font-size: 1.2em;
+    color: #413f3c;
+
+}
+
 .start-end {
     color: teal;
 }

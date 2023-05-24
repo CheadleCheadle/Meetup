@@ -317,3 +317,66 @@ img {
         margin: 0 0vw;
     }
 }
+
+
+#question {
+    left: 5px;
+    bottom: 5px;
+    width: 2.2em;
+    height: 2.2em;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#question:hover {
+    transition-duration: 700ms;
+    background-color: rgba(60,64,67,0.2);
+}
+
+
+
+#question-mark {
+    height: 1.5em;
+    width: 1.5em;
+}
+
+
+.about-me {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: .5em;
+    height: 3em;
+    margin-left: 3em;
+    bottom: 0;
+    width: 5em;
+    position: fixed;
+}
+#github-logo {
+    width: 2em;
+    height: 2em;
+    cursor: pointer;
+}
+
+#github-logo:hover {
+    transition-duration: 700ms;
+    border-radius: 50%;
+    background-color: #f64060;
+}
+
+#linkedin-logo {
+    width: 2em;
+    height: 2em;
+    cursor: pointer;
+}
+
+#linkedin-logo:hover {
+    transition-duration: 700ms;
+    border-radius: 20%;
+    background-color: #f64060;
+}

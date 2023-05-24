@@ -73,6 +73,13 @@ font-size: 24px;
     margin-left: 20px;
     width: 50%;
 }
+
+.groupInfo p {
+        font-weight: 400;
+    font-size: 1em;
+    color: #413f3c;
+
+}
  .event-group-heading a {
    color: gray;
    text-decoration: none;
