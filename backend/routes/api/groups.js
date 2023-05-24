@@ -419,14 +419,14 @@ router.get('/:groupId/members', async (req, res) => {
     let otherMembers = [];
     for (let i = 0; i < groupMembers.length; i++) {
         const membership = groupMembers[i];
-        if (membership.dataValues.status !== "pending") {
+
             let member = {};
         member.id = membership.dataValues.User.dataValues.id;
         member.firstName = membership.dataValues.User.dataValues.firstName;
         member.lastName = membership.dataValues.User.dataValues.lastName;
         member.Membership = {status: membership.dataValues.status};
         otherMembers.push(member);
-        }
+
     }
     return res.status(200).json({Members: otherMembers});
 }
@@ -472,6 +472,7 @@ router.put('/:groupId/membership', [requireAuth, validateMemberBody], async (req
     let { groupId } = req.params;
     groupId = parseInt(groupId);
     const { user } = req;
+    console.log("-----------", groupId, user)
     let { memberId, status } = req.body
     memberId = parseInt(memberId);
     const userToFind = await User.findByPk(memberId);
@@ -552,7 +553,7 @@ router.put('/:groupId/membership', [requireAuth, validateMemberBody], async (req
 
 });
 //Delete a membership to a group by id
-router.delete('/:groupId/membership', requireAuth, async (req, res) => {
+router.delete('/:groupId/membership/delete', requireAuth, async (req, res) => {
     const { user } = req;
     let { groupId } = req.params;
     let { memberId } = req.body;
@@ -595,6 +596,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
 })
     }
 
+
     if (!membershipToDelete) {
         return res.status(404).json({message: "Membership does not exist for this User", statusCode: 404});
     }
@@ -605,7 +607,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
         await membershipToDelete.destroy();
         return res.status(200).json({message: "Successfully deleted membership from group"});
     } else {
-        return res.status(400).json({message: "Forbidden request", status: 400});
+        return res.status(400).json({message: "Forbidden request123", status: 400});
     }
 })
 

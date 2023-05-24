@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import normalize from './normalize';
 const GET_ALL_GROUPS = "groups/getAllGroups";
 const GET_GROUP_DETAILS = "groups/details";
 const CREATE_GROUP = "/groups/new";
@@ -6,6 +7,12 @@ const CREATE_GROUP_IMAGE = "/groups/image";
 const UPDATE_GROUP = "/groups/edit"
 const UPDATE_GROUP_IMAGE = "/groups/image/edit"
 const DELETE_GROUP = "/groups/delete";
+const GET_MEMBERS = "groups/members";
+const JOIN_GROUP = "groups/join";
+const UPDATE_MEMBER = "groups/membership/update";
+const DELETE_MEMBER = "groups/membership/delete";
+
+
 const loadGroups = (groups) => {
     return {
         type: GET_ALL_GROUPS,
@@ -57,6 +64,70 @@ const deleteGroup = (groupId) => {
     }
 }
 
+const getMembers = (members) => {
+    return {
+        type: GET_MEMBERS,
+        members
+    }
+}
+
+const joinGroup = (member) => {
+    return {
+        type: JOIN_GROUP,
+        member
+    }
+}
+
+const updateMembership = (status, memberId) => {
+    return {
+        type: UPDATE_MEMBER,
+        status,
+        memberId
+    }
+}
+
+const deleteMembership = (groupId, memberId) => {
+    return {
+        type: DELETE_MEMBER,
+        groupId,
+        memberId
+    }
+}
+
+export const updateMembershipThunk = (userId, memberId, groupId, status) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
+        method: "PUT",
+        headers: {"Content-Type": "Application/json"},
+        body: JSON.stringify({
+            memberId: userId,
+            status
+        })
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(updateMembership(status, userId))
+        console.log('Updted membership', data);
+    }
+
+}
+
+export const deleteMembershipThunk = (groupId, userId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/membership/delete`, {
+        method: "DELETE",
+        headers: {"Content-Type": "Application/json"},
+        body: JSON.stringify({
+            memberId: userId
+        })
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(deleteMembership(groupId, userId))
+        console.log("deleted",data );
+    }
+}
+
 
 export const getAllGroups = () => async (dispatch) => {
     const response = await fetch('/api/groups');
@@ -72,6 +143,7 @@ export const getGroupDetails = (id) => async (dispatch) => {
     const response = await fetch(`/api/groups/${id}`);
     if (response.ok) {
         const data = await response.json();
+        dispatch(getGroupMembers(id));
         dispatch(loadGroupDetails(data));
         return data;
     }
@@ -156,6 +228,37 @@ export const deleteGroupAction = (groupId) => async (dispatch) => {
     }
 }
 
+export const getGroupMembers = (groupId) => async  (dispatch) => {
+    console.log('THIS IS THE GROUPID', groupId);
+    const response = await csrfFetch(`/api/groups/${groupId}/members`);
+
+    if (response.ok) {
+        const data = await response.json();
+        const members = normalize(data.Members);
+        dispatch(getMembers(members))
+    }
+}
+
+export const joinGroupThunk = (groupId, user) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
+        method: "POST",
+        headers: {'Content-Type': 'Application/json'},
+        body: null
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        const userObject = {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            Membership: {status: data.status}
+        };
+        dispatch(joinGroup(userObject));
+        console.log("NEw membership", userObject);
+    }
+}
+
 
 
 // const initalState = {allGroups: {}, singleGroup: {GroupImages: []}, Venues: {}};
@@ -171,6 +274,7 @@ const initialState = {
 
       },
       Venues: [],
+      members: {},
     },
 }
 
@@ -222,6 +326,53 @@ const groupsReducer = (state = initialState, action) => {
             newState.singleGroup = {};
             newState.allGroups = {...state.allGroups};
             delete newState.allGroups[action.groupId];
+            return newState;
+        }
+        case GET_MEMBERS: {
+            const newState = {
+                ...state,
+                singleGroup: {
+                    ...state.singleGroup,
+                    members: {...action.members}
+                }
+            }
+            return newState;
+
+        }
+        case JOIN_GROUP: {
+            const newState = {
+                ...state,
+                singleGroup: {
+                    ...state.singleGroup,
+                    members: {
+                        ...state.singleGroup.members,
+                        [action.member.id]: action.member
+                    }
+                }
+            }
+            return newState;
+        }
+
+        case UPDATE_MEMBER: {
+            const newState = {
+                ...state,
+                singleGroup: {
+                    ...state.singleGroup,
+                    members: {...state.singleGroup.members,}
+                }
+            }
+            newState.singleGroup.members[action.memberId].Membership.status = action.status;
+            return newState;
+        }
+        case DELETE_MEMBER: {
+            const newState = {
+                ...state,
+                singleGroup: {
+                    ...state.singleGroup,
+                    members: {...state.singleGroup.members}
+                }
+            };
+            delete newState.singleGroup.members[action.memberId];
             return newState;
         }
         default:
