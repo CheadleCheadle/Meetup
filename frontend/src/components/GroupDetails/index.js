@@ -24,7 +24,7 @@ export default function GroupDetails({sessionUser}) {
     const goToDetails = (event) => {
     return history.replace(`/events/${event.id}`);
     }
-    const events = useSelector((state) => Object.values(state.events.allEvents));
+    const events = useSelector((state) => Object.values(state.events.groupEvents));
     const upComingEvents = (events) => {
         return events.filter(event => {
             if (Date.parse(event.startDate) >= Date.now()) {

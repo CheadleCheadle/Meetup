@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import "./GroupDetails.css";
 export default function GroupEvents ({flag}) {
     const history = useHistory();
-    const events = useSelector((state) => Object.values(state.events.allEvents));
+    const events = useSelector((state) => Object.values(state.events.groupEvents));
 
     const upComingEvents = (events) => {
         return events.filter(event => {
@@ -15,6 +15,22 @@ export default function GroupEvents ({flag}) {
 
     const goToDetails = (event) => {
     return history.replace(`/events/${event.id}`);
+    }
+
+        const handleDate = (date) => {
+        console.log(date, typeof date);
+        const utcDate = new Date(date);
+        const options = {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour12: true
+        };
+        const localTimeString = utcDate.toLocaleDateString(undefined, options);
+        return (
+            <h4>{localTimeString}</h4>
+        )
     }
 
     const newEvents = upComingEvents(events);
@@ -35,7 +51,8 @@ export default function GroupEvents ({flag}) {
                 <img src={event.previewImage}></img>
                 </div>
                 <div>
-                <h4>{ new Date(event.startDate).toDateString()} • {event.startDate.slice(11,19)}</h4>
+                {/* <h4>{ new Date(event.startDate).toDateString()} • {event.startDate.slice(11,19)}</h4> */}
+                {handleDate(event.startDate)}
 
                 <h2>{event.name}</h2>
 
