@@ -27,7 +27,8 @@ To launch the application locally:
 * Inside the frontend folder, type "npm start" to start the react frontend server on localhost:3000
 * The application should now be running!
 
-![meetup-landing](https://user-images.githubusercontent.com/108553712/226253222-ada3c36f-ed14-437c-a24e-15c428a52361.PNG)
+
+![main_image](https://github.com/CheadleCheadle/Yeetup/assets/108553712/4fb5559b-4805-47a5-9424-3f66634a9578)
 
 
 If you wish to stop using the application, you can close it by hitting ctrl + c inside of both the backend and frontend folders.
