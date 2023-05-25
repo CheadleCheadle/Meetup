@@ -174,3 +174,9 @@ justify-content: space-around
     display: flex;
     width: 50%;
 }
+
+@media (max-width:1392px) {
+    .first-event-section {
+        margin: 1em 2em 1em 2em;
+    }
+}

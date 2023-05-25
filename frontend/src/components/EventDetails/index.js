@@ -20,6 +20,7 @@ export default function EventDetails({sessionUser}) {
     eventId = parseInt(eventId);
     const dispatch = useDispatch();
     const event = useSelector((state) => state.events.singleEvent);
+    console.log("event image", event);
     const eventsGroup = useSelector((state) => state.groups.singleGroup);
     const groupId = event.groupId;
     const [isLoaded, setIsLoaded] = useState(false);
@@ -86,7 +87,7 @@ export default function EventDetails({sessionUser}) {
             return <div className="group-buttons"><OpenModalButton
             buttonText="Delete"
             modalComponent={<DeleteEventButtonModal groupId={groupId} eventId={eventId}></DeleteEventButtonModal>}></OpenModalButton>
-            <button onClick={() =>  history.push(`/events/{eventId}/edit`)}>Update</button>
+            <button onClick={() =>  history.push(`/events/${eventId}/edit`)}>Update</button>
             </div>
         } else {
             return null;
@@ -111,7 +112,7 @@ return ( isLoaded &&
             <div className="first-event-section">
         <div className="event-image-container">
             <ImageFallBack
-            src={event.EventImages[0]?.url}
+            src={Object.values(event.EventImages)[0]?.url}
             fallbackSrc="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"
             alt="Image of Meetup logo"
             />
@@ -169,7 +170,7 @@ return ( isLoaded &&
                     </div>
             </div>
                 <div id="map-cont">
-                <MapContainer  lat={event.Venue.lat} lng={event.Venue.lng}apiKey="AIzaSyCuR8c72mbLTAxw7jcDrnbCakHUZ6kNT3k" />
+                { event.Venue ? <MapContainer  lat={event.Venue.lat} lng={event.Venue.lng}apiKey="AIzaSyCuR8c72mbLTAxw7jcDrnbCakHUZ6kNT3k" />: null}
                 </div>
                 </div>
         </div>

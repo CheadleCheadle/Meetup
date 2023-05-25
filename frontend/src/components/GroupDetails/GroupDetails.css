@@ -318,6 +318,10 @@ background-color: rgba(238, 238, 238, 1);
     .second-half {
         margin: 0em 3em 4em 3em;
     }
+
+    .first-event-section {
+        margin: 1em 4em 1em 4em;
+    }
 }
 
 @media (max-width: 1258px) {
