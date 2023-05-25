@@ -5,6 +5,7 @@ import { getEventDetails,createEventAction, createEventImageAction, updateEventA
 import { useSelector } from "react-redux";
 import "./CreateEvent.css"
 import { getGroupDetails } from "../../../store/groups";
+import normalize from "../../../store/normalize";
 export default function CreateEvent({update}) {
     const group = useSelector((state) => state.groups.singleGroup);
     const singleEvent = useSelector(state => state.events.singleEvent);
@@ -14,7 +15,8 @@ export default function CreateEvent({update}) {
 
     const history = useHistory();
     const dispatch = useDispatch();
-    const currentEvent = useSelector((state) => state.events.SingleEvent);
+    const currentEvent = useSelector((state) => state.events.singleEvent);
+    console.log(currentEvent, "wasd")
     const [name, setName] = useState("");
     const [type, setType] = useState("");
     const [isPrivate, setisPrivate] = useState("");
@@ -41,13 +43,31 @@ export default function CreateEvent({update}) {
         setSubmitted(true);
         if (!disabled) {
         const event = {name, type, private: stringToBool(isPrivate), price:Number(price), description:about, startDate, endDate};
+        if (update) {
+            event.id = eventId;
+        }
         let theImage = {url:"https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png", preview: true }
         if (image) {
              theImage = {url:image, preview: true}
         }
         if (update) {
-            await dispatch(updateEventAction(event))
-            await dispatch(updateEventImageAction(theImage));
+            
+        }
+        if (update) {
+             console.log("Im being updated")
+            const updatedEvent = dispatch(updateEventAction(event))
+            .then((d) => {
+            console.log("----", d);
+                const images = d.EventImages;
+                console.log("imagessss---------------", images)
+                const image = images[0];
+                theImage.id = image.id;
+                theImage.eventId = eventId;
+             dispatch(updateEventImageAction(theImage));
+             history.push(`/events/${eventId}`)
+            })
+            
+            
         } else if (!update) {
             console.log("Group Id", group.id, group)
             try {
@@ -67,25 +87,25 @@ export default function CreateEvent({update}) {
     //Handle validations
     useEffect(() => {
         const tempErrors = {};
-        if (name.replaceAll(' ', '') === "") {
+        if (name?.replaceAll(' ', '') === "") {
             tempErrors.name = "Name is required";
         }
-        if (name.length > 100) {
+        if (name?.length > 100) {
             tempErrors.name = "Name must be less than 100 characters"
         }
-        if (type.replaceAll(' ', '') === "") {
+        if (type?.replaceAll(' ', '') === "") {
             tempErrors.type = "Event Type is required";
         }
-        if (isPrivate.replaceAll(' ', '') === "") {
+        if (isPrivate?.replaceAll(' ', '') === "") {
             tempErrors.private = "Visibility is required";
         }
-        if (price.replaceAll(' ', '') === "") {
+        if (typeof price === "String" && price?.replaceAll(' ', '') === "") {
             tempErrors.price = "Price is required";
         }
-        if (startDate.replaceAll(' ', '') === "") {
+        if (startDate?.replaceAll(' ', '') === "") {
             tempErrors.startDate = "Event start is required";
         }
-        if (endDate.replaceAll(' ', '') === "") {
+        if (endDate?.replaceAll(' ', '') === "") {
             tempErrors.endDate = "Event end is required";
         }
         if (image) {
@@ -93,7 +113,7 @@ export default function CreateEvent({update}) {
             tempErrors.image = "Image URL must end in .png, .jpg, or .jpeg";
         }
         }
-        if (about.length < 30 || about.replaceAll(' ', '') === "") {
+        if (about?.length < 30 || about?.replaceAll(' ', '') === "") {
             tempErrors.about = "Description must be at least 30 characters long";
         }
         setErrors(tempErrors);
@@ -105,7 +125,7 @@ export default function CreateEvent({update}) {
             setDisabled(true);
 
         }
-    }, [name, type, isPrivate, price, startDate, endDate, image, about, submitted])
+    }, [name, type, isPrivate, price, startDate, endDate, image, about, submitted, update])
 
     useEffect(() => {
         dispatch(getAllEvents())
@@ -113,7 +133,7 @@ export default function CreateEvent({update}) {
         .then(() => {
             setIsLoaded(true)
         })
-        setErrors([]);
+        setErrors([update]);
     },[]);
 
     useEffect(() => {
@@ -121,24 +141,29 @@ export default function CreateEvent({update}) {
         if (update) {
             console.log("IM UPDATING");
              setName(currentEvent.name);
-            setAbout(currentEvent.about);
+            setAbout(currentEvent.description);
             setType(currentEvent.type);
-            setisPrivate(currentEvent.isPrivate);
+            if (currentEvent.isPrivate === null) {
+                setisPrivate("public");
+            } else {
+                setisPrivate(currentEvent.isPrivate);
+            }
             setPrice(currentEvent.price);
             setStartDate(currentEvent.startDate);
             setEndDate(currentEvent.endDate);
             if (currentEvent.EventImages.length > 0) {
                 setImage(currentEvent.EventImages[0].url)
             }
+            
 
         }
-    },[]);
+    },[update, dispatch]);
 
     return ( isLoaded &&
         <>
         <div className="create-event-wrap">
             {!update ? <h1 id="title">Create an event for {group.name}</h1> : <h1 id="title">Update your event's information</h1>}
-          <form id="create-event-form" onSubmit={handleSubmit}>
+          <form id="create-event-form" >
             <label>
                 <h3 id="first-h3">What is the name of your event?</h3>
                 <input  id="event-name"placeholder="Event Name"className="event-name" type="text" value={name} onChange={(e) => setName(e.target.value)}></input>
@@ -189,8 +214,10 @@ export default function CreateEvent({update}) {
 
             </label>
             <div id="button-container-update">
-            <input id="submit-button" type="submit" value="Create Event"></input>
+            
             </div>
+            <button onClick={(e) => handleSubmit(e)} id="submit-button" type="submit" value={!update ? "Create Event" : "Edit Event"}>{!update ? "Create Event" : "Save Changes"}</button>
+
           </form>
           </div>
         </>

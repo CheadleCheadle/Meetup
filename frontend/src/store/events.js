@@ -81,6 +81,9 @@ export const getEventDetails = (id) => async (dispatch) => {
     const response = await fetch(`/api/events/${id}`);
     if (response.ok) {
         const data = await response.json();
+        console.log("data", data);
+        data.EventImages = normalize(data.EventImages);
+        console.log(data.EventImages)
         dispatch(loadEventDetails(data));
         return data;
     }
@@ -155,14 +158,18 @@ export const deleteEventAction = (eventId) => async (dispatch) => {
 }
 
 export const updateEventAction = (event) => async (dispatch) => {
-    const response = await csrfFetch(`/api/events/{event.id}/edit`, {
+    console.log("Being dispatched", event)
+    const response = await csrfFetch(`/api/events/${event.id}/edit`, {
         method: "PUT",
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(event)
     });
 
+    console.log(response);
+
     if (response.ok) {
       const data = await response.json();
+      console.log("the updated event", data);
         dispatch(updateEvent(event));
         return data;
     }
@@ -170,15 +177,21 @@ export const updateEventAction = (event) => async (dispatch) => {
 }
 
 export const updateEventImageAction = (image) => async (dispatch) => {
+    console.log("The image111111111111", image);
     const response = await csrfFetch(`/api/event-images/${image.id}`, {
         method: "PUT",
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(image)
     });
 
+    console.log(response);
+
     if (response.ok) {
       const data = await response.json();
-      dispatch(updateEventImage(data));
+      console.log("New image", data);
+      const image = Object.values(data.EventImages)[0]
+      console.log("IMAGEEE", image);
+      dispatch(updateEventImage(image));
       return data;
     }
 }
@@ -204,7 +217,7 @@ const initialState = {
       Venue: {
 
       },
-      EventImages: [],
+      EventImages: {},
       Members: [],
       Attendees: [],
     },
@@ -265,16 +278,13 @@ const eventsReducer = (state = initialState, action) => {
             newState.singleEvent.description = action.event.description;
             newState.singleEvent.startDate = action.event.startDate;
             newState.singleEvent.endDate = action.event.endDate;
+            return newState;
         }
 
         case UPDATE_EVENT_IMAGE: {
             const newState = {...state};
-            newState.singlEvent.EventImages = [...state.singleEvent.EventImages];
-            newState.singlEvent.EventImages.forEach(image => {
-                if (image.id === action.image.id) {
-                    image.url = action.image.url;
-                }
-            });
+            newState.singleEvent.EventImages = {...state.singleEvent.EventImages};
+            newState.singleEvent.EventImages[action.image.id] = action.image;
             return newState;
 
         }
