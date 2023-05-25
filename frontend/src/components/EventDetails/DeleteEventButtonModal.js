@@ -14,7 +14,7 @@ export default function DeleteEventButtonModal({eventId, groupId}) {
         history.push(`/groups/${groupId}`)
         closeModal();
     }
-	
+
     return (
         <div className="delete-group">
         <span className="header-text">
@@ -22,8 +22,8 @@ export default function DeleteEventButtonModal({eventId, groupId}) {
         </span>
         <h3> Are you sure you want to remove this event?</h3>
         <div className="button-holder">
-        <button id="delete-group-yes" onClick={() => handleDelete(eventId)}>Yes (Delete Event)</button>
-        <button id="delete-group-no" onClick={closeModal}>No (Keep Event)</button>
+        <button id="delete-group-yes" onClick={() => handleDelete(eventId)}>Delete</button>
+        <button id="delete-group-no" onClick={closeModal}>Cancel</button>
         </div>
         </div>
     )
