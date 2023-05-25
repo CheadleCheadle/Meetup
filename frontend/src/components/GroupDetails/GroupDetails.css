@@ -373,3 +373,13 @@ background-color: rgba(238, 238, 238, 1);
         margin: 0em 0em 4em 0em;
     }
 }
+
+
+#no-events-cont {
+    height: 100%;
+}
+
+#no-events {
+    font-size: 2em;
+    font-weight: 500;
+}

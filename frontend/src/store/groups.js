@@ -11,8 +11,15 @@ const GET_MEMBERS = "groups/members";
 const JOIN_GROUP = "groups/join";
 const UPDATE_MEMBER = "groups/membership/update";
 const DELETE_MEMBER = "groups/membership/delete";
+const DELETE_GROUP_EVENT = "groups/event/delete";
 
 
+export const deleteGroupEvent = (eventId) => {
+    return {
+        type: DELETE_GROUP_EVENT,
+        eventId
+    }
+}
 const loadGroups = (groups) => {
     return {
         type: GET_ALL_GROUPS,
@@ -373,6 +380,14 @@ const groupsReducer = (state = initialState, action) => {
                 }
             };
             delete newState.singleGroup.members[action.memberId];
+            return newState;
+        }
+        case DELETE_GROUP_EVENT: {
+            const newState = {
+                ...state,
+                singleGroup: {...state.singleGroup}
+            }
+            delete newState.singleGroup.Events[action.eventId];
             return newState;
         }
         default:
