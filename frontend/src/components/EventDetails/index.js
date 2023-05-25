@@ -118,7 +118,9 @@ return ( isLoaded &&
         {/* <img src={event.EventImages[0]?.url} onError={this.src="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"}></img> */}
         </div>
         <div className="group-event-details">
-        <div className="group-details">
+        <div
+        onClick={() => history.push(`/groups/${event.groupId}`)}
+         className="group-details">
             <div className="group-image-container-event">
             <img src={eventsGroup.GroupImages[0].url}></img>
             </div>
@@ -161,10 +163,10 @@ return ( isLoaded &&
                     </div>
                     <div className="type">{event.type}</div>
                     </div>
+                </div>
                     <div className="button-cont">
                     {renderDeleteButton()}
                     </div>
-                </div>
             </div>
                 <div id="map-cont">
                 <MapContainer  lat={event.Venue.lat} lng={event.Venue.lng}apiKey="AIzaSyCuR8c72mbLTAxw7jcDrnbCakHUZ6kNT3k" />
@@ -175,7 +177,9 @@ return ( isLoaded &&
         </div>
         <div className="about-wrapper-event">
         <h1>Details</h1>
+        <span id="event-description-cont">
         <p>{event.description}</p>
+        </span>
         </div>
         </div>
     </section>

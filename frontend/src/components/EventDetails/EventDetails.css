@@ -21,7 +21,7 @@
     display: flex;
     flex-direction: row;
     margin: 1em 8em 1em 8em;
-    height: 25em;
+    height: 27em;
     gap: 1em;
 }
 
@@ -46,6 +46,7 @@
     display: flex;
     background-color: white;
     border-radius: 15px;
+    cursor: pointer;
 }
 .group-image-container-event {
     margin: 1em 0em 1em 1em;
@@ -167,4 +168,9 @@ justify-content: space-around
     width: 35vw;
     height: 12vw;
   position: relative;
+}
+
+#event-description-cont {
+    display: flex;
+    width: 50%;
 }

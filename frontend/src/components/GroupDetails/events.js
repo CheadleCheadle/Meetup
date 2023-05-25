@@ -57,7 +57,7 @@ export default function GroupEvents ({flag}) {
                 <h2>{event.name}</h2>
 
 
-                {event.Venue ? (<><h3>{event.Venue.city} {event.Venue.state}</h3></> ) : <h3>No Venue for this event yet...</h3>}
+                {event.Venue ? (<><h3>{event.Venue.city}, {event.Venue.state}</h3></> ) : <h3>No Venue for this event yet...</h3>}
                 </div>
                 </div>
                 <div className="event-description-group">{event.description}</div>

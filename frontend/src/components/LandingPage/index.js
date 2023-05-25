@@ -9,10 +9,13 @@ import { NavLink } from 'react-router-dom';
 import OpenModalButton from '../OpenModalButton';
 import SignupFormModal from '../SignupFormModal';
 import Loading from '../loading';
+import { useModal } from '../../context/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import LoginFormModal from '../LoginFormModal';
 export default function Landing({sessionUser, isLoaded}) {
 
+  const { setModalContent, setOnModalClose } = useModal();
     const handleStartNewGroup = () => {
         if (!sessionUser) {
             return `disabled`;
@@ -48,19 +51,19 @@ export default function Landing({sessionUser, isLoaded}) {
             <div className="landing-nav">
                 <div className="see-groups">
                 <img src="https://secure.meetupstatic.com/next/images/shared/handsUp.svg?w=256"></img>
-                <NavLink to="/groups">See all groups</NavLink>
+                { sessionUser ?<NavLink to="/groups">See all groups</NavLink> : <p id="landing-no-user"onClick={() => setModalContent(<LoginFormModal />)}>See all groups</p>}
                 <p>Do what you love, meet others who love it, find your community. The rest is history!</p>
                 </div>
 
                 <div className="find-event">
                 <img src="https://secure.meetupstatic.com/next/images/shared/ticket.svg?w=256"></img>
-                <NavLink to="/events">Find an event</NavLink>
+                {sessionUser ? <NavLink to="/events">Find an event</NavLink> : <p id="landing-no-user" onClick={() => setModalContent(<LoginFormModal />)}>Find an event</p>}
                 <p>Events are happening on just about any topic you can think of, from online gaming and photography to yoga and hiking.</p>
                 </div>
 
                 <div className="start-group">
                 <img src="https://secure.meetupstatic.com/next/images/shared/joinGroup.svg?w=256"></img>
-                <NavLink to="/groups/new" className={handleStartNewGroup} onClick={(e) => !sessionUser ? e.preventDefault() : undefined}>Start a new group</NavLink>
+                 <NavLink to="/groups/new" className={handleStartNewGroup} onClick={(e) => !sessionUser ? e.preventDefault() : undefined}>Start a new group</NavLink>
                 <p>You don’t have to be an expert to gather people together and explore shared interests.</p>
                 </div>
             </div>
