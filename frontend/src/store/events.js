@@ -189,7 +189,7 @@ export const updateEventImageAction = (image) => async (dispatch) => {
     if (response.ok) {
       const data = await response.json();
       console.log("New image", data);
-      const image = Object.values(data.EventImages)[0]
+    //   const image = Object.values(data.EventImages)[0]
       console.log("IMAGEEE", image);
       dispatch(updateEventImage(image));
       return data;
