@@ -43,6 +43,7 @@ export default function CreateEvent({update}) {
         setSubmitted(true);
         if (!disabled) {
         const event = {name, type, private: stringToBool(isPrivate), price:Number(price), description:about, startDate, endDate};
+        console.log("THIS IS THE OG EVENT", event);
         if (update) {
             event.id = eventId;
         }
@@ -51,7 +52,7 @@ export default function CreateEvent({update}) {
              theImage = {url:image, preview: true}
         }
         if (update) {
-            
+
         }
         if (update) {
              console.log("Im being updated")
@@ -66,8 +67,8 @@ export default function CreateEvent({update}) {
              dispatch(updateEventImageAction(theImage));
              history.push(`/events/${eventId}`)
             })
-            
-            
+
+
         } else if (!update) {
             console.log("Group Id", group.id, group)
             try {
@@ -86,6 +87,8 @@ export default function CreateEvent({update}) {
     }
     //Handle validations
     useEffect(() => {
+
+        console.log(isPrivate, "private");
         const tempErrors = {};
         if (name?.replaceAll(' ', '') === "") {
             tempErrors.name = "Name is required";
@@ -143,18 +146,30 @@ export default function CreateEvent({update}) {
              setName(currentEvent.name);
             setAbout(currentEvent.description);
             setType(currentEvent.type);
-            if (currentEvent.isPrivate === null) {
-                setisPrivate("public");
+            console.log("CURE", currentEvent.isPrivate);
+            if (currentEvent.private) {
+                setisPrivate("Private");
             } else {
-                setisPrivate(currentEvent.isPrivate);
+                setisPrivate("Public");
             }
             setPrice(currentEvent.price);
-            setStartDate(currentEvent.startDate);
-            setEndDate(currentEvent.endDate);
+
+            const startDate = new Date(currentEvent.startDate);
+            startDate.setHours(startDate.getHours());
+            startDate.setMinutes(startDate.getMinutes());
+            const formattedStartDate = startDate.toISOString().slice(0, 16);
+
+            setStartDate(formattedStartDate);
+
+            const endDate= new Date(currentEvent.endDate);
+            endDate.setHours(endDate.getHours());
+            endDate.setMinutes(endDate.getMinutes());
+            const formattedEndDate = endDate.toISOString().slice(0, 16);
+            setEndDate(formattedEndDate);
             if (currentEvent.EventImages.length > 0) {
                 setImage(currentEvent.EventImages[0].url)
             }
-            
+
 
         }
     },[update, dispatch]);
@@ -214,7 +229,7 @@ export default function CreateEvent({update}) {
 
             </label>
             <div id="button-container-update">
-            
+
             </div>
             <button onClick={(e) => handleSubmit(e)} id="submit-button" type="submit" value={!update ? "Create Event" : "Edit Event"}>{!update ? "Create Event" : "Save Changes"}</button>
 
