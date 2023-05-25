@@ -348,7 +348,7 @@ router.post('/:groupId/events', [requireAuth], async (req, res) => {
     let { groupId } = req.params;
     groupId = parseInt(groupId);
 
-    const { venueId, name, type, capacity, price, description, startDate, endDate} = req.body;
+    const { venueId, name, type, capacity, price, description, startDate, endDate, private} = req.body;
 
     const group = await Group.findByPk(groupId);
     if (!group) res.status(404).json({message: "Group couldn't be found", statusCode: 404});
@@ -363,7 +363,7 @@ router.post('/:groupId/events', [requireAuth], async (req, res) => {
 
     if (membership.userId === group.organizerId || membership.status === "co-host") {
         try {
-            const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate });
+            const newEvent = await Event.create({ venueId, groupId, name, type, capacity, price, description, startDate, endDate, private });
             await Attendance.create({eventId: newEvent.dataValues.id, userId: user.id, status: "host"});
             delete newEvent.dataValues.createdAt;
             delete newEvent.dataValues.updatedAt;

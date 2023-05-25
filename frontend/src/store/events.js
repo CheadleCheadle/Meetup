@@ -1,4 +1,5 @@
 import { csrfFetch } from "./csrf";
+import { deleteGroupEvent } from "./groups";
 import normalize from "./normalize";
 
 
@@ -153,6 +154,7 @@ export const deleteEventAction = (eventId) => async (dispatch) => {
     if (response.ok) {
         const data = await response.json();
         dispatch(deleteEvent(eventId));
+        dispatch(deleteGroupEvent(eventId));
         return data;
     }
 }

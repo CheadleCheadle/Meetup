@@ -4,6 +4,7 @@ import "./GroupDetails.css";
 export default function GroupEvents ({flag}) {
     const history = useHistory();
     const events = useSelector((state) => Object.values(state.events.groupEvents));
+    console.log("NO EVENTS", events)
 
     const upComingEvents = (events) => {
         return events.filter(event => {
@@ -41,7 +42,13 @@ export default function GroupEvents ({flag}) {
     let switchEvents;
     if (flag) switchEvents = newEvents;
     if (!flag) switchEvents = pastEvents;
-
+    // if (!events.length) {
+    //     return (
+    //         <div>
+    //             No events
+    //         </div>
+    //     )
+    // }
     return (
         <>
  {switchEvents.map((event) => (
