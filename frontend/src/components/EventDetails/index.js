@@ -20,7 +20,6 @@ export default function EventDetails({sessionUser}) {
     eventId = parseInt(eventId);
     const dispatch = useDispatch();
     const event = useSelector((state) => state.events.singleEvent);
-    console.log("event image", event);
     const eventsGroup = useSelector((state) => state.groups.singleGroup);
     const groupId = event.groupId;
     const [isLoaded, setIsLoaded] = useState(false);
@@ -31,7 +30,6 @@ export default function EventDetails({sessionUser}) {
 
     useEffect(() => {
         if (event.id) {
-            console.log("uSeffect is running", event)
             dispatch(getGroupDetails(event.groupId))
             .then(() => {
                 setIsLoaded(true);
@@ -49,7 +47,6 @@ export default function EventDetails({sessionUser}) {
 
 
     const ImageFallBack = ( { src, fallbackSrc, alt }) => {
-        console.log("fal", fallbackSrc)
         const handleImageError = (event) => {
             event.target.src = fallbackSrc
         }
@@ -58,7 +55,6 @@ export default function EventDetails({sessionUser}) {
 
 
     const handleDate = (date, flag) => {
-        console.log(date, typeof date);
         const utcDate = new Date(date);
         const options = {
             weekday: 'short',
