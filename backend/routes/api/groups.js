@@ -369,7 +369,6 @@ router.post('/:groupId/events', [requireAuth], async (req, res) => {
             delete newEvent.dataValues.updatedAt;
             res.status(200).json(newEvent);
         } catch (error) {
-            console.log("IM CATCHING THE ERRORS")
             res.status(400).json({errors: error});
         }
     } else {
@@ -472,7 +471,6 @@ router.put('/:groupId/membership', [requireAuth, validateMemberBody], async (req
     let { groupId } = req.params;
     groupId = parseInt(groupId);
     const { user } = req;
-    console.log("-----------", groupId, user)
     let { memberId, status } = req.body
     memberId = parseInt(memberId);
     const userToFind = await User.findByPk(memberId);

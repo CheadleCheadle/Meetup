@@ -16,7 +16,6 @@ export default function CreateEvent({update}) {
     const history = useHistory();
     const dispatch = useDispatch();
     const currentEvent = useSelector((state) => state.events.singleEvent);
-    console.log(currentEvent, "wasd")
     const [name, setName] = useState("");
     const [type, setType] = useState("");
     const [isPrivate, setisPrivate] = useState("");
@@ -43,7 +42,6 @@ export default function CreateEvent({update}) {
         setSubmitted(true);
         if (!disabled) {
         const event = {name, type, private: stringToBool(isPrivate), price:Number(price), description:about, startDate, endDate};
-        console.log("THIS IS THE OG EVENT", event);
         if (update) {
             event.id = eventId;
         }
@@ -55,12 +53,9 @@ export default function CreateEvent({update}) {
 
         }
         if (update) {
-             console.log("Im being updated")
             const updatedEvent = dispatch(updateEventAction(event))
             .then((d) => {
-            console.log("----", d);
                 const images = d.EventImages;
-                console.log("imagessss---------------", images)
                 const image = images[0];
                 theImage.id = image.id;
                 theImage.eventId = eventId;
@@ -70,7 +65,6 @@ export default function CreateEvent({update}) {
 
 
         } else if (!update) {
-            console.log("Group Id", group.id, group)
             try {
 
                 const newEvent = dispatch(createEventAction(event, group.id))
@@ -88,7 +82,6 @@ export default function CreateEvent({update}) {
     //Handle validations
     useEffect(() => {
 
-        console.log(isPrivate, "private");
         const tempErrors = {};
         if (name?.replaceAll(' ', '') === "") {
             tempErrors.name = "Name is required";
@@ -142,11 +135,9 @@ export default function CreateEvent({update}) {
     useEffect(() => {
         dispatch(getEventDetails(eventId))
         if (update) {
-            console.log("IM UPDATING");
              setName(currentEvent.name);
             setAbout(currentEvent.description);
             setType(currentEvent.type);
-            console.log("CURE", currentEvent.isPrivate);
             if (currentEvent.private) {
                 setisPrivate("Private");
             } else {

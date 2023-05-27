@@ -84,7 +84,6 @@ function AboutMe() {
     const openMenu = (e) => {
         e.stopPropagation();
         setIsVisible(!isVisible);
-        console.log(isVisible);
     }
 
     const redirect = (url) => {
