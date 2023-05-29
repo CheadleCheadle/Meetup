@@ -29,6 +29,10 @@ To launch the application locally:
 
 
 ![main_image](https://github.com/CheadleCheadle/Yeetup/assets/108553712/4fb5559b-4805-47a5-9424-3f66634a9578)
+![meetup_events](https://github.com/CheadleCheadle/Yeetup/assets/108553712/7207788f-bcff-4628-ab0a-f3f3b6eeb9cd)
+![meetup_group](https://github.com/CheadleCheadle/Yeetup/assets/108553712/4a1b4442-4542-4d40-ae93-58608f0a563b)
+![event_details](https://github.com/CheadleCheadle/Yeetup/assets/108553712/4b8b31de-f788-492c-aa4d-9dd696730394)
+![group_details](https://github.com/CheadleCheadle/Yeetup/assets/108553712/ffcdf68e-f775-471f-869e-e5f4878f2ac9)
 
 
 If you wish to stop using the application, you can close it by hitting ctrl + c inside of both the backend and frontend folders.
