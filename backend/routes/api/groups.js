@@ -153,10 +153,12 @@ router.post('/', [requireAuth, validateGroupBody], async (req, res) => {
 
 //Add an Image to a Group based on the Group's id
 router.post('/:groupId/images', requireAuth, singleMulterUpload("image"), async (req, res) => {
-    // const {preview } = req.body;
+    const {imageUrl } = req.body;
     const { groupId } = req.params;
     // console.log('---------------------------', req.file, req);
-    const url = await singlePublicFileUpload(req.file);
+
+        const url = await singlePublicFileUpload(req.file);
+
 
     console.log("url--------------------", url);
     const { user } = req;
@@ -171,6 +173,28 @@ router.post('/:groupId/images', requireAuth, singleMulterUpload("image"), async 
             res.status(403).json({message: "Forbidden", statusCode: 403});
         }
 });
+
+router.post('/:groupId/images/default', requireAuth, async (req, res) => {
+    const { url } = req.body;
+    const { groupId } = req.params;
+    console.log("URL!!!!!!!!!!!!!!!!!!!!", url);
+    // console.log('---------------------------', req.file, req);
+
+    console.log("url--------------------", url);
+    const { user } = req;
+        const group = await Group.findByPk(groupId);
+        if (!group) {
+            return res.status(404).json({message: "Group couldn't be found", statusCode: 404});
+        }
+        if (group.organizerId === user.id) {
+        const newImage = await GroupImage.create({ groupId, url, preview:true });
+        res.status(200).json({id: newImage.id, url: newImage.url, preview: newImage.preview});
+        } else {
+            res.status(403).json({message: "Forbidden", statusCode: 403});
+        }
+});
+
+
 
 //Edit a group
 router.put('/:groupId', [requireAuth, validateGroupBody], async (req, res) => {
