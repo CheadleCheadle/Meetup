@@ -65,6 +65,7 @@ export default function GroupDetails({sessionUser}) {
     const pastEvents = events.filter(event => !newEvents.includes(event));
     pastEvents.sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
 
+    console.log("NEW EVENTS", newEvents);
 
     useEffect(() => {
         dispatch(getGroupDetails(groupId));
@@ -192,18 +193,17 @@ return ( isLoaded &&
             <h1>What we're about</h1>
             <p>{group.about}</p>
         </div>
+    </section>}
+    <section>
         {newEvents.length && active === "events" ? (<>
         <h1>Upcoming Events {`(${newEvents.length})`}</h1>
             <GroupEvents flag={true}></GroupEvents>
-        </>): null}
-    </section>}
-    <section>
+        </>) : null}
         {pastEvents.length && active==="events" ? (<>
         <h1>Past Events {`(${pastEvents.length})`}</h1>
             <GroupEvents flag={false}></GroupEvents>
-        </>) : active==="events" ? <div id="no-events-cont">
-            <span id="no-events">No past or upcoming events...</span>
-            </div> : null}
+        </>) : null}
+        {!pastEvents.length && !newEvents.length && active === "events" ? "No Upcoming or Past Events" : null}
 
         {active === "members" && <GroupMembers groupId={groupId} userId={sessionUser.id} organizerId={group.organizerId} members={Object.values(members)} />}
     </section>
