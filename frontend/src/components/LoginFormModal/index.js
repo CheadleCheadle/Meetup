@@ -38,6 +38,7 @@ errors = Object.values(errors);
       <span id="not-members">
       <p>Not a member yet? </p>
       <Link onClick={() => setModalContent(<SignupFormModal />)}>Sign up</Link>
+
       </span>
       </span>
       <div className="login-form-cont">
