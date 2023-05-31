@@ -130,7 +130,24 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
 }
 
 export const createEventImageAction = (eventId, image) => async (dispatch) => {
+    const formData = new FormData();
+    formData.append("image", image);
+
     const response = await csrfFetch(`/api/events/${eventId}/images`, {
+        method: "POST",
+        headers: {'Content-Type': 'multipart/form-data'},
+        body: formData
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(createEventImage(image, eventId));
+        return data;
+    }
+
+}
+export const createEventImageActionDefault = (eventId, image) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/images/default`, {
         method: "POST",
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(image)
@@ -178,24 +195,24 @@ export const updateEventAction = (event) => async (dispatch) => {
 
 }
 
-export const updateEventImageAction = (image) => async (dispatch) => {
-    console.log("The image111111111111", image);
-    const response = await csrfFetch(`/api/event-images/${image.id}`, {
-        method: "PUT",
-        headers: {'Content-Type': 'Application/json'},
-        body: JSON.stringify(image)
-    });
+export const updateEventImageAction = (image, eventId) => async (dispatch) => {
+    let imageResponse;
+        const formData = new FormData();
+        formData.append("image", image);
 
-    console.log(response);
+        imageResponse = await csrfFetch(`/api/event-images/${image.id}/${eventId}`, {
+            method: "PUT",
+            headers: {'Content-Type': 'multipart/form-data'},
+            body: formData
+        })
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("New image", data);
-    //   const image = Object.values(data.EventImages)[0]
-      console.log("IMAGEEE", image);
-      dispatch(updateEventImage(image));
+
+    if (imageResponse.ok) {
+      const data = await imageResponse.json();
+      console.log("date of upodated image", data);
+      dispatch(updateEventImage(data));
       return data;
-    }
+}
 }
 
 

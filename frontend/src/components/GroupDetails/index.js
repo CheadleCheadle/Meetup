@@ -15,7 +15,7 @@ import "./GroupDetails.css";
 import Loading from "../loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faClock, faDollarSign, faLocationDot, faUserGroup} from "@fortawesome/free-solid-svg-icons";
+import { faClock, faDollarSign, faLocationDot, faUserGroup, faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 export default function GroupDetails({sessionUser}) {
     const history = useHistory();
     const params = useParams();
@@ -133,17 +133,22 @@ export default function GroupDetails({sessionUser}) {
         )
     }
 
+    console.log("GroupImage", group, group.GroupImages[0]);
+
 return ( isLoaded &&
     <>
     <div className="group-details-wrapper">
         <div className="image-details-wrapper">
         <div className="bread-crumb">
-        <NavLink to="/groups">Groups</NavLink>
+        <NavLink to="/groups">
+            <FontAwesomeIcon icon={faChevronLeft} />
+            Back to More Groups
+            </NavLink>
         </div>
     <section className="display-img-details">
 
             <div className="group-image-cont">
-            <img src={group.GroupImages[0].url}></img>
+            <img src={group?.GroupImages[0]?.url}></img>
             </div>
             <div id="group-info-cont">
                 <h1>{group.name}</h1>

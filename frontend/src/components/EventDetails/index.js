@@ -11,7 +11,7 @@ import DeleteEventButtonModal from "./DeleteEventButtonModal";
 import "./EventDetails.css";
 import Loading from "../loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock, faDollarSign, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faDollarSign, faLocationDot, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import MapContainer from "./map";
 export default function EventDetails({sessionUser}) {
     const history = useHistory();
@@ -104,7 +104,10 @@ return ( isLoaded &&
     <>
     <section className="events-wrapper">
         <div className="events-navigation">
-        <NavLink to="/events">Events</NavLink>
+        <NavLink to="/events">
+            <FontAwesomeIcon icon={faChevronLeft} />
+             Back to More Events
+            </NavLink>
         <h1>{event.name}</h1>
         <h3>Hosted by {eventsGroup.Organizer.firstName} {eventsGroup.Organizer.lastName}</h3>
         </div>

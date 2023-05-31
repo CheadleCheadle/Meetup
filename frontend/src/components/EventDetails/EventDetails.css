@@ -9,6 +9,15 @@
     margin: 2.5em 8em 1em 8em;
 }
 
+.events-navigation a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: .25em;
+    font-size: 18px;
+    font-weight: 500;
+}
+
 .events-navigation h3{
     color: gray;
     font-weight: 500;

@@ -83,7 +83,7 @@ export default function EventList() {
                     {/* <p>{event.startDate.slice(0,10)} • {event.startDate.slice(11, 19)}</p> */}
                     {handleDate(event.startDate)}
                     <h1>{event.name}</h1>
-                    {event.Venue ? ( <h3>{event.Venue.city} {event.Venue.state}</h3>) : (<p>No Venue for this event yet...</p>)}
+                    {event.Venue ? ( <h3>{event.Venue.city}, {event.Venue.state}</h3>) : (<p>No Venue for this event yet...</p>)}
                 </div>
             </div>
             <div onClick={() => {

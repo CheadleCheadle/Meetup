@@ -19,9 +19,18 @@
 .bread-crumb {
     display: flex;
     flex-direction: row;
-    margin: 0px 0px 2px 1em;
+    margin: 0px 0px 2px 0em;
 
     color: black;
+}
+
+.bread-crumb a {
+        text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+    font-size: 18px;
+    font-weight: 500;
 }
 .display-img-details {
     display: flex;
