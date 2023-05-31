@@ -3,7 +3,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createGroupAction, createGroupImageAction, updateGroupAction, updateGroupImageAction, getGroupDetails, createGroupImageActionDefault} from "../../../store/groups";
 import './CreateGroup.css';
-import { reduce } from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 export default function CreateGroup({update, sessionUser}) {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -132,8 +133,10 @@ export default function CreateGroup({update, sessionUser}) {
 
     const updateFile = (e) => {
     const file = e.target.files[0];
+    console.log("FILE,", file);
     if (file) setImage(file);
     };
+
 
     return (
         <>
@@ -243,7 +246,12 @@ export default function CreateGroup({update, sessionUser}) {
         </select>
         { submitted && errors.private? <p className="errs">{errors.private}</p>: null}
         <p>Please add an image for your group below: (optional)</p>
-        <input type="file" onChange={updateFile}></input>
+        <label className="file-input-cont">
+            <FontAwesomeIcon icon={faPlus} />
+            Add Image
+        <input  type="file" onChange={updateFile}></input>
+        </label>
+        <p>{image.name}</p>
         {/* <input placeholder="Image Url" type="text" value={image} onChange={(e) => setImage(e.target.value)}/> */}
         </label>
         { submitted && errors.image ? <p className="errs">{errors.image}</p>: null}

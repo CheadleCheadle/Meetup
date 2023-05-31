@@ -215,7 +215,7 @@ export default function CreateEvent({update}) {
             </label>
             <label>
                 <h3>Please add in image for your event below: (optional)</h3>
-                <input type="file" onChange={updateFile}></input>
+                <input className="add-image" type="file" onChange={updateFile}></input>
                 { submitted && errors.image ? <p className="errors">{errors.image}</p>: null}
             </label>
             <h3 id="description-head">Please describe your event:</h3>

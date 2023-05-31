@@ -100,3 +100,32 @@ border-radius: 8px;
     background-color: #E8F0FE;
 
 }
+
+.add-image {
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+input[type="file"] {
+    display: none;
+
+}
+
+.file-input-cont {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    padding: .5em;
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 2px;
+    background-color: #E8F0FE;
+    height: 1.5em;
+    margin-bottom: .5em;
+    width: 10em;
+}
