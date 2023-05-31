@@ -183,11 +183,11 @@ router.put('/:eventId/edit', [requireAuth, validateEventBody], async (req, res) 
     const { user } = req;
     let { eventId } = req.params;
     eventId = parseInt(eventId);
-    console.log("The event id ", eventId)
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
-    const event = await Event.findByPk(eventId, { include: Group });
-    console.log("event", event)
-    if (!event) return res.status(404).json({ message: "Event couldn't be found", statusCode: 404 });
+
+    const event = await Event.findByPk(eventId, {include: Group});
+      if (!event) return res.status(404).json({message: "Event couldn't be found", statusCode: 404});
+  
     const membership = await Membership.findOne({
         where: {
             userId: user.id,
@@ -209,8 +209,6 @@ router.put('/:eventId/edit', [requireAuth, validateEventBody], async (req, res) 
     })
     if (event.groupId === membership.groupId || membership.status === "co-host") {
         event.dataValues.EventImages = images;
-        console.log("Event preset", event);
-
         event.set({ venueId, name, type, capacity, price, description, startDate, endDate });
         await event.save();
         delete event.dataValues.updatedAt;

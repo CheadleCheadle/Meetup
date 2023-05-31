@@ -52,7 +52,6 @@ router.put('/:imageId', requireAuth, singleMulterUpload("image"), async (req, re
     imageId = parseInt(imageId);
     const image = await GroupImage.findByPk(imageId);
 
-    console.log("Im the image", image);
 
     if (!image) {
         return res.status(404).json({message: "Group image couldn't be found", statusCode: 404});
@@ -65,7 +64,6 @@ router.put('/:imageId', requireAuth, singleMulterUpload("image"), async (req, re
         }
     });
 
-    console.log("Im the currentMembership", currentMembership);
 
     if (!currentMembership && user.id !== image.dataValues.Group.dataValues.organizerId) {
         return res.status(403).json({message: "Forbidden", status: 403});

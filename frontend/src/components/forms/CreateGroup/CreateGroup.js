@@ -34,25 +34,26 @@ export default function CreateGroup({update, sessionUser}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitted(true);
-        console.log("In submit", disabled);
         if (!disabled) {
-            console.log('im not disabled');
         const spaceRemoved = location.replaceAll(' ', '');
         const group = {city:spaceRemoved, state, name, about, type, private:stringToBool(isPrivate)};
         let theImage = {url: "https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"};
         if (image) {
-            console.log("no images")
+            
              theImage = image;
+
         }
         if (!update) {
             console.log("Image from form", image, theImage);
             const newGroup = await dispatch(createGroupAction(group));
+          
             if (image) {
 
                 dispatch(createGroupImageAction(newGroup.id, image));
             } else {
                 dispatch(createGroupImageActionDefault(newGroup.id, theImage));
             }
+
             history.push(`/groups/${newGroup.id}`);
         } else if (update) {
             const oldImage = currentGroup.GroupImages[0].url;
@@ -92,7 +93,6 @@ export default function CreateGroup({update, sessionUser}) {
 
     useEffect(() => {
         const tempErrors = {};
-        console.log("use effect is running")
         if (location.replaceAll(' ', '') === "") {
             tempErrors.location = "City is required";
         }

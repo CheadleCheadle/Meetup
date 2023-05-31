@@ -4,7 +4,6 @@ import { Map, GoogleApiWrapper } from 'google-maps-react';
 class MapContainer extends Component {
   render() {
     const { lat, lng} = this.props;
-    console.log("lats", lat, lng)
     return (
 
       <Map

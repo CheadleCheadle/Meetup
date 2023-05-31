@@ -114,7 +114,6 @@ export const updateMembershipThunk = (userId, memberId, groupId, status) => asyn
     if (response.ok) {
         const data = await response.json();
         dispatch(updateMembership(status, userId))
-        console.log('Updted membership', data);
     }
 
 }
@@ -131,7 +130,6 @@ export const deleteMembershipThunk = (groupId, userId) => async (dispatch) => {
     if (response.ok) {
         const data = await response.json();
         dispatch(deleteMembership(groupId, userId))
-        console.log("deleted",data );
     }
 }
 
@@ -264,7 +262,6 @@ export const deleteGroupAction = (groupId) => async (dispatch) => {
 }
 
 export const getGroupMembers = (groupId) => async  (dispatch) => {
-    console.log('THIS IS THE GROUPID', groupId);
     const response = await csrfFetch(`/api/groups/${groupId}/members`);
 
     if (response.ok) {
@@ -290,7 +287,6 @@ export const joinGroupThunk = (groupId, user) => async (dispatch) => {
             Membership: {status: data.status}
         };
         dispatch(joinGroup(userObject));
-        console.log("NEw membership", userObject);
     }
 }
 

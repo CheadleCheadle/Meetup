@@ -71,7 +71,6 @@ export const getAllEvents = () => async (dispatch) => {
     const response = await fetch(`/api/events`);
     if (response.ok) {
         const data = await response.json();
-        console.log("events", data);
         const events = normalize(data.Events);
         dispatch(loadEvents(events));
         return events
@@ -82,9 +81,7 @@ export const getEventDetails = (id) => async (dispatch) => {
     const response = await fetch(`/api/events/${id}`);
     if (response.ok) {
         const data = await response.json();
-        console.log("data", data);
         data.EventImages = normalize(data.EventImages);
-        console.log(data.EventImages)
         dispatch(loadEventDetails(data));
         return data;
     }
@@ -108,7 +105,6 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
     });
     if (response.ok) {
         const data = await response.json();
-        console.log("THis is the data", data);
         const singleObject = {
             ...data,
             Group: {
@@ -125,7 +121,6 @@ export const createEventAction = (event, groupId) => async (dispatch) => {
         return data;
     } else {
         const errors = await response.json();
-        console.log("Hi errors", errors);
     }
 }
 
@@ -177,23 +172,21 @@ export const deleteEventAction = (eventId) => async (dispatch) => {
 }
 
 export const updateEventAction = (event) => async (dispatch) => {
-    console.log("Being dispatched", event)
     const response = await csrfFetch(`/api/events/${event.id}/edit`, {
         method: "PUT",
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(event)
     });
 
-    console.log(response);
 
     if (response.ok) {
       const data = await response.json();
-      console.log("the updated event", data);
         dispatch(updateEvent(event));
         return data;
     }
 
 }
+
 
 export const updateEventImageAction = (image, eventId) => async (dispatch) => {
     let imageResponse;
@@ -211,6 +204,7 @@ export const updateEventImageAction = (image, eventId) => async (dispatch) => {
       const data = await imageResponse.json();
       console.log("date of upodated image", data);
       dispatch(updateEventImage(data));
+
       return data;
 }
 }
