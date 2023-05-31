@@ -22,12 +22,12 @@ module.exports = {
 
         {
           eventId: 1,
-          url: "https://edison365.com/wp-content/uploads/2022/03/How-do-hackathons-work.png",
+          url: "https://cdn.mos.cms.futurecdn.net/4qrW9mHjeDWK5hSFuTMkk3.jpg",
           preview: true,
         },
         {
           eventId: 2,
-          url: "https://media.istockphoto.com/id/1370862129/vector/happy-st-patricks-day-celtic-lettering-logo-on-green-clover-and-shamrock-background.jpg?s=612x612&w=0&k=20&c=qTCWqrKWeyxfByde309qkmj70LNpDU9LdG0aObQrLBI=",
+          url: "https://traveler.marriott.com/wp-content/uploads/2017/09/NYCUptown_HighbridgePark.jpg",
           preview: true,
         },
         {
@@ -40,6 +40,31 @@ module.exports = {
           url: "https://opb-opb-prod.cdn.arcpublishing.com/resizer/KwDlh3ZbfTJOUp4mKDbkTzv42jo=/767x0/smart/cloudfront-us-east-1.images.arcpublishing.com/opb/GHYQM4EWFVDOTIKC7WDURJJPPQ.jpg",
           preview: true,
         },
+        {
+          eventId: 5,
+          url: "https://hips.hearstapps.com/hmg-prod/images/cycling-power-allied-echo-0078-tara-trevor-raab-6435b957839d1.jpg",
+          preview:true
+        },
+        {
+          eventId: 6,
+          url: "https://nassauobserver.com/wp-content/uploads/2015/11/MassapequaPreserve_112515A.jpg",
+          preview: true
+        },
+        {
+          eventId: 7,
+          url: "https://recsports.usc.edu/wp-content/uploads/sites/4/2023/04/LCPracTen-8-1024x683.jpg",
+          preview: true
+        },
+        {
+          eventId: 8,
+          url: "https://www.njpalisades.org/images/thumbs/mastheadPhotoNew.jpg",
+          preview: true
+        },
+        {
+          eventId: 9,
+          url: "https://assets.simpleviewinc.com/simpleview/image/upload/crm/newyorkstate/Kayak-Adventures-7_248faed8-b080-2378-ece9ddeb6e0fd9ae.jpg",
+          preview: true
+        }
        ], {})
   },
 

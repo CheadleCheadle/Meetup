@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage} = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {  handleCustomValidationErrors } = require('../../utils/validation');
+const { singleMulterUpload, singlePublicFileUpload } = require("../../awsS3");
 
 //Delete an Image for a Group
 
@@ -36,9 +37,17 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     }
 });
 //Update Image for a group
-router.put('/:imageId', requireAuth, async (req, res) => {
+router.put('/:imageId', requireAuth, singleMulterUpload("image"), async (req, res) => {
     const { user } = req;
-    const { url } = req.body;
+    let { url } = req.body;
+
+    newUrl = await singlePublicFileUpload(req.file);
+
+    if (newUrl) {
+        url = newUrl;
+    }
+
+    console.log("IM the req body", url);
     let { imageId } = req.params;
     imageId = parseInt(imageId);
     const image = await GroupImage.findByPk(imageId);

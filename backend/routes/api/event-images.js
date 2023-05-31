@@ -3,6 +3,7 @@ const router = require('express').Router();
 const { Group, Membership, GroupImage, User, Venue, Event, Attendance, EventImage} = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const {  handleCustomValidationErrors } = require('../../utils/validation');
+const { singleMulterUpload, singlePublicFileUpload } = require("../../awsS3");
 //Delete image for an event by imageId
 router.delete('/:imageId', requireAuth, async (req, res) => {
     const { user } = req;
@@ -40,15 +41,64 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
 })
 
 //Update image for an event
-//Added the info I think might work, but it will probably need to be revisited
-//Specifically the membership and if statement on l23. Test with postman first. Then incorporate it into the frontend action creater
-//
-router.put('/:imageId', requireAuth, async (req, res) => {
+router.put('/:imageId/:eventId', requireAuth, singleMulterUpload("image"), async (req, res) => {
+    const { user } = req;
+    let { url } =  req.body;
+    let {imageId, eventId } = req.params;
+    imageId = parseInt(imageId);
+    eventId = parseInt(eventId);
+    const newUrl = await singlePublicFileUpload(req.file);
+
+    if (newUrl) {
+        url = newUrl;
+    }
+
+
+    console.log("222222222222222222222222222222222222222222222", url, imageId, eventId);
+
+    const image = await EventImage.findByPk(imageId);
+
+    if (!image) {
+        return res.status(404).json({message: "Event image couldn't be found", statusCode: 404});
+    }
+    const event = await Event.findByPk(eventId);
+
+
+    const currentMembership = await Membership.findOne({
+        where: {
+            userId: user.id,
+            groupId: event.groupId
+        }
+    });
+
+    if (!currentMembership) {
+        return res.status(403).json({message: "Forbidden", status: 403});
+    }
+
+    if (["host", "co-host"].includes(currentMembership.dataValues.status) || event.organizerId === user.id) {
+        image.set({
+            url
+        });
+        await image.save()
+        return res.status(200).json(image);
+    } else {
+        return res.status(403).json({message: "Forbidden", statusCode: 403});
+    }
+
+})
+
+//Update image for an event default
+router.put('/:imageId/default', requireAuth, async (req, res) => {
     const { user } = req;
     let { url, eventId } =  req.body;
     let {imageId } = req.params;
     imageId = parseInt(imageId);
     eventId = parseInt(eventId);
+
+    console.log('111111111111111111111', url, eventId, req.body);
+
+
+    console.log("221231231231231232222222222222222", url);
 
     const image = await EventImage.findByPk(imageId);
 

@@ -1,9 +1,10 @@
 import React, {useEffect, useState, useLayoutEffect, useMemo} from "react"
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createGroupAction, createGroupImageAction, updateGroupAction, updateGroupImageAction, getGroupDetails} from "../../../store/groups";
+import { createGroupAction, createGroupImageAction, updateGroupAction, updateGroupImageAction, getGroupDetails, createGroupImageActionDefault} from "../../../store/groups";
 import './CreateGroup.css';
-import { reduce } from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 export default function CreateGroup({update, sessionUser}) {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -36,18 +37,35 @@ export default function CreateGroup({update, sessionUser}) {
         if (!disabled) {
         const spaceRemoved = location.replaceAll(' ', '');
         const group = {city:spaceRemoved, state, name, about, type, private:stringToBool(isPrivate)};
-        let theImage = {url: "https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png", preview: true};
+        let theImage = {url: "https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"};
         if (image) {
-             theImage = {url:image, preview: true};
+            
+             theImage = image;
+
         }
         if (!update) {
+            console.log("Image from form", image, theImage);
             const newGroup = await dispatch(createGroupAction(group));
-            const response =  await dispatch(createGroupImageAction(newGroup.id, theImage));
+          
+            if (image) {
+
+                dispatch(createGroupImageAction(newGroup.id, image));
+            } else {
+                dispatch(createGroupImageActionDefault(newGroup.id, theImage));
+            }
+
             history.push(`/groups/${newGroup.id}`);
         } else if (update) {
+            const oldImage = currentGroup.GroupImages[0].url;
             const updatedGroup = await dispatch(updateGroupAction(group, currentGroup.id));
-            if (currentGroup.GroupImages) {
-                 await dispatch(updateGroupImageAction(currentGroup.GroupImages[0].id, theImage));
+            if (currentGroup.GroupImages && !image) {
+                 await dispatch(updateGroupImageAction(currentGroup.GroupImages[0].id, oldImage, false));
+
+            history.push(`/groups/${updatedGroup.id}`);
+
+            } else if (currentGroup.GroupImages) {
+            history.push(`/groups/${updatedGroup.id}`);
+                 await dispatch(updateGroupImageAction(currentGroup.GroupImages[0].id, image, true));
             }
             history.push(`/groups/${updatedGroup.id}`);
         }
@@ -91,11 +109,6 @@ export default function CreateGroup({update, sessionUser}) {
         if (isPrivate.replaceAll(' ', '') === "") {
             tempErrors.private = "Visibility Type is required";
         }
-        if (image) {
-        if (!["jpg", "jpeg", "png"].includes(image.slice(image.length - 5).split(".")[1])) {
-            tempErrors.image = "Image URL must end in .png, .jpg, or .jpeg";
-        }
-        }
         setErrors(tempErrors);
         if (Object.keys(tempErrors).length === 0) {
 
@@ -117,6 +130,13 @@ export default function CreateGroup({update, sessionUser}) {
     if (!sessionUser) {
         history.replace("/");
     }
+
+    const updateFile = (e) => {
+    const file = e.target.files[0];
+    console.log("FILE,", file);
+    if (file) setImage(file);
+    };
+
 
     return (
         <>
@@ -225,8 +245,14 @@ export default function CreateGroup({update, sessionUser}) {
         <option value="Public">Public</option>
         </select>
         { submitted && errors.private? <p className="errs">{errors.private}</p>: null}
-        <p>Please add an image url for your group below: (optional)</p>
-        <input placeholder="Image Url" type="text" value={image} onChange={(e) => setImage(e.target.value)}/>
+        <p>Please add an image for your group below: (optional)</p>
+        <label className="file-input-cont">
+            <FontAwesomeIcon icon={faPlus} />
+            Add Image
+        <input  type="file" onChange={updateFile}></input>
+        </label>
+        <p>{image.name}</p>
+        {/* <input placeholder="Image Url" type="text" value={image} onChange={(e) => setImage(e.target.value)}/> */}
         </label>
         { submitted && errors.image ? <p className="errs">{errors.image}</p>: null}
         <div id="button-container-create">

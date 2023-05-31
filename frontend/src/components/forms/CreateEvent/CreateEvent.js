@@ -5,7 +5,8 @@ import { getEventDetails,createEventAction, createEventImageAction, updateEventA
 import { useSelector } from "react-redux";
 import "./CreateEvent.css"
 import { getGroupDetails } from "../../../store/groups";
-import normalize from "../../../store/normalize";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 export default function CreateEvent({update}) {
     const group = useSelector((state) => state.groups.singleGroup);
     const singleEvent = useSelector(state => state.events.singleEvent);
@@ -45,21 +46,19 @@ export default function CreateEvent({update}) {
         if (update) {
             event.id = eventId;
         }
-        let theImage = {url:"https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png", preview: true }
+        let theImage = {url:"https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"}
         if (image) {
-             theImage = {url:image, preview: true}
+             theImage = image;
         }
-        if (update) {
 
-        }
         if (update) {
             const updatedEvent = dispatch(updateEventAction(event))
             .then((d) => {
                 const images = d.EventImages;
-                const image = images[0];
-                theImage.id = image.id;
+                const oldImage = images[0];
+                theImage.id = oldImage.id;
                 theImage.eventId = eventId;
-             dispatch(updateEventImageAction(theImage));
+                dispatch(updateEventImageAction(image, eventId));
              history.push(`/events/${eventId}`)
             })
 
@@ -103,11 +102,6 @@ export default function CreateEvent({update}) {
         }
         if (endDate?.replaceAll(' ', '') === "") {
             tempErrors.endDate = "Event end is required";
-        }
-        if (image) {
-        if (!["jpg", "jpeg", "png"].includes(image.slice(image.length - 5).split(".")[1])) {
-            tempErrors.image = "Image URL must end in .png, .jpg, or .jpeg";
-        }
         }
         if (about?.length < 30 || about?.replaceAll(' ', '') === "") {
             tempErrors.about = "Description must be at least 30 characters long";
@@ -165,6 +159,13 @@ export default function CreateEvent({update}) {
         }
     },[update, dispatch]);
 
+    const updateFile = (e) => {
+    const file = e.target.files[0];
+    if (file) setImage(file);
+    };
+
+
+
     return ( isLoaded &&
         <>
         <div className="create-event-wrap">
@@ -209,8 +210,13 @@ export default function CreateEvent({update}) {
                 {submitted && errors.endDate ? <p className="errors">{errors.endDate}</p> : null}
             </label>
             <label>
-                <h3>Please add in image url for your event below: (optional)</h3>
-                <input className="event-name"type="text" value={image} onChange={(e) => setImage(e.target.value)}></input>
+                <h3>Please add in image for your event below: (optional)</h3>
+                <label className="file-input-cont">
+                <FontAwesomeIcon icon={faPlus} />
+                Add Image
+                <input className="add-image" type="file" onChange={updateFile}></input>
+                </label>
+                <p id="image-name">{image.name}</p>
                 { submitted && errors.image ? <p className="errors">{errors.image}</p>: null}
             </label>
             <h3 id="description-head">Please describe your event:</h3>

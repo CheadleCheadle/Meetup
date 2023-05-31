@@ -11,7 +11,7 @@ import DeleteEventButtonModal from "./DeleteEventButtonModal";
 import "./EventDetails.css";
 import Loading from "../loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock, faDollarSign, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { faClock, faDollarSign, faLocationDot, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import MapContainer from "./map";
 export default function EventDetails({sessionUser}) {
     const history = useHistory();
@@ -100,19 +100,17 @@ return ( isLoaded &&
     <>
     <section className="events-wrapper">
         <div className="events-navigation">
-        <NavLink to="/events">Events</NavLink>
+        <NavLink to="/events">
+            <FontAwesomeIcon icon={faChevronLeft} />
+             Back to More Events
+            </NavLink>
         <h1>{event.name}</h1>
         <h3>Hosted by {eventsGroup.Organizer.firstName} {eventsGroup.Organizer.lastName}</h3>
         </div>
         <div className="event-container">
             <div className="first-event-section">
         <div className="event-image-container">
-            <ImageFallBack
-            src={Object.values(event.EventImages)[0]?.url}
-            fallbackSrc="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"
-            alt="Image of Meetup logo"
-            />
-        {/* <img src={event.EventImages[0]?.url} onError={this.src="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"}></img> */}
+            <img src={Object.values(event.EventImages)[0]?.url}></img>
         </div>
         <div className="group-event-details">
         <div
@@ -138,8 +136,6 @@ return ( isLoaded &&
 
                     </div>
                     <div className="start-end">
-                        {/* <div>{new Date(event.startDate).toDateString()} • {event.startDate.slice(11, 19)}</div> */}
-                        {/* <div>{new Date(event.endDate).toDateString()} • {event.endDate.slice(11,19)}</div> */}
                         {handleDate(event.startDate, true)}
                         {handleDate(event.endDate)}
 

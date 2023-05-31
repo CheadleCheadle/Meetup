@@ -178,7 +178,23 @@ export const createGroupAction = (group) => async (dispatch) => {
 }
 
 export const createGroupImageAction = (groupId, image) => async (dispatch) => {
+        const formData = new FormData();
+        formData.append("image", image);
+        console.log("Image", image);
         const imageResponse = await csrfFetch(`/api/groups/${groupId}/images`, {
+        method: "POST",
+        headers: {'Content-Type': 'multipart/form-data'},
+        body: formData
+    });
+    if (imageResponse.ok) {
+        const data = await imageResponse.json();
+        dispatch(createGroupImage(data));
+        return data;
+    }
+}
+
+export const createGroupImageActionDefault = (groupId, image) => async (dispatch) => {
+        const imageResponse = await csrfFetch(`/api/groups/${groupId}/images/default`, {
         method: "POST",
         headers: {'Content-Type': 'Application/json'},
         body: JSON.stringify(image)
@@ -204,12 +220,24 @@ export const updateGroupAction = (group, groupId) => async (dispatch) => {
     }
 }
 
-export const updateGroupImageAction = (imageId, image) => async (dispatch) => {
-    const imageResponse = await csrfFetch(`/api/group-images/${imageId}`, {
+export const updateGroupImageAction = (imageId, image, flag) => async (dispatch) => {
+    let imageResponse;
+    if (flag) {
+        const formData = new FormData();
+        formData.append("image", image);
+
+        imageResponse = await csrfFetch(`/api/group-images/${imageId}`, {
         method: "PUT",
-        headers: {'Content-Type': 'Application/json'},
-        body: JSON.stringify(image)
+        headers: {'Content-Type': 'multipart/form-data'},
+        body: formData
     });
+    } else {
+        imageResponse = await csrfFetch(`/api/group-images/${imageId}`, {
+            method: "PUT",
+            headers: {'Content-Type': 'Application/json'},
+            body: JSON.stringify(image)
+        });
+    }
 
     if (imageResponse.ok) {
         const data = await imageResponse.json();

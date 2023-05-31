@@ -21,13 +21,13 @@ module.exports = {
        await queryInterface.bulkInsert(options, [
         {
           groupId: 1,
-          url: "https://res.cloudinary.com/devex/image/fetch/c_scale,f_auto,q_auto,w_720/https://lh4.googleusercontent.com/VQyrPPyh-FGdV2BJtlcwDphesnxERD6SLWvGtARygLDVNSsXhFF0kzG_yXvLyiARZbKIG3VYF_CIbF4_B-Wy3Eu7kKhHKKR3pq_2ob2pdZgxt_Wz_uqXjRMrhIBKREQnJo--Ui9b",
+          url: "https://helios-i.mashable.com/imagery/articles/04j10PCNoJJFQbSy5wpmHRn/hero-image.fill.size_1248x702.v1680172923.jpg",
           preview: true,
         },
 
         {
           groupId: 2,
-          url: "https://static.vecteezy.com/system/resources/previews/001/218/566/original/carpe-diem-motivational-icon-vector.jpg",
+          url: "https://as2.ftcdn.net/v2/jpg/02/87/24/95/1000_F_287249541_Ui4Iqyp4ggPSuHg89yvvEWsB4ksH9jYT.jpg",
           preview: true
         },
         {
@@ -40,6 +40,12 @@ module.exports = {
           url: "https://photos.thetrek.co/wp-content/uploads/2019/04/23113425/Screen-Shot-2019-04-23-at-10.33.35-AM-e1556040946541.png",
           preview: true
         },
+        {
+          groupId: 5,
+          url: "https://www.communityboating.com/wp-content/uploads/2018/01/paddling-header.jpg",
+          preview: true
+        },
+
        ], {})
   },
 

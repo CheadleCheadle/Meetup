@@ -5,6 +5,8 @@ import * as sessionActions from "../../store/session";
 import './SignupForm.css';
 import LoginFormModal from "../LoginFormModal";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import DemoLogin from "../LoginFormModal/signinDemo";
+
 function SignupFormModal() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -73,6 +75,8 @@ function SignupFormModal() {
       <span id="not-members">
       <p>Already a member? </p>
       <Link onClick={() => setModalContent(<LoginFormModal />)}>Log in</Link>
+      or
+      <DemoLogin id="signup-demo" onItemClick={closeModal}>Demo</DemoLogin>
       </span>
       </span>
       <div className="signup-form-cont">
