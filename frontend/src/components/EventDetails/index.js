@@ -114,12 +114,7 @@ return ( isLoaded &&
         <div className="event-container">
             <div className="first-event-section">
         <div className="event-image-container">
-            <ImageFallBack
-            src={Object.values(event.EventImages)[0]?.url}
-            fallbackSrc="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"
-            alt="Image of Meetup logo"
-            />
-        {/* <img src={event.EventImages[0]?.url} onError={this.src="https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"}></img> */}
+            <img src={Object.values(event.EventImages)[0]?.url}></img>
         </div>
         <div className="group-event-details">
         <div
@@ -145,8 +140,6 @@ return ( isLoaded &&
 
                     </div>
                     <div className="start-end">
-                        {/* <div>{new Date(event.startDate).toDateString()} • {event.startDate.slice(11, 19)}</div> */}
-                        {/* <div>{new Date(event.endDate).toDateString()} • {event.endDate.slice(11,19)}</div> */}
                         {handleDate(event.startDate, true)}
                         {handleDate(event.endDate)}
 

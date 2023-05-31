@@ -5,6 +5,8 @@ import { getEventDetails,createEventAction, createEventImageAction, updateEventA
 import { useSelector } from "react-redux";
 import "./CreateEvent.css"
 import { getGroupDetails } from "../../../store/groups";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 export default function CreateEvent({update}) {
     const group = useSelector((state) => state.groups.singleGroup);
     const singleEvent = useSelector(state => state.events.singleEvent);
@@ -215,7 +217,12 @@ export default function CreateEvent({update}) {
             </label>
             <label>
                 <h3>Please add in image for your event below: (optional)</h3>
+                <label className="file-input-cont">
+                <FontAwesomeIcon icon={faPlus} />
+                Add Image
                 <input className="add-image" type="file" onChange={updateFile}></input>
+                </label>
+                <p id="image-name">{image.name}</p>
                 { submitted && errors.image ? <p className="errors">{errors.image}</p>: null}
             </label>
             <h3 id="description-head">Please describe your event:</h3>

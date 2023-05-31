@@ -125,7 +125,13 @@ input[type="file"] {
     border: 2px solid black;
     border-radius: 2px;
     background-color: #E8F0FE;
-    height: 1.5em;
-    margin-bottom: .5em;
+    height: 1em;
+    margin-top: .5em;
     width: 10em;
+}
+
+#image-name {
+        font-weight: 400;
+    font-size: 1.2em;
+    color: #413f3c;
 }
