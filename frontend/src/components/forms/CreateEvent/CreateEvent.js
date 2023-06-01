@@ -1,8 +1,9 @@
 import React, {useEffect, useState } from "react";
 import { useHistory, useParams} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getEventDetails,createEventAction, createEventImageAction, updateEventAction, updateEventImageAction, getAllEvents} from "../../../store/events";
+import { getEventDetails,createEventAction, createEventImageActionDefault, createEventImageAction, updateEventAction, updateEventImageAction, getAllEvents} from "../../../store/events";
 import { useSelector } from "react-redux";
+import Loading from "../../loading";
 import "./CreateEvent.css"
 import { getGroupDetails } from "../../../store/groups";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -64,14 +65,21 @@ export default function CreateEvent({update}) {
 
 
         } else if (!update) {
+            console.log("THE IMAGE", theImage);
             try {
-
                 const newEvent = dispatch(createEventAction(event, group.id))
                 .then((event) => {
-                    dispatch(createEventImageAction(event.id,theImage))
-                    .then(() => {
-                        history.push(`/events/${event.id}`);
-                    });
+                    if (!image) {
+                        dispatch(createEventImageActionDefault(event.id,theImage))
+                        .then(() => {
+                            history.push(`/events/${event.id}`);
+                        });
+                    } else {
+                        dispatch(createEventImageAction(event.id,theImage))
+                        .then(() => {
+                            history.push(`/events/${event.id}`);
+                        });
+                    }
                 });
             } catch (e) {
             }
@@ -164,6 +172,11 @@ export default function CreateEvent({update}) {
     if (file) setImage(file);
     };
 
+    if (!isLoaded) {
+        return (
+            <Loading />
+        )
+    }
 
 
     return ( isLoaded &&
