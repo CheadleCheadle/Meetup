@@ -16,6 +16,14 @@
     position: absolute;
     height: 20em;
 }
+#center-blob-profile {
+    max-width: 75%;
+    left: 65%;
+    top: 65%;
+    transform: translateX(-50%);
+    position: absolute;
+    height: 20em;
+}
 
 #landing-no-user {
     color: teal;

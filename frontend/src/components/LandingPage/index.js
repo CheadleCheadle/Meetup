@@ -37,7 +37,7 @@ export default function Landing({sessionUser, isLoaded}) {
                 <img id="center-blob" src="https://secure.meetupstatic.com/next/images/blobs/yellow-blob.svg"></img>
                 <img id="left-blob" src="https://secure.meetupstatic.com/next/images/blobs/red-blob.svg"></img>
             <div className="landing-message">
-                <h1>The people platform-Where interests become friendships</h1>
+                <h1>The people platform-where interests become friendships</h1>
                 <p>Whatever your interest, from hiking and reading to networking and skill sharing, there are thousands of people who share it on Meetup. Events are happening every day—sign up to join the fun.</p>
             </div>
             <div className="image-container">
@@ -45,7 +45,7 @@ export default function Landing({sessionUser, isLoaded}) {
             </div>
             </div>
             <div className="description-middle">
-                <h2>How Meetup works</h2>
+                <h2>How Meetup Works</h2>
                 <p>Meet new people who share your interests through online and in-person events. It’s free to create an account.</p>
             </div>
             <div className="landing-nav">

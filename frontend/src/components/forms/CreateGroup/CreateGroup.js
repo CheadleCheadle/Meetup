@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect, useMemo} from "react"
+import React, {useEffect, useState, useRef} from "react"
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createGroupAction, createGroupImageAction, updateGroupAction, updateGroupImageAction, getGroupDetails, createGroupImageActionDefault} from "../../../store/groups";
@@ -23,6 +23,7 @@ export default function CreateGroup({update, sessionUser}) {
     const [errors, setErrors] = useState({});
     const [disabled, setDisabled] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const elementRef = useRef(null);
 
     const stringToBool = (bool) => {
         if (bool === "Private") {
@@ -39,14 +40,14 @@ export default function CreateGroup({update, sessionUser}) {
         const group = {city:spaceRemoved, state, name, about, type, private:stringToBool(isPrivate)};
         let theImage = {url: "https://logos-world.net/wp-content/uploads/2021/02/Meetup-Logo.png"};
         if (image) {
-            
+
              theImage = image;
 
         }
         if (!update) {
             console.log("Image from form", image, theImage);
             const newGroup = await dispatch(createGroupAction(group));
-          
+
             if (image) {
 
                 dispatch(createGroupImageAction(newGroup.id, image));
@@ -137,10 +138,18 @@ export default function CreateGroup({update, sessionUser}) {
     if (file) setImage(file);
     };
 
+    useEffect(() => {
+        const element = elementRef.current;
+
+        if (element) {
+            element.scrollTop = 0;
+        }
+    }, [])
+
 
     return (
         <>
-        <div className="create-group-wrap">
+        <div ref={elementRef} className="create-group-wrap">
         <div className="organizer-div">
         { !update ? <h3>Start a New Group</h3> : <h3>Update your group's information</h3>}
         { !update ? <h1>We'll walk you through a few steps to build your local community</h1> : <h1>We'll walk you through a few steps to update your group's information</h1>}
