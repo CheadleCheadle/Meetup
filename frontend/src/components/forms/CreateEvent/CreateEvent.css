@@ -18,6 +18,9 @@ label h3 {
     margin-bottom: 0;
 }
 
+#create-event-form {
+    margin-bottom: 5em;
+}
 
 #create-event-form h3{
     margin-bottom: 0;
@@ -78,7 +81,8 @@ border-radius: 8px;
 }
 
 #button-container-update{
-    padding-top: 2em;
+    padding-top: 1.5em;
+    border-top: 2px solid gray;
 }
 #title {
     font-size: 2em;

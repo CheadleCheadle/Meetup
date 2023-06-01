@@ -13,6 +13,7 @@ import Landing from "./components/LandingPage";
 import CreateEvent from "./components/forms/CreateEvent/CreateEvent";
 import { getGroupDetails } from "./store/groups";
 import Loading from "./components/loading";
+import DeveloperPage from "./components/AboutMe/developerPage";
 function App() {
   const history = useHistory();
   const sessionUser = useSelector(state => state.session.user);
@@ -42,6 +43,9 @@ function App() {
         </Route>
         <Route exact path="/events/:eventId/edit">
           <CreateEvent update={true} sessionUser={sessionUser}></CreateEvent>
+        </Route>
+        <Route exact path="/about-me">
+          <DeveloperPage />
         </Route>
         </Switch>
       )}
