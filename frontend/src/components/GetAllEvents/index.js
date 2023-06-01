@@ -29,7 +29,6 @@ export default function EventList() {
     }
 
     const handleDate = (date) => {
-        console.log(date, typeof date);
         const utcDate = new Date(date);
         const options = {
             weekday: 'short',
@@ -50,7 +49,6 @@ export default function EventList() {
        return history.push(`/events/${event.id}`);
     }
     useEffect(() => {
-        console.log("Im running");
         dispatch(getAllEvents())
     }, [dispatch]);
 

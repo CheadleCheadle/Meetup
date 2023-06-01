@@ -155,12 +155,10 @@ router.post('/', [requireAuth, validateGroupBody], async (req, res) => {
 router.post('/:groupId/images', requireAuth, singleMulterUpload("image"), async (req, res) => {
     const {imageUrl } = req.body;
     const { groupId } = req.params;
-    // console.log('---------------------------', req.file, req);
 
         const url = await singlePublicFileUpload(req.file);
 
 
-    console.log("url--------------------", url);
     const { user } = req;
         const group = await Group.findByPk(groupId);
         if (!group) {
@@ -177,10 +175,7 @@ router.post('/:groupId/images', requireAuth, singleMulterUpload("image"), async 
 router.post('/:groupId/images/default', requireAuth, async (req, res) => {
     const { url } = req.body;
     const { groupId } = req.params;
-    console.log("URL!!!!!!!!!!!!!!!!!!!!", url);
-    // console.log('---------------------------', req.file, req);
 
-    console.log("url--------------------", url);
     const { user } = req;
         const group = await Group.findByPk(groupId);
         if (!group) {
