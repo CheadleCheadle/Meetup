@@ -38,7 +38,6 @@ export default function GroupDetails({sessionUser}) {
     }
 
     const members = group.members;
-    console.log("Members", members, typeof sessionUser.id, sessionUser.id);
     const handleJoin = () => {
         dispatch(joinGroupThunk(groupId, sessionUser));
     }
@@ -65,7 +64,6 @@ export default function GroupDetails({sessionUser}) {
     const pastEvents = events.filter(event => !newEvents.includes(event));
     pastEvents.sort((a, b) => Date.parse(b.startDate) - Date.parse(a.startDate));
 
-    console.log("NEW EVENTS", newEvents);
 
     useEffect(() => {
         dispatch(getGroupDetails(groupId));
@@ -133,7 +131,6 @@ export default function GroupDetails({sessionUser}) {
         )
     }
 
-    console.log("GroupImage", group, group.GroupImages[0]);
 
 return ( isLoaded &&
     <>
@@ -223,7 +220,6 @@ return ( isLoaded &&
 
 
 function GroupMembers ({members, userId, organizerId, groupId}) {
-    console.log("Memes", members, userId, organizerId);
     const dispatch = useDispatch();
     const handleAccept = (memberId) => {
         dispatch(updateMembershipThunk(memberId,userId, groupId, "member"))
@@ -237,7 +233,6 @@ function GroupMembers ({members, userId, organizerId, groupId}) {
         return members.map((member) => {
 
             if (member.Membership.status === "pending" && userId === organizerId) {
-                console.log("first  ")
                 return (
                     <div key={member.id} id="member-box">
                     <span>
@@ -254,10 +249,8 @@ function GroupMembers ({members, userId, organizerId, groupId}) {
                 </div>
             )
         } else if (member.Membership.status === "pending" && userId !== organizerId){
-            console.log("hiu mom")
             return null
         } else {
-                console.log("first  ", member )
             return (
                 <div key={member.id} id="member-box">
                     <span>

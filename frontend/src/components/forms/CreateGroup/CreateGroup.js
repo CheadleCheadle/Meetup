@@ -45,7 +45,6 @@ export default function CreateGroup({update, sessionUser}) {
 
         }
         if (!update) {
-            console.log("Image from form", image, theImage);
             const newGroup = await dispatch(createGroupAction(group));
 
             if (image) {
@@ -134,7 +133,6 @@ export default function CreateGroup({update, sessionUser}) {
 
     const updateFile = (e) => {
     const file = e.target.files[0];
-    console.log("FILE,", file);
     if (file) setImage(file);
     };
 

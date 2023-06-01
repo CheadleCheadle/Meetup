@@ -47,7 +47,6 @@ router.put('/:imageId', requireAuth, singleMulterUpload("image"), async (req, re
         url = newUrl;
     }
 
-    console.log("IM the req body", url);
     let { imageId } = req.params;
     imageId = parseInt(imageId);
     const image = await GroupImage.findByPk(imageId);

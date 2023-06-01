@@ -202,7 +202,6 @@ export const updateEventImageAction = (image, eventId) => async (dispatch) => {
 
     if (imageResponse.ok) {
       const data = await imageResponse.json();
-      console.log("date of upodated image", data);
       dispatch(updateEventImage(data));
 
       return data;

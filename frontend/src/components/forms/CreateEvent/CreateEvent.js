@@ -65,7 +65,6 @@ export default function CreateEvent({update}) {
 
 
         } else if (!update) {
-            console.log("THE IMAGE", theImage);
             try {
                 const newEvent = dispatch(createEventAction(event, group.id))
                 .then((event) => {

@@ -4,7 +4,6 @@ import "./GroupDetails.css";
 export default function GroupEvents ({flag}) {
     const history = useHistory();
     const events = useSelector((state) => Object.values(state.events.groupEvents));
-    console.log("NO EVENTS", events)
 
     const upComingEvents = (events) => {
         return events.filter(event => {
@@ -19,7 +18,6 @@ export default function GroupEvents ({flag}) {
     }
 
         const handleDate = (date) => {
-        console.log(date, typeof date);
         const utcDate = new Date(date);
         const options = {
             weekday: 'short',

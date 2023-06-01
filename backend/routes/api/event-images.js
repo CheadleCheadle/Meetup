@@ -54,7 +54,6 @@ router.put('/:imageId/:eventId', requireAuth, singleMulterUpload("image"), async
     }
 
 
-    console.log("222222222222222222222222222222222222222222222", url, imageId, eventId);
 
     const image = await EventImage.findByPk(imageId);
 
@@ -95,10 +94,8 @@ router.put('/:imageId/default', requireAuth, async (req, res) => {
     imageId = parseInt(imageId);
     eventId = parseInt(eventId);
 
-    console.log('111111111111111111111', url, eventId, req.body);
 
 
-    console.log("221231231231231232222222222222222", url);
 
     const image = await EventImage.findByPk(imageId);
 

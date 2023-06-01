@@ -180,7 +180,6 @@ export const createGroupAction = (group) => async (dispatch) => {
 export const createGroupImageAction = (groupId, image) => async (dispatch) => {
         const formData = new FormData();
         formData.append("image", image);
-        console.log("Image", image);
         const imageResponse = await csrfFetch(`/api/groups/${groupId}/images`, {
         method: "POST",
         headers: {'Content-Type': 'multipart/form-data'},
